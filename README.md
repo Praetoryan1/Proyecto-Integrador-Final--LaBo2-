@@ -1,10 +1,10 @@
 # Trazo · Portafolios creativos
 
-Proyecto Integrador Final de **Laboratorio II**. Autor: **Muñoz, Jonathan**. Entrega preliminar: 15/10/2026. Entrega final: **05/11/2026**.
+Proyecto Integrador Final de **Laboratorio II**. Autor: **Muñoz, Jonathan**.
 
 Trazo reúne portafolios de diseño, ilustración y animación con descubrimiento por etiquetas. Los reclutadores pueden navegar sin cuenta; cada creador decide la visibilidad de su perfil, publicaciones y contacto profesional. Busca resolver la dispersión de trabajos y datos de contacto entre redes generalistas y sitios personales.
 
-**Estado al 21/10/2026: primer incremento funcional local.** Ya se puede registrar una cuenta, ingresar y salir, editar el perfil, subir un avatar, explorar publicaciones de demostración y administrar etiquetas con el rol correspondiente. El editor de publicaciones, los medios adicionales, Vue, JWT y las funciones sociales todavía están pendientes. Esta versión no está preparada para abrirse al público.
+**Estado al 21/10/2026: primer incremento funcional local.** Ya se puede registrar una cuenta, ingresar y salir, editar el perfil, subir un avatar, explorar publicaciones de demostración y administrar etiquetas con el rol correspondiente. El editor de publicaciones, los medios adicionales, Vue, JWT y las funciones sociales todavía están pendientes.
 
 ![Explorar en Trazo](docs/evidencias/explorar-desktop.png)
 
@@ -103,7 +103,3 @@ Se agregó un [workflow de GitHub Actions](.github/workflows/ci.yml). Su ejecuci
 Para promoción faltan los módulos señalados, funciones sociales y moderación, datos multimedia, SQL con datos ficticios completos, colección Postman, documentación y evidencias finales, y ensayo de instalación y defensa. El SQL actual contiene el **esquema**; los datos se generan con el inicializador C#.
 
 Para producción se requiere otra etapa: recuperación y confirmación de cuentas, revisión de seguridad y operación, tratamiento de datos personales, términos y privacidad aplicables, licencias, copias de seguridad y gestión de incidentes. La página de privacidad actual informa el estado de desarrollo; no es una política legal definitiva.
-
-## Trabajo por incrementos
-
-Al terminar cada incremento se revisan archivos y pruebas y se **detiene el desarrollo para el commit/push de Jonathan**. No se ejecuta push automáticamente. La apertura a producción es independiente de la entrega académica.
