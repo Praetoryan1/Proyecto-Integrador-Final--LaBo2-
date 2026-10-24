@@ -79,8 +79,6 @@ tools/                Preparación del entorno y ejecución de pruebas
 
 ## Matriz de evidencias de requerimientos mínimos
 
-Se prioriza el mínimo de **6 entidades principales** de la consigna, aunque su tabla de ejemplo diga 4. No se considera que tener una tabla equivalga a completar su módulo funcional.
-
 | Requerimiento | Estado real | Código / controladores | Evidencia |
 | --- | --- | --- | --- |
 | 1. Al menos 6 entidades principales, 1:N y N:M | Implementado en persistencia: 7 principales, asociaciones y soporte Identity | [Modelo](src/Trazo.Web/Domain/Modelo.cs), [DbContext](src/Trazo.Web/Data/TrazoDbContext.cs), [migración](src/Trazo.Web/Data/Migrations/20261021051003_ModeloInicial.cs) | [DER](docs/der.png), [correspondencia física](docs/modelo-de-datos.md), [SQL](database/001-modelo-inicial.sql), pruebas con MySQL |
@@ -112,12 +110,3 @@ npm run test:browser
 
 Usa la cuenta demo Ana y crea/elimina una publicación temporal en `trazo_dev`. Requiere suficientes publicaciones para una segunda página (la semilla original incluye 12 de Ana). Genera video, capturas y metadatos de red sin cookies ni tokens en `docs/evidencias/incremento-02/`.
 
-## Documentación y pendientes de entrega
-
-- [Entrega preliminar PDF](output/pdf/entrega-preliminar-trazo.pdf), [fuente](docs/entrega-preliminar.md) y [DER Mermaid](docs/der.mmd).
-- [Plan de trabajo y antecedentes de seguridad y marco legal argentino](docs/plan-de-trabajo.md).
-- [Desarrollo en VS Code y MySQL](docs/desarrollo.md), [modelo físico](docs/modelo-de-datos.md) y [dependencias de terceros](docs/dependencias.md).
-
-Para promoción faltan los módulos señalados, funciones sociales y moderación, datos multimedia, SQL con datos ficticios completos, colección Postman, documentación y evidencias finales, y ensayo de instalación y defensa. El SQL actual contiene el **esquema**; los datos se generan con el inicializador C#.
-
-Para producción se requiere otra etapa: recuperación y confirmación de cuentas, revisión de seguridad y operación, tratamiento de datos personales, términos y privacidad aplicables, licencias, copias de seguridad y gestión de incidentes. La página de privacidad actual informa el estado de desarrollo; no es una política legal definitiva.
