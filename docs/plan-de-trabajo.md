@@ -4,6 +4,8 @@ Documento complementario a la entrega preliminar. Investigación consultada el *
 
 **Actualización del 21/10/2026:** Jonathan autorizó iniciar la implementación y confirmó el vencimiento final para el **05/11/2026**. El primer incremento se amplió a entorno, persistencia, cuentas, perfiles/avatar, exploración de textos demo y administración de etiquetas. El estado comprobado está en [incremento 01](incremento-01.md) y en la [matriz del README](../README.md); las secciones de investigación siguientes incluyen funciones futuras y no certifican que estén implementadas.
 
+**Actualización del 24/10/2026:** el primer incremento fue subido a GitHub y Jonathan pidió continuar. Se implementó el [incremento 02](incremento-02.md): editor Vue, endpoints JSON con cookies/antiforgery y selector paginado de etiquetas. No cambió el DER. Se conserva la consulta pendiente al profesor sobre herramientas auxiliares; Python no ejecuta la aplicación y Docker solo aloja MySQL localmente.
+
 ## 1. Concepto y referencias
 
 **Propuesta:** un portafolio profesional vivo para diseñadores y animadores, con descubrimiento de obras y una comunidad sencilla. El éxito inicial será que una persona pueda publicar una obra, compartir su perfil y recibir contacto profesional; no se medirá por cantidad de funciones sociales.
@@ -104,7 +106,7 @@ Revisión local del 09/10/2026: SDK **10.0.400** disponible; Git disponible; car
 | Relacionados por AJAX | Selector de etiquetas en el editor | Buscar término, recibir coincidencias limitadas, seleccionar y persistir la asociación |
 | REST + JWT | `/api/v1/publicaciones` y consulta relacionada | Postman: token válido, vencido, alterado, sin token, rol incorrecto y otro propietario |
 
-Contrato de listado propuesto: `page`, `pageSize`, filtros y orden; respuesta con `items`, `page`, `pageSize` y `totalCount` autorizado. Tamaño por defecto 12, máximo 50; validación de límites en backend. Consulta EF con filtro de autorización, proyección, orden estable, `Skip`/`Take` y ejecución en base de datos. No hacer `ToList()` antes de paginar. Revisar índices según consultas: autor/fecha, visibilidad/estado/fecha, etiqueta normalizada y ambos sentidos útiles de las asociaciones.
+Contrato implementado para el panel: parámetros `pagina`, `q` y `estado`; respuesta `items`, `numero`, `tamano`, `total`, `paginas`, `anterior` y `siguiente`. Tamaño fijo de 12 publicaciones y 10 etiquetas por petición; el cliente no puede solicitar el catálogo completo mediante pageSize. Consulta EF con filtro de autorización, proyección, orden estable, `Skip`/`Take` y ejecución en base de datos. No hacer `ToList()` antes de paginar. Revisar índices según consultas: autor/fecha, visibilidad/estado/fecha, etiqueta normalizada y ambos sentidos útiles de las asociaciones.
 
 Selector: solicitud con término y página, máximo 20 coincidencias, búsqueda con una breve espera tras teclear y cancelación de respuestas antiguas. Cargar solo etiquetas seleccionadas al editar. Los IDs recibidos se vuelven a validar en el servidor. El CRUD de etiquetas es administrativo; crear nuevas etiquetas desde el selector no es parte del MVP.
 
@@ -171,8 +173,8 @@ Se deberán aprobar documentos y procesos concretos: términos de uso, privacida
 | Incremento | Resultado verificable | Parada |
 | --- | --- | --- |
 | 0 - Actividad preliminar | PDF, DER, narrativa y alcance preparados; implementación autorizada por Jonathan | No se infiere aprobación docente a partir de esa autorización |
-| 1 - Base funcional ampliada | MVC, MySQL, migración, Identity, perfiles/avatar, exploración paginada, etiquetas por rol y pruebas | Revisar y realizar el primer push; preparado el 21/10 |
-| 2 - Editor Vue y relacionados | ABM de publicaciones propio vía AJAX/JSON, selector asíncrono de etiquetas y privacidad | Pruebas entre cuentas, video y push |
+| 1 - Base funcional ampliada | MVC, MySQL, migración, Identity, perfiles/avatar, exploración paginada, etiquetas por rol y pruebas | Push verificado el 24/10 |
+| 2 - Editor Vue y relacionados | ABM de publicaciones propio vía AJAX/JSON, selector asíncrono de etiquetas y privacidad | Implementado y probado el 24/10; espera revisión y push |
 | 3 - Archivos y medios | Imágenes, GIF, video corto y YouTube con lectura autorizada, límites y créditos | Pruebas de subida/descarga y push |
 | 4 - API REST con JWT | Autenticación y endpoints, permisos compartidos, colección Postman | Pruebas positivas/negativas y push |
 | 5 - Comunidad y moderación | Destacados, favoritos, seguimientos, reportes y suspensión administrable | Pruebas de privacidad, paginado y roles; push |
@@ -183,4 +185,4 @@ La seguridad y autorización se incorporan en cada bloque; la preparación produ
 
 ## 9. Próximas decisiones
 
-El siguiente paso es revisar el primer incremento y crear el repositorio público para el push de Jonathan. Las versiones probadas y los pasos de MySQL/VS Code figuran en el README y en desarrollo.md. Queda verificar con el docente cualquier observación sobre el alcance propuesto, en particular el video corto. El nombre de trabajo puede cambiar sin afectar el modelo. No publicar contraseñas reales, claves JWT, datos de usuarios ni archivos sin licencia en GitHub.
+El siguiente paso es revisar y subir el incremento 02. Luego se incorporará la carga y lectura autorizada de medios de publicaciones. Las versiones probadas y los pasos de MySQL/VS Code figuran en el README y en desarrollo.md. Queda verificar con el docente cualquier observación sobre el alcance y las herramientas auxiliares. El nombre de trabajo puede cambiar sin afectar el modelo. No publicar contraseñas reales, claves JWT, datos de usuarios ni archivos sin licencia en GitHub.

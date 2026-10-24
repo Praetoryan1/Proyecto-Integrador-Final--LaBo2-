@@ -1,0 +1,18 @@
+@{ ViewData["Title"] = "Mis publicaciones"; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/publicaciones.css" asp-append-version="true" />
+}
+<section class="page-heading">
+    <a asp-controller="Panel" asp-action="Index" class="quiet-link">← Mi estudio</a>
+    <div class="eyebrow mt-4">MI ESTUDIO / PUBLICACIONES</div>
+    <h1>Ideas que toman forma<span class="accent">.</span></h1>
+    <p>Compartí una actualización, guardá un borrador o volvé sobre tu proceso.</p>
+</section>
+<div id="publicaciones-app">
+    @Html.AntiForgeryToken()
+    <p role="status">Cargando tus publicaciones…</p>
+</div>
+<noscript><p class="notice error">Activá JavaScript para usar el editor de publicaciones.</p></noscript>
+@section Scripts {
+    <script type="module" src="~/js/publicaciones/editor.js" asp-append-version="true"></script>
+}

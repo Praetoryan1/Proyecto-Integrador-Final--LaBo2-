@@ -5,7 +5,10 @@
     <div class="eyebrow mt-5">@(Model.Publicacion.Tipo == TipoPublicacion.Obra ? "OBRA" : "ACTUALIZACIÓN")</div>
     <h1>@Model.Publicacion.Titulo</h1>
     <p class="muted">Por <a asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@Model.Publicacion.NombreUsuario">@Model.Publicacion.Autor</a> · @(Model.Publicacion.Fecha?.ToString("dd/MM/yyyy") ?? "Sin publicar")</p>
-    @if (Model.Propia) { <p class="notice">Tu publicación · Visibilidad: @Model.Visibilidad · Estado: @Model.Estado</p> }
+    @if (Model.Propia) {
+        <p class="notice">Tu publicación · Visibilidad: @Model.Visibilidad · Estado: @Model.Estado</p>
+        <a asp-controller="Publicaciones" asp-action="Index" asp-route-editar="@Model.Publicacion.Id" class="btn btn-outline-light mb-4">Editar publicación ↗</a>
+    }
     <div class="publication-text">@Model.Publicacion.Texto</div>
     <div class="tags mt-4">@foreach (var tag in Model.Publicacion.Etiquetas) { <a asp-action="Index" asp-route-etiqueta="@tag">#@tag</a> }</div>
 </article>

@@ -1,0 +1,60 @@
+{
+  "documentRequestsDuringCrud": 0,
+  "requests": [
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones?q=&pagina=1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/etiquetas?q=Anima&pagina=1",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "/panel-json/publicaciones",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones?q=&pagina=1",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "url": "/panel-json/publicaciones/23",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones?q=&pagina=1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones?q=&pagina=2",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones?q=Estudio+de+movimiento+%C2%B7+prueba+1792819866180&pagina=1",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones/23",
+      "status": 200
+    },
+    {
+      "method": "DELETE",
+      "url": "/panel-json/publicaciones/23",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "url": "/panel-json/publicaciones?q=Estudio+de+movimiento+%C2%B7+prueba+1792819866180&pagina=1",
+      "status": 200
+    }
+  ]
+}

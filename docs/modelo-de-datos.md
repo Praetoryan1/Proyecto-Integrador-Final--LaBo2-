@@ -34,7 +34,7 @@ En este incremento, `Reporte.Motivo` se guarda como texto de hasta 80 caracteres
 - CHECK de MySQL que impide seguirse a uno mismo.
 - CHECK de recurso: fuente local o identificador YouTube, nunca ambos; su tipo debe corresponder a la fuente.
 - Eliminación restringida de etiquetas usadas, autores con publicaciones y relaciones sensibles de reportes/seguimientos.
-- Token de concurrencia `Publicacion.Version` preparado para el futuro editor. Su renovación y conflicto de edición se implementarán junto a ese flujo.
+- Token de concurrencia `Publicacion.Version`: el editor lo recibe, devuelve al modificar/eliminar y renueva al guardar. Una versión desactualizada o una colisión real en EF devuelve 409, sin pisar el cambio anterior.
 
 Usuario y Perfil se crean en una misma transacción durante el registro. La FK garantiza un propietario válido y unicidad del perfil; la obligación de crear el perfil al registrar un usuario pertenece al flujo de aplicación.
 
@@ -42,4 +42,6 @@ La lectura autorizada se compone con `IQueryable` antes de `Count`, `Skip` y `Ta
 
 ## Qué está pendiente
 
-El esquema de recursos, favoritos, seguimientos y reportes está creado, pero sus altas y demás operaciones de usuario todavía no están implementadas. Tampoco se ofrece todavía el cambio de estado editorial de publicaciones. Por eso las pruebas actuales validan restricciones estructurales y lectura, sin presentar esos módulos como terminados.
+El esquema de recursos, favoritos, seguimientos y reportes está creado, pero sus altas y demás operaciones de usuario todavía no están implementadas. Desde el incremento 02 sí existen ABM, asociación de etiquetas y cambio de estado editorial de publicaciones de texto. Se permite conservar etiquetas desactivadas ya asociadas, pero no agregar nuevas asociaciones con ellas. No se puede publicar una obra sin un recurso listo. Borrar una publicación con reportes o recursos vinculados devuelve 409 y permite optar por archivarla; la coordinación de eliminación de archivos llegará con medios.
+
+No hubo cambios de tablas ni relaciones en el incremento 02: el DER y la migración inicial siguen representando el esquema actual. El estado de moderación no se modifica desde el editor, ni puede elegirse otro autor enviando campos adicionales.

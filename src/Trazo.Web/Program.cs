@@ -52,6 +52,7 @@ builder.Services.AddAntiforgery(o =>
 });
 builder.Services.AddControllersWithViews(o => o.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 builder.Services.AddScoped<AvatarService>();
+builder.Services.AddScoped<PublicacionesService>();
 builder.Services.AddRateLimiter(o =>
 {
     o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;

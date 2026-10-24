@@ -2,6 +2,7 @@
   "recommendations": [
     "ms-dotnettools.csdevkit",
     "ms-azuretools.vscode-containers",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "Vue.volar"
   ]
 }

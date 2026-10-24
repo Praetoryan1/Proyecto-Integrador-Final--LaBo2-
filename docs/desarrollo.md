@@ -1,6 +1,6 @@
 # Desarrollo local: VS Code, MySQL y GitHub
 
-Guía del incremento 01, 21/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
+Guía actualizada al incremento 02, 24/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
 
 ## 1. Abrir el proyecto
 
@@ -15,7 +15,7 @@ docker version
 git --version
 ```
 
-El SDK fijado es 10.0.400; `global.json` permite parches posteriores de esa banda. Los scripts requieren PowerShell 7.2 o superior. Docker Desktop debe mostrar el motor Linux funcionando. Postman y Vue se incorporarán con los módulos de API y publicaciones.
+El SDK fijado es 10.0.400; `global.json` permite parches posteriores de esa banda. Los scripts requieren PowerShell 7.2 o superior. Docker Desktop debe mostrar el motor Linux funcionando. Vue ya está integrado; Postman se incorporará con la API JWT.
 
 ## 2. Preparar la base de datos
 
@@ -72,7 +72,25 @@ Recorrido sugerido:
 3. Abrir `/p/ana` con y sin sesión para observar los permisos. Ana ve sus borradores y privados; otra cuenta no.
 4. Ingresar como administrador y usar Administrar para crear, editar y eliminar una etiqueta nueva. Una etiqueta asociada a publicaciones no se elimina: puede desactivarse.
 
-Todavía no existe un editor de publicaciones: los textos visibles provienen de los datos iniciales. No hay carga de imágenes de obras, GIF o videos en este incremento.
+Desde **Mi estudio → Administrar mis publicaciones** se accede a `/panel/publicaciones`. Crear una actualización, completar título/texto, buscar etiquetas y guardar. Elegir Borrador para conservarla sin difusión, Publicada para habilitar su lectura según privacidad, o Archivada para retirarla sin eliminarla. Todas esas operaciones, los filtros y el paginado se resuelven vía AJAX sin recargar.
+
+Eliminar requiere confirmación y borra de forma permanente una publicación de texto sin reportes ni recursos vinculados. Si otra pestaña ya la cambió, se muestra un conflicto y se conserva el texto local para poder copiarlo antes de recargar su versión actual. Las obras sin recursos todavía no se pueden publicar. No hay carga de imágenes de obras, GIF o videos en este incremento.
+
+### Editar los componentes Vue
+
+Los componentes están en `src/Trazo.Web/ClientApp/publicaciones/`. VS Code recomienda la extensión Vue Official. Para ejecutar el proyecto como evaluador no hace falta Node: el bundle compilado está incluido. Para modificar esos componentes se necesita Node >=22.12:
+
+```powershell
+node --version
+npm ci
+npm run build
+```
+
+Vite genera `src/Trazo.Web/wwwroot/js/publicaciones/editor.js`. No editar ese archivo a mano: editar `.vue` / `.js` en ClientApp, recompilar y versionar tanto fuentes como bundle. No hay que dejar un servidor Node funcionando.
+
+Durante el desarrollo, `npm run watch` recompila al guardar; mantenerlo en otra terminal y recargar el navegador después de cambiar el código. Esto es independiente del funcionamiento AJAX del editor, que no recarga al operar publicaciones. Los estilos específicos están en `wwwroot/css/publicaciones.css`.
+
+No cambió el modelo de datos en el incremento 02: no crear otra base ni una nueva migración para usarlo.
 
 ## 5. Probar cambios
 
@@ -83,7 +101,21 @@ Todavía no existe un editor de publicaciones: los textos visibles provienen de 
 
 El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
 
-Resultados esperados de este incremento: sin `-Integracion`, 12 aprobadas y 7 omitidas; con `-Integracion`, 19 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+Resultados esperados de este incremento: sin `-Integracion`, 12 aprobadas y 14 omitidas; con `-Integracion`, 26 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+
+### Recorrido de navegador y evidencia
+
+Con Windows, Edge instalado, la aplicación ejecutándose en HTTPS 7280, la cuenta demo Ana sin cambiar su contraseña y la semilla con sus 12 publicaciones:
+
+```powershell
+npm ci
+npx playwright install ffmpeg
+npm run test:browser
+```
+
+El script crea una publicación temporal en `trazo_dev`, la edita, busca etiquetas, prueba la segunda página, comprueba el ancho móvil y la elimina al terminar. No recrea la base. Necesita suficientes entradas de Ana para paginar; repetir la semilla no restablece entradas eliminadas a mano. Usar los datos demo para este recorrido. En caso de interrupción abrupta, revisar si quedó una entrada con el título “Estudio de movimiento · prueba …”.
+
+Genera capturas, video WebM y un registro de métodos/URL/estados HTTP sin contraseñas ni tokens en `docs/evidencias/incremento-02/`. El contexto de pruebas acepta únicamente para ese recorrido el certificado local de desarrollo; el navegador habitual sigue usando el certificado confiado en el paso 3.
 
 Para restaurar exactamente las dependencias fijadas:
 
@@ -116,20 +148,19 @@ Para retomar: abrir Docker Desktop, ejecutar `docker compose up -d --wait` y lue
 
 Si aparece “address already in use”, comprobar si otra terminal o el depurador ya ejecutan Trazo. Si aparece “access denied” de MySQL, revisar la correspondencia entre `.env`, User Secrets y el volumen, sin borrar datos para resolverlo. Si el certificado no es confiable, repetir el paso del certificado y reabrir el navegador. Si falta la conexión, ejecutar nuevamente el script de preparación.
 
-## 8. Primer commit y push
+## 8. Commit y push del incremento actual
 
-El repositorio Git local ya está inicializado en `main`. Crear en GitHub un repositorio **público** llamado, por ejemplo, `trazo`, vacío: sin agregar README, `.gitignore` ni licencia desde GitHub.
+El repositorio ya está creado y `origin` apunta al proyecto de GitHub. El primer incremento fue subido; no volver a ejecutar `git init` ni `git remote add`.
 
-Antes de subir, revisar `git status --short`: no deben aparecer `.env`, `bin`, `obj`, `App_Data`, `TestResults` ni archivos con contraseñas reales. Los datos demo del README son deliberadamente públicos. La licencia del código propio se decidirá por separado; publicar el repositorio no concede automáticamente una licencia de reutilización.
+Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.env`, `node_modules`, `bin`, `obj`, `App_Data`, `TestResults` ni archivos con contraseñas reales. Los datos demo del README son deliberadamente públicos. La licencia del código propio se decidirá por separado; publicar el repositorio no concede automáticamente una licencia de reutilización.
 
 ```powershell
 git add .
 git diff --cached --stat
-git commit -m "feat: base MVC, identidad, perfiles y persistencia MySQL"
-git remote add origin https://github.com/TU_USUARIO/trazo.git
-git push -u origin main
+git commit -m "feat: editor Vue de publicaciones y selector AJAX de etiquetas"
+git push
 ```
 
-Sustituir `TU_USUARIO` y, si corresponde, el nombre del repositorio. El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: se espera la primera ejecución del workflow de compilación y pruebas.
+El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: este incremento añade compilación Vue y verificación del bundle a las pruebas .NET/MySQL.
 
 **Parada acordada:** confirmar el commit/push antes de comenzar el próximo incremento. No realizar todavía un despliegue público de la aplicación.

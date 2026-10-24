@@ -8,6 +8,9 @@ Inventario inicial para el primer incremento. Las versiones NuGet exactas y tran
 | MySql.EntityFrameworkCore 10.0.9 | Proveedor EF para MySQL | El manifiesto NuGet declara `GPL-2.0-only WITH Universal-FOSS-exception-1.0`; incluye dependencia de MySql.Data |
 | SkiaSharp 4.153.1 y recursos nativos | Decodificación y conversión de avatar | MIT para el wrapper; conservar y revisar avisos de componentes nativos al distribuir |
 | Bootstrap local | Base de estilos | MIT; [licencia incluida](../src/Trazo.Web/wwwroot/lib/bootstrap/LICENSE) |
+| Vue 3.5.44 | Editor y selector reactivos del panel | MIT; [licencia incluida con el bundle](../src/Trazo.Web/wwwroot/js/publicaciones/LICENSE.vue.txt) |
+| Vite 8.3.5 y plugin Vue 6.0.10 | Compilación de componentes; no requieren un servidor Node al ejecutar Trazo | MIT; versiones fijadas en package-lock.json |
+| Playwright 1.64.1 | Recorrido de navegador y captura de evidencia | Apache-2.0; herramienta de desarrollo. Usa Edge instalado y FFmpeg descargado por su instalador |
 | jQuery y complementos de validación | Archivos de la plantilla MVC conservados; el layout actual no los carga | MIT; avisos incluidos en sus directorios de `wwwroot/lib` |
 | xUnit, test SDK, WebApplicationFactory y coverlet | Pruebas | Consultar los manifiestos de las versiones fijadas; herramientas de desarrollo |
 | Imagen MySQL 8.4 | Base de desarrollo en Docker | Imagen externa; revisar sus avisos y condiciones para la distribución elegida |
@@ -17,3 +20,5 @@ Este inventario no determina por sí solo la compatibilidad legal de una distrib
 Las formas geométricas de las tarjetas se dibujan con CSS del proyecto. Los textos y usuarios de demostración son ficticios; no se copiaron obras de Amy J. Xu u otros portafolios. Las capturas de `docs/evidencias` corresponden a la aplicación local con esos datos.
 
 La [investigación preliminar](plan-de-trabajo.md) conserva las referencias técnicas y legales consultadas. Los archivos de terceros conservan sus avisos originales. Una publicación futura de obras de usuarios requerirá permisos y procedimientos específicos, aparte de las licencias del software.
+
+Para integrar Vue se consultaron las guías oficiales de [herramientas y precompilación](https://vuejs.org/guide/scaling-up/tooling), [seguridad de plantillas](https://vuejs.org/guide/best-practices/security) e [integración de Vite con un backend](https://vite.dev/guide/backend-integration). Se compilan plantillas propias y se trata el texto del usuario como texto, sin `v-html`, compilación de plantillas de usuarios ni relajación de la política CSP. Se eligió una salida única con nombre estable y `asp-append-version` para servirla desde Razor.
