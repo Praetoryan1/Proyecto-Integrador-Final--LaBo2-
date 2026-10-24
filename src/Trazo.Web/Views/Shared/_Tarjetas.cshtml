@@ -1,0 +1,27 @@
+@model IReadOnlyList<TarjetaPublicacion>
+<div class="portfolio-grid">
+@foreach (var item in Model)
+{
+    <article class="work-card">
+        <a class="work-cover cover-@(item.Id % 5)" asp-controller="Explorar" asp-action="Detalle" asp-route-id="@item.Id">
+            <span class="cover-kicker">@(item.Tipo == TipoPublicacion.Obra ? "PORTAFOLIO" : "NOTA DE ESTUDIO")</span>
+            <span class="cover-shape" aria-hidden="true"></span>
+            <span class="cover-title">@item.Titulo</span>
+            <span class="cover-arrow" aria-hidden="true">↗</span>
+        </a>
+        <div class="work-info">
+            <a class="work-author" asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@item.NombreUsuario">
+                <span class="initial-avatar" aria-hidden="true">@item.Autor[..1]</span>@item.Autor
+            </a>
+            <span class="work-kind">@(item.Tipo == TipoPublicacion.Obra ? "Obra" : "Actualización")</span>
+        </div>
+        <div class="tags">
+        @foreach (var tag in item.Etiquetas) { <a asp-controller="Explorar" asp-action="Index" asp-route-etiqueta="@tag">#@tag</a> }
+        </div>
+    </article>
+}
+</div>
+@if (!Model.Any())
+{
+    <div class="empty-state"><span class="eyebrow">UN ESPACIO POR DESCUBRIR</span><h2>Todavía no hay publicaciones para mostrar.</h2><p>Probá otra búsqueda o volvé más adelante.</p><a asp-controller="Explorar" asp-action="Index" class="btn btn-outline-light">Explorar todo</a></div>
+}

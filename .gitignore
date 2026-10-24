@@ -1,0 +1,40 @@
+# .NET / IDE
+# Instrucciones locales del asistente (en cualquier carpeta)
+AGENTS.md
+
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+coverage/
+
+# Frontend
+node_modules/
+dist/
+# Las bibliotecas distribuidas con MVC deben llegar al clon; no son un build local.
+!src/Trazo.Web/wwwroot/lib/**/dist/
+!src/Trazo.Web/wwwroot/lib/**/dist/**
+
+# Configuración privada y secretos
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+*.pfx
+*.p12
+*.key
+
+# Datos reales, archivos de usuarios y temporales
+App_Data/
+uploads/
+storage/
+backups/
+*.log
+tmp/
+__pycache__/
+
+# Los PDF y diagramas académicos de output/pdf/ y docs/ sí se versionan.

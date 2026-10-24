@@ -1,0 +1,32 @@
+@model ExplorarModel
+@{ ViewData["Title"] = "Explorar creatividad"; }
+<section class="hero">
+    <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> UN ESPACIO PARA TU MIRADA</div>
+        <h1>Lo que imaginás<br />merece <em>verse.</em></h1>
+        <p>Descubrí ideas, procesos y personas detrás del diseño.<br class="desktop-only" /> Un lugar para mostrar lo que te hace crear.</p>
+        <div class="hero-actions"><a href="#publicaciones" class="btn btn-lime">Explorar publicaciones <span aria-hidden="true">↗</span></a>
+        @if (User.Identity?.IsAuthenticated != true) { <a asp-controller="Cuenta" asp-action="Registro" class="quiet-link">Crear mi portafolio →</a> }
+        else { <a asp-controller="Panel" asp-action="Index" class="quiet-link">Ir a mi estudio →</a> }</div>
+    </div>
+    <div class="hero-art" aria-hidden="true"><div class="art-label">ESTUDIO ABIERTO / TRAZO</div><div class="art-orbit"></div><div class="art-disc"></div><div class="art-line"></div><div class="art-star">✳</div><div class="art-bottom">Ideas en<br /><strong>movimiento.</strong><span>01 — ∞</span></div></div>
+</section>
+<section id="publicaciones" class="explore-section">
+    <div class="section-heading"><div><span class="eyebrow">EL PROCESO TAMBIÉN CUENTA</span><h2>Explorar publicaciones<span class="accent">.</span></h2></div><span class="count-pill">@Model.Resultados.Total publicaciones</span></div>
+    <form method="get" asp-controller="Explorar" asp-action="Index" class="filter-bar" role="search">
+        <div class="search-field"><label for="q" class="visually-hidden">Buscar publicaciones</label><span aria-hidden="true">⌕</span><input id="q" name="q" maxlength="100" value="@Model.Q" placeholder="Buscá una idea, un proceso…" /></div>
+        <div><label for="etiqueta" class="visually-hidden">Etiqueta</label><input id="etiqueta" name="etiqueta" maxlength="40" value="@Model.Etiqueta" placeholder="# Etiqueta" class="form-control" /></div>
+        <div>
+            <label for="tipo" class="visually-hidden">Tipo de publicación</label>
+            <select id="tipo" name="tipo" class="form-select">
+                <option value="">Todas las publicaciones</option>
+                <option value="Obra" selected="@(Model.Tipo == TipoPublicacion.Obra)">Obras</option>
+                <option value="Actualizacion" selected="@(Model.Tipo == TipoPublicacion.Actualizacion)">Actualizaciones</option>
+            </select>
+        </div>
+        <button class="btn btn-outline-light" type="submit">Buscar</button>
+        @if (Model.Q != null || Model.Etiqueta != null || Model.Tipo != null) { <a asp-action="Index" class="quiet-link">Limpiar</a> }
+    </form>
+    <partial name="_Tarjetas" model="Model.Resultados.Items" />
+    <partial name="_Pagination" model="@((Model.Resultados.Numero, Model.Resultados.Paginas, Model.Resultados.Total))" />
+</section>

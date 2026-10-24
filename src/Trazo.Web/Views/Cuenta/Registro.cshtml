@@ -1,0 +1,13 @@
+@model RegistroModel
+@{ ViewData["Title"] = "Crear cuenta"; }
+<div class="auth-shell"><div class="auth-aside"><span class="eyebrow">HACÉ LUGAR A TUS IDEAS</span><h1>Tu trabajo.<br />Tu <em>mirada.</em></h1><p>Reuní lo que creás en un espacio propio y compartilo con el mundo.</p><div class="auth-decoration" aria-hidden="true">↗</div></div>
+<section class="form-panel"><h2>Empezá tu portafolio.</h2><p class="muted">Podés explorar sin cuenta. Registrate para tener tu perfil.</p>
+<form asp-action="Registro" method="post">
+    <div asp-validation-summary="ModelOnly" class="validation" role="alert"></div>
+    <div class="field"><label asp-for="NombreVisible"></label><input asp-for="NombreVisible" class="form-control" autocomplete="name" /><span asp-validation-for="NombreVisible"></span></div>
+    <div class="field"><label asp-for="NombreUsuario"></label><input asp-for="NombreUsuario" class="form-control" autocomplete="username" /><small>Tu dirección será /p/usuario. Usá minúsculas, números o guion bajo.</small><span asp-validation-for="NombreUsuario"></span></div>
+    <div class="field"><label asp-for="Email"></label><input asp-for="Email" class="form-control" autocomplete="email" /><small>Tu correo de acceso no se publica.</small><span asp-validation-for="Email"></span></div>
+    <div class="field"><label asp-for="Password"></label><input asp-for="Password" class="form-control" autocomplete="new-password" /><small>Al menos 12 caracteres, con mayúscula, minúscula, número y símbolo.</small><span asp-validation-for="Password"></span></div>
+    <div class="field"><label asp-for="Confirmacion"></label><input asp-for="Confirmacion" class="form-control" autocomplete="new-password" /><span asp-validation-for="Confirmacion"></span></div>
+    <button type="submit" class="btn btn-lime w-100">Crear mi cuenta →</button>
+</form><p class="mt-4 muted">¿Ya tenés cuenta? <a asp-action="Ingresar">Ingresá</a></p></section></div>

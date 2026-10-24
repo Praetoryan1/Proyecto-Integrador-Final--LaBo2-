@@ -1,0 +1,3 @@
+@model ErrorViewModel
+@{ ViewData["Title"] = "Ocurrió un problema"; }
+<section class="empty-state"><span class="eyebrow">ALGO NO SALIÓ COMO ESPERÁBAMOS</span><h1>No pudimos completar la solicitud.</h1><p>Intentá nuevamente más tarde.</p>@if (Model.ShowRequestId) { <p class="muted">Referencia: @Model.RequestId</p> }<a asp-controller="Explorar" asp-action="Index" class="btn btn-lime">Volver a explorar</a></section>

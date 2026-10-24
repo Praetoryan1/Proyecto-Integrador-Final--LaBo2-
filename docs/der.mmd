@@ -1,0 +1,115 @@
+erDiagram
+    Usuario ||--|| Perfil : tiene
+    Perfil ||--o{ EnlacePerfil : contiene
+    Usuario ||--o{ Publicacion : crea
+    Publicacion ||--o{ RecursoMultimedia : contiene
+    Publicacion ||--o{ PublicacionEtiqueta : clasifica
+    Etiqueta ||--o{ PublicacionEtiqueta : identifica
+    Usuario ||--o{ Favorito : guarda
+    Publicacion ||--o{ Favorito : recibe
+    Usuario ||--o{ Seguimiento : seguidor
+    Usuario ||--o{ Seguimiento : seguido
+    Publicacion ||--o{ Reporte : recibe
+    Usuario ||--o{ Reporte : denuncia
+    Usuario |o--o{ Reporte : resuelve
+    Usuario ||--o{ UsuarioRol : posee
+    Rol ||--o{ UsuarioRol : asigna
+
+    Usuario {
+        string Id PK
+        string EmailNormalizado UK
+        string NombreUsuarioNormalizado UK
+        string PasswordHash
+        boolean EmailConfirmado
+        enum Estado
+        datetime FechaAlta
+    }
+    Perfil {
+        string UsuarioId PK,FK
+        string NombreVisible
+        string Biografia
+        string Especialidad
+        boolean DisponibleParaTrabajar
+        string AvatarClave
+        enum Tema
+        string ColorAcento
+        enum Disposicion
+        enum Visibilidad
+        string EmailContacto
+        enum VisibilidadContacto
+    }
+    EnlacePerfil {
+        bigint Id PK
+        string PerfilUsuarioId FK
+        string Etiqueta
+        string Url
+        int Orden
+    }
+    Publicacion {
+        bigint Id PK
+        string AutorId FK
+        enum Tipo
+        string Titulo
+        string Texto
+        enum EstadoEditorial
+        enum EstadoModeracion
+        enum Visibilidad
+        int OrdenDestacado
+        datetime CreadaUtc
+        datetime PublicadaUtc
+        datetime ActualizadaUtc
+        string Version
+    }
+    RecursoMultimedia {
+        bigint Id PK
+        bigint PublicacionId FK
+        enum Tipo
+        string ClaveAlmacenamiento
+        string YouTubeId
+        string Mime
+        bigint Bytes
+        enum EstadoProcesamiento
+        int Orden
+        string TextoAlternativo
+        string Creditos
+    }
+    Etiqueta {
+        bigint Id PK
+        string Nombre
+        string NombreNormalizado UK
+        boolean Activa
+    }
+    PublicacionEtiqueta {
+        bigint PublicacionId PK,FK
+        bigint EtiquetaId PK,FK
+    }
+    Favorito {
+        string UsuarioId PK,FK
+        bigint PublicacionId PK,FK
+        datetime CreadoUtc
+    }
+    Seguimiento {
+        string SeguidorId PK,FK
+        string SeguidoId PK,FK
+        datetime CreadoUtc
+    }
+    Reporte {
+        bigint Id PK
+        bigint PublicacionId FK
+        string DenuncianteId FK
+        string ResueltoPorId FK
+        string Motivo
+        string Detalle
+        enum Estado
+        datetime CreadoUtc
+        datetime ResueltoUtc
+        string Resolucion
+    }
+    Rol {
+        string Id PK
+        string NombreNormalizado UK
+    }
+    UsuarioRol {
+        string UsuarioId PK,FK
+        string RolId PK,FK
+    }

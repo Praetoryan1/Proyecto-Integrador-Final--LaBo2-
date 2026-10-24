@@ -1,0 +1,22 @@
+@model PerfilPublicoModel
+@{
+    ViewData["Title"] = Model.Nombre;
+    var accent = Array.IndexOf(Trazo.Web.Controllers.PerfilController.Acentos, Model.Acento);
+}
+<section class="profile-surface theme-@Model.Tema.ToString().ToLowerInvariant() accent-@accent layout-@Model.Disposicion.ToString().ToLowerInvariant()">
+<div class="profile-heading"><div class="profile-identity">
+    @if (Model.TieneAvatar) { <img class="profile-avatar" src="@Url.Action("Avatar", "Perfil", new { usuario = Model.Usuario })" alt="Avatar de @Model.Nombre" width="96" height="96" /> }
+    else { <span class="profile-avatar avatar-placeholder" aria-hidden="true">@Model.Nombre[..1]</span> }
+    <div><span class="eyebrow">PORTAFOLIO / @Model.Usuario</span><h1>@Model.Nombre</h1><p>@Model.Especialidad</p></div></div>
+    @if (Model.Disponible) { <span class="availability"><span class="status-dot"></span> Disponible para trabajar</span> }
+</div>
+<div class="profile-bio">@Model.Biografia</div>
+<div class="contact-links">
+    @if (!string.IsNullOrWhiteSpace(Model.EmailContacto)) { <a href="mailto:@Model.EmailContacto" class="btn btn-lime">Contactar por email ↗</a> }
+    @foreach (var link in Model.Enlaces) { <a href="@link.Url" target="_blank" rel="noopener noreferrer">@link.Etiqueta ↗</a> }
+    @if (Model.Propio) { <a asp-action="Editar" class="btn btn-outline-light">Editar mi perfil</a> }
+</div>
+<div class="section-heading"><h2>Publicaciones<span class="accent">.</span></h2><span class="muted">@Model.Publicaciones.Total resultados</span></div>
+<partial name="_Tarjetas" model="Model.Publicaciones.Items" />
+<partial name="_Pagination" model="@((Model.Publicaciones.Numero, Model.Publicaciones.Paginas, Model.Publicaciones.Total))" />
+</section>

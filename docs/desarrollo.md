@@ -1,0 +1,135 @@
+# Desarrollo local: VS Code, MySQL y GitHub
+
+Guía del incremento 01, 21/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
+
+## 1. Abrir el proyecto
+
+En VS Code: **Archivo → Abrir carpeta** y seleccionar `Proyecto Integrador Final (LaBo2)`. Aceptar las extensiones recomendadas de C# y EditorConfig. Abrir **Terminal → Nueva terminal** y seleccionar **PowerShell 7** (comando `pwsh`), no Windows PowerShell 5.1.
+
+Comprobar las herramientas:
+
+```powershell
+dotnet --version
+$PSVersionTable.PSVersion
+docker version
+git --version
+```
+
+El SDK fijado es 10.0.400; `global.json` permite parches posteriores de esa banda. Los scripts requieren PowerShell 7.2 o superior. Docker Desktop debe mostrar el motor Linux funcionando. Postman y Vue se incorporarán con los módulos de API y publicaciones.
+
+## 2. Preparar la base de datos
+
+```powershell
+./tools/Preparar-Entorno.ps1
+docker compose ps
+```
+
+El script crea `.env` con contraseñas aleatorias si aún no existe, configura `ConnectionStrings:Trazo` en User Secrets, restaura herramientas y paquetes y levanta MySQL 8.4. Esperar a que `docker compose ps` indique `healthy`.
+
+| Configuración | Valor |
+| --- | --- |
+| Host local | `127.0.0.1` |
+| Puerto publicado | `3307` |
+| Usuario de la aplicación | `trazo` |
+| Contraseña | Valor de `TRAZO_DB_PASSWORD` en tu `.env` local |
+| Base de desarrollo | `trazo_dev` |
+| Base descartable de pruebas | `trazo_tests` |
+| Persistencia Docker | Volumen `trazo_mysql_data` |
+
+No modifica Inmobiliaria_JM ni las bases de XAMPP. Dentro del contenedor MySQL usa 3306; desde Windows se usa 3307 para evitar conflictos.
+
+**Workbench:** crear una conexión Standard TCP/IP con esos datos, pulsar Test Connection y guardar la contraseña en su almacén local si se desea. Después de inicializar el modelo, actualizar Schemas y abrir `trazo_dev`. No incluir la contraseña en capturas de evidencia.
+
+No editar ni borrar `.env` para cambiar la contraseña de una base ya creada: MySQL solo toma las variables iniciales al crear el volumen. Si se pierde el archivo, primero recuperar las credenciales locales; regenerarlo no cambia la contraseña almacenada en MySQL.
+
+## 3. Crear tablas y datos de demostración
+
+```powershell
+dotnet dev-certs https --trust
+dotnet run --project src/Trazo.Web --launch-profile https -- --seed-demo
+```
+
+La primera línea confía el certificado HTTPS de desarrollo y puede abrir una confirmación de Windows. La segunda aplica la migración y crea roles, usuarios y publicaciones ficticias; al terminar devuelve el control a la terminal.
+
+Las credenciales están en el [README](../README.md#cuentas-de-demostración). Volver a ejecutar la semilla conserva usuarios existentes y sus contraseñas; no es un comando para restablecer datos editados. El modo demo solo se permite en Development. Para inicializar esquema y roles sin datos demo, usar `--initialize` en lugar de `--seed-demo`.
+
+La fuente del esquema son las migraciones de EF. No ejecutar además el SQL a mano en la misma base: `database/001-modelo-inicial.sql` es una exportación de consulta/entrega del esquema inicial, no un segundo paso de instalación.
+
+## 4. Ejecutar y depurar
+
+```powershell
+dotnet run --project src/Trazo.Web --launch-profile https
+```
+
+Abrir **https://localhost:7280**. HTTP en 5079 redirige a HTTPS. Mantener esa terminal abierta; **Ctrl+C** detiene la web.
+
+Alternativamente, detener antes la ejecución de terminal y pulsar **F5 → Trazo: depurar MVC**. VS Code compila e inicia la aplicación con el entorno Development. No ejecutar ambas opciones al mismo tiempo en los mismos puertos. **Ctrl+Shift+B** compila sin iniciar el servidor.
+
+Recorrido sugerido:
+
+1. Sin sesión, recorrer Explorar, buscar una etiqueta y abrir la segunda página.
+2. Ingresar como Ana, abrir Mi estudio y Editar mi perfil. Cambiar presentación, tema y contacto; cargar un PNG/JPG/WebP propio de hasta 2 MB.
+3. Abrir `/p/ana` con y sin sesión para observar los permisos. Ana ve sus borradores y privados; otra cuenta no.
+4. Ingresar como administrador y usar Administrar para crear, editar y eliminar una etiqueta nueva. Una etiqueta asociada a publicaciones no se elimina: puede desactivarse.
+
+Todavía no existe un editor de publicaciones: los textos visibles provienen de los datos iniciales. No hay carga de imágenes de obras, GIF o videos en este incremento.
+
+## 5. Probar cambios
+
+```powershell
+./tools/Probar.ps1
+./tools/Probar.ps1 -Integracion
+```
+
+El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
+
+Resultados esperados de este incremento: sin `-Integracion`, 12 aprobadas y 7 omitidas; con `-Integracion`, 19 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+
+Para restaurar exactamente las dependencias fijadas:
+
+```powershell
+dotnet restore --locked-mode Trazo.sln
+dotnet build Trazo.sln --no-restore
+```
+
+## 6. Migraciones futuras
+
+Después de un cambio acordado del modelo, detener la web, generar una migración con nombre descriptivo y revisar su SQL antes de aplicarla:
+
+```powershell
+dotnet tool restore
+dotnet ef migrations add NombreDelCambio --project src/Trazo.Web
+dotnet run --project src/Trazo.Web --launch-profile https -- --initialize
+```
+
+No hace falta crear otra migración para instalar el proyecto: la primera ya está incluida. Actualizar el DER y la documentación junto con los cambios de relaciones.
+
+## 7. Detener y volver a trabajar
+
+Cerrar la web con Ctrl+C o detener el depurador. Para parar MySQL sin borrar datos:
+
+```powershell
+docker compose stop
+```
+
+Para retomar: abrir Docker Desktop, ejecutar `docker compose up -d --wait` y luego iniciar la web. Los avatares quedan en `src/Trazo.Web/App_Data/avatars`; no forman parte de Git. La base y los archivos deben respaldarse por separado cuando haya datos que conservar.
+
+Si aparece “address already in use”, comprobar si otra terminal o el depurador ya ejecutan Trazo. Si aparece “access denied” de MySQL, revisar la correspondencia entre `.env`, User Secrets y el volumen, sin borrar datos para resolverlo. Si el certificado no es confiable, repetir el paso del certificado y reabrir el navegador. Si falta la conexión, ejecutar nuevamente el script de preparación.
+
+## 8. Primer commit y push
+
+El repositorio Git local ya está inicializado en `main`. Crear en GitHub un repositorio **público** llamado, por ejemplo, `trazo`, vacío: sin agregar README, `.gitignore` ni licencia desde GitHub.
+
+Antes de subir, revisar `git status --short`: no deben aparecer `.env`, `bin`, `obj`, `App_Data`, `TestResults` ni archivos con contraseñas reales. Los datos demo del README son deliberadamente públicos. La licencia del código propio se decidirá por separado; publicar el repositorio no concede automáticamente una licencia de reutilización.
+
+```powershell
+git add .
+git diff --cached --stat
+git commit -m "feat: base MVC, identidad, perfiles y persistencia MySQL"
+git remote add origin https://github.com/TU_USUARIO/trazo.git
+git push -u origin main
+```
+
+Sustituir `TU_USUARIO` y, si corresponde, el nombre del repositorio. El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: se espera la primera ejecución del workflow de compilación y pruebas.
+
+**Parada acordada:** confirmar el commit/push antes de comenzar el próximo incremento. No realizar todavía un despliegue público de la aplicación.

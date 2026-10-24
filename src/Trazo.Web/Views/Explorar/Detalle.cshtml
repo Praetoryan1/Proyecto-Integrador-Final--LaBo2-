@@ -1,0 +1,11 @@
+@model DetallePublicacionModel
+@{ ViewData["Title"] = Model.Publicacion.Titulo; }
+<article class="reading-page">
+    <a asp-controller="Explorar" asp-action="Index" class="quiet-link">← Volver a explorar</a>
+    <div class="eyebrow mt-5">@(Model.Publicacion.Tipo == TipoPublicacion.Obra ? "OBRA" : "ACTUALIZACIÓN")</div>
+    <h1>@Model.Publicacion.Titulo</h1>
+    <p class="muted">Por <a asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@Model.Publicacion.NombreUsuario">@Model.Publicacion.Autor</a> · @(Model.Publicacion.Fecha?.ToString("dd/MM/yyyy") ?? "Sin publicar")</p>
+    @if (Model.Propia) { <p class="notice">Tu publicación · Visibilidad: @Model.Visibilidad · Estado: @Model.Estado</p> }
+    <div class="publication-text">@Model.Publicacion.Texto</div>
+    <div class="tags mt-4">@foreach (var tag in Model.Publicacion.Etiquetas) { <a asp-action="Index" asp-route-etiqueta="@tag">#@tag</a> }</div>
+</article>

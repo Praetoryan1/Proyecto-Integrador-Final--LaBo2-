@@ -1,0 +1,10 @@
+@model IngresoModel
+@{ ViewData["Title"] = "Ingresar"; }
+<div class="auth-shell"><div class="auth-aside"><span class="eyebrow">TU PRÓXIMA IDEA EMPIEZA ACÁ</span><h1>Volvé a<br />tu <em>espacio.</em></h1><p>Tu mirada, tus procesos y todo lo que todavía queda por crear.</p><div class="auth-decoration" aria-hidden="true">✳</div></div>
+<section class="form-panel"><h2>Qué bueno verte.</h2><p class="muted">Ingresá a tu cuenta de Trazo.</p>
+<form asp-action="Ingresar" method="post">
+    <div asp-validation-summary="ModelOnly" class="validation" role="alert"></div><input asp-for="ReturnUrl" type="hidden" />
+    <div class="field"><label asp-for="Email"></label><input asp-for="Email" class="form-control" autocomplete="email" /><span asp-validation-for="Email"></span></div>
+    <div class="field"><label asp-for="Password"></label><input asp-for="Password" class="form-control" autocomplete="current-password" /><span asp-validation-for="Password"></span></div>
+    <button type="submit" class="btn btn-lime w-100">Ingresar →</button>
+</form><p class="mt-4 muted">¿Primera vez acá? <a asp-action="Registro">Creá tu cuenta</a></p></section></div>

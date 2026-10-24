@@ -1,0 +1,15 @@
+@model (int Numero, int Paginas, int Total)
+@{
+    string Link(int page) {
+        var query = Context.Request.Query.ToDictionary(x => x.Key, x => (string?)x.Value.ToString());
+        query["pagina"] = page.ToString();
+        return Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(Context.Request.Path, query);
+    }
+}
+<nav class="pagination-bar" aria-label="Páginas de resultados">
+    <span>@Model.Total resultados · Página @Model.Numero de @Model.Paginas</span>
+    <div class="d-flex gap-2">
+        @if (Model.Numero > 1) { <a class="btn btn-outline-light btn-sm" href="@Link(Model.Numero - 1)">← Anterior</a> }
+        @if (Model.Numero < Model.Paginas) { <a class="btn btn-outline-light btn-sm" href="@Link(Model.Numero + 1)">Siguiente →</a> }
+    </div>
+</nav>

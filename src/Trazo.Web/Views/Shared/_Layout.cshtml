@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es-AR" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Trazo: un espacio para mostrar tu mirada, compartir procesos y descubrir creatividad." />
+    <title>@ViewData["Title"] · Trazo</title>
+    <link rel="icon" href="~/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+        <nav class="site-nav shell" aria-label="Navegación principal">
+            <a class="brand" asp-controller="Explorar" asp-action="Index" aria-label="Trazo, inicio"><span class="brand-mark" aria-hidden="true">t</span>trazo<span class="brand-dot">.</span></a>
+            <button class="mobile-toggle btn btn-outline-light" type="button" aria-controls="nav-links" aria-expanded="false">Menú</button>
+            <div id="nav-links" class="nav-links">
+                <a asp-controller="Explorar" asp-action="Index" class="nav-explore">Explorar</a>
+                <div class="nav-account">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    @if (User.IsInRole(Roles.Administrador)) { <a asp-controller="Etiquetas" asp-action="Index">Administrar</a> }
+                    <a asp-controller="Panel" asp-action="Index" class="btn btn-lime btn-sm">Mi estudio ↗</a>
+                    <form asp-controller="Cuenta" asp-action="Salir" method="post"><button type="submit" class="quiet-button">Salir</button></form>
+                }
+                else
+                {
+                    <a asp-controller="Cuenta" asp-action="Ingresar">Ingresar</a>
+                    <a asp-controller="Cuenta" asp-action="Registro" class="btn btn-lime btn-sm">Crear portafolio ↗</a>
+                }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main id="contenido" class="shell">
+        @if (TempData["Exito"] is string message) { <div class="notice success" role="status">@message</div> }
+        @if (TempData["Error"] is string error) { <div class="notice error" role="alert">@error</div> }
+        @RenderBody()
+    </main>
+    <footer class="site-footer shell"><a class="brand" asp-controller="Explorar" asp-action="Index">trazo<span class="brand-dot">.</span></a><p>Un espacio para lo que imaginás.</p><a asp-controller="Home" asp-action="Privacy">Privacidad</a><span>© @DateTime.UtcNow.Year Trazo</span></footer>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

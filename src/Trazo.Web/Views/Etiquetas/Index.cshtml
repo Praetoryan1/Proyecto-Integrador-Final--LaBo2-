@@ -1,0 +1,8 @@
+@model Pagina<Etiqueta>
+@{ ViewData["Title"] = "Administrar etiquetas"; }
+<section class="page-heading"><span class="eyebrow">ADMINISTRACIÓN</span><h1>Etiquetas<span class="accent">.</span></h1><p>Organizá las especialidades y los temas de la comunidad.</p></section>
+<div class="section-heading"><form method="get" class="d-flex gap-2"><label for="q" class="visually-hidden">Buscar etiqueta</label><input id="q" name="q" maxlength="40" value="@ViewData["Q"]" class="form-control" placeholder="Buscar etiqueta" /><button class="btn btn-outline-light">Buscar</button></form><a asp-action="Crear" class="btn btn-lime">Nueva etiqueta +</a></div>
+<div class="table-responsive"><table class="table trazo-table"><thead><tr><th>Nombre</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+@foreach (var item in Model.Items) { <tr><td>#@item.Nombre</td><td>@(item.Activa ? "Activa" : "Inactiva")</td><td><div class="d-flex gap-3 align-items-center"><a asp-action="Editar" asp-route-id="@item.Id">Editar</a><form asp-action="Eliminar" asp-route-id="@item.Id" method="post" data-confirm="¿Eliminar esta etiqueta? Las etiquetas en uso no se eliminan."><button type="submit" class="quiet-button danger-link">Eliminar</button></form></div></td></tr> }
+</tbody></table></div>
+<partial name="_Pagination" model="@((Model.Numero, Model.Paginas, Model.Total))" />
