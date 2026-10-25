@@ -15,6 +15,14 @@
 <div class="form-check field"><input asp-for="DisponibleParaTrabajar" class="form-check-input" /><label asp-for="DisponibleParaTrabajar" class="form-check-label"></label></div>
 <h2 class="form-section-title">Apariencia</h2><div class="row"><div class="col-md-6 field"><label asp-for="Tema"></label><select asp-for="Tema" asp-items="Html.GetEnumSelectList<TemaPerfil>()" class="form-select"></select></div><div class="col-md-6 field"><label asp-for="Disposicion"></label><select asp-for="Disposicion" asp-items="Html.GetEnumSelectList<DisposicionPerfil>()" class="form-select"></select></div></div>
 <div class="field"><label asp-for="ColorAcento"></label><select asp-for="ColorAcento" class="form-select"><option value="#c4f566">Lima</option><option value="#c4b5fd">Lavanda</option><option value="#7dd3fc">Cielo</option><option value="#fda4af">Rosa</option><option value="#fdba74">Durazno</option></select></div>
+<div id="vista-previa-perfil" class="profile-surface theme-oscuro accent-0 layout-cuadricula appearance-preview" aria-label="Vista previa de apariencia">
+    <span class="eyebrow">VISTA PREVIA · EJEMPLO</span><h3><span data-preview-name>Tu portafolio</span><span class="accent">.</span></h3><p class="muted" data-preview-specialty>Tu especialidad</p>
+    <div class="portfolio-grid">
+        <div class="work-card"><div class="work-cover cover-1"><span class="cover-kicker">OBRA DE EJEMPLO</span><span class="cover-title">Ideas en movimiento</span></div><div class="work-info"><span>Tu selección</span></div></div>
+        <div class="work-card"><div class="work-cover cover-2"><span class="cover-kicker">OBRA DE EJEMPLO</span><span class="cover-title">Explorar el color</span></div><div class="work-info"><span>Tu próxima historia</span></div></div>
+    </div><p class="muted mt-3">Los cambios se aplican a tu portafolio al guardar. Esta vista no modifica la privacidad.</p>
+</div>
+<a asp-controller="Destacados" asp-action="Index" class="quiet-link d-inline-block mt-3">Elegir y ordenar mis obras destacadas ↗</a>
 <h2 class="form-section-title">Privacidad y contacto</h2>
 <div class="field"><label asp-for="Visibilidad"></label><select asp-for="Visibilidad" class="form-select"><option value="Publica">Público: cualquiera puede verlo</option><option value="Registrados">Solo cuentas registradas</option><option value="Privada">Privado: solo yo</option></select><small>Esta restricción también se aplica a tu avatar y tus publicaciones.</small></div>
 <div class="field"><label asp-for="EmailContacto"></label><input asp-for="EmailContacto" class="form-control" /></div>
@@ -23,3 +31,4 @@
 @for (var i = 0; i < Model.Enlaces.Count; i++) { <div class="row"><div class="col-md-4 field"><label for="Enlaces_@(i)__Etiqueta">Nombre @(i + 1)</label><input asp-for="Enlaces[i].Etiqueta" class="form-control" placeholder="Mi sitio" /></div><div class="col-md-8 field"><label for="Enlaces_@(i)__Url">Enlace @(i + 1)</label><input asp-for="Enlaces[i].Url" class="form-control" placeholder="https://…" /></div></div> }
 <button class="btn btn-lime" type="submit">Guardar cambios →</button> <a asp-action="Ver" asp-route-usuario="@User.Identity!.Name" class="quiet-link ms-3">Ver mi perfil ↗</a>
 </form></section></div>
+@section Scripts { <script src="~/js/perfil-preview.js" asp-append-version="true"></script> }

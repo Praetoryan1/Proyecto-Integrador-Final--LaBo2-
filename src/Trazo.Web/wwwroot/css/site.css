@@ -1152,3 +1152,34 @@ textarea {
 .report-card h2 { font-size: 22px; margin: 12px 0; }
 .report-card p { margin-bottom: 0; }
 .report-preview { margin: 32px 0; }
+.featured-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.featured-actions .form-select { width: auto; max-width: 100%; }
+.featured-choice h3, .featured-candidate h3 { font-size: 22px; margin-top: 12px; }
+#obras-destacadas { margin-bottom: 60px; }
+.appearance-preview { padding: 24px; border: 1px solid var(--line); margin-top: 0; }
+.appearance-preview h3 { margin-top: 16px; overflow-wrap: anywhere; }
+.appearance-preview .portfolio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.appearance-preview .work-cover { min-height: 140px; }
+.appearance-preview .cover-title { font-size: 24px; }
+.appearance-preview.layout-lista .portfolio-grid { grid-template-columns: 1fr; }
+.profile-surface { --accent-ink: var(--lime); }
+.profile-surface.theme-claro { --accent-ink: #3b5818; }
+.profile-surface.theme-claro.accent-1 { --accent-ink: #65439b; }
+.profile-surface.theme-claro.accent-2 { --accent-ink: #155f7c; }
+.profile-surface.theme-claro.accent-3 { --accent-ink: #963752; }
+.profile-surface.theme-claro.accent-4 { --accent-ink: #8a4518; }
+.profile-surface .accent { color: var(--accent-ink); }
+.profile-surface .status-dot { background: var(--accent-ink); }
+.profile-surface a:not(.btn):not(.work-cover):hover { color: var(--accent-ink); }
+.profile-surface .work-cover.cover-0:hover { color: #253126; }
+.profile-surface .work-cover.cover-1:hover { color: #3d3050; }
+.profile-surface .work-cover.cover-2:hover { color: #482f24; }
+.profile-surface .work-cover.cover-3:hover { color: #1e3f4d; }
+.profile-surface .work-cover.cover-4:hover { color: #354119; }
+.profile-surface .work-cover.with-media:hover { color: #fff; }
+.profile-surface :focus-visible { outline-color: var(--accent-ink); }
+.profile-surface .btn-lime:hover { background: var(--lime); border-color: var(--accent-ink); color: #151a10; }
+@media (max-width: 600px) {
+  .appearance-preview .portfolio-grid { grid-template-columns: 1fr; }
+  .appearance-preview.layout-lista .work-card { grid-template-columns: 1fr; }
+}

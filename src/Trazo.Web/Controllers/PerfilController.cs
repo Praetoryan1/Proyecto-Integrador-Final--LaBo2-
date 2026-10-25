@@ -22,14 +22,18 @@ public class PerfilController(TrazoDbContext db, AvatarService avatars) : Contro
             .Include(p => p.Usuario).SingleOrDefaultAsync(p => p.Usuario.NormalizedUserName == usuario.ToUpper(), ct);
         if (profile is null) return NotFound();
         var contact = VisibilidadService.PuedeVerContacto(profile, viewer);
-        var posts = await db.Publicaciones.AsNoTracking().LegiblesPor(viewer).Where(p => p.AutorId == profile.UsuarioId)
-            .OrderBy(p => p.OrdenDestacado == null).ThenBy(p => p.OrdenDestacado)
-            .ThenByDescending(p => p.PublicadaUtc).ThenByDescending(p => p.Id).Tarjetas().PaginarAsync(pagina, ct: ct);
+        var readable = db.Publicaciones.AsNoTracking().LegiblesPor(viewer).Where(p => p.AutorId == profile.UsuarioId &&
+            p.EstadoEditorial == EstadoEditorial.Publicada && p.EstadoModeracion == EstadoModeracion.Visible);
+        var featured = DestacadosService.Elegibles(readable).Where(p => p.OrdenDestacado >= 1 && p.OrdenDestacado <= DestacadosService.Limite);
+        var highlights = await featured.OrderBy(p => p.OrdenDestacado).ThenBy(p => p.Id).Take(DestacadosService.Limite).Tarjetas().ToListAsync(ct);
+        var highlightedIds = highlights.Select(p => p.Id).ToArray();
+        var posts = await readable.Where(p => !highlightedIds.Contains(p.Id))
+            .OrderByDescending(p => p.PublicadaUtc).ThenByDescending(p => p.Id).Tarjetas().PaginarAsync(pagina, ct: ct);
         return View(new PerfilPublicoModel(profile.Usuario.UserName!, profile.NombreVisible, profile.Biografia, profile.Especialidad,
             profile.DisponibleParaTrabajar, profile.Tema, profile.Disposicion, profile.ColorAcento, profile.AvatarClave != null,
             contact ? profile.EmailContacto : null,
             contact ? profile.Enlaces.OrderBy(x => x.Orden).Select(e => new EnlaceModel { Etiqueta = e.Etiqueta, Url = e.Url }).ToList() : [],
-            posts, viewer == profile.UsuarioId, viewer != null && await db.Seguimientos.AnyAsync(s => s.SeguidorId == viewer && s.SeguidoId == profile.UsuarioId, ct)));
+            posts, viewer == profile.UsuarioId, viewer != null && await db.Seguimientos.AnyAsync(s => s.SeguidorId == viewer && s.SeguidoId == profile.UsuarioId, ct), highlights));
     }
 
     [HttpGet("/mi-perfil"), Authorize]

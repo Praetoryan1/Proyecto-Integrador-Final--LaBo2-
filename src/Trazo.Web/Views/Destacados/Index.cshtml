@@ -1,0 +1,37 @@
+@model DestacadosModel
+@{ ViewData["Title"] = "Obras destacadas"; }
+<section class="page-heading"><span class="eyebrow">MI ESTUDIO / PORTAFOLIO</span><h1>Tu selección<span class="accent">.</span></h1><p>Elegí hasta seis obras para presentar tu trabajo. Las posiciones menores aparecen primero.</p></section>
+<div class="social-controls"><a asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@User.Identity!.Name" class="btn btn-outline-light">Ver mi portafolio ↗</a><a asp-controller="Publicaciones" asp-action="Index">Administrar publicaciones ↗</a></div>
+<p class="notice">Asignar una posición ocupada reemplaza esa obra en la selección. No la elimina. Las obras privadas, archivadas u ocultas dejan de mostrarse, pero conservan su posición hasta que las quites o vuelvan a estar disponibles.</p>
+<h2 class="mb-4">Selección actual · @Model.Seleccion.Count / 6</h2>
+<div class="report-list mb-5" id="seleccion-actual">
+@foreach (var obra in Model.Seleccion) {
+    <article class="featured-choice report-card" data-id="@obra.Id"><span class="eyebrow">POSICIÓN @obra.Posicion · @(obra.Disponible ? "LISTA PARA MOSTRAR SEGÚN PERMISOS" : "NO SE MUESTRA ACTUALMENTE")</span><h3>@obra.Titulo</h3>
+        <form asp-action="Guardar" asp-route-id="@obra.Id" method="post" class="featured-actions">
+            <input type="hidden" name="Version" value="@obra.Version" /><input type="hidden" name="VersionSeleccion" value="@Model.VersionSeleccion" />
+            <label for="posicion-@obra.Id">Posición</label><select name="Posicion" id="posicion-@obra.Id" class="form-select">
+                <option value="0">Quitar de destacados</option>
+                @if (obra.Disponible) { for (var i = 1; i <= 6; i++) { <option value="@i" selected="@(i == obra.Posicion)">@i</option> } }
+            </select><button type="submit" class="btn btn-outline-light">Guardar posición</button>
+        </form>
+    </article>
+}
+</div>
+@if (Model.Seleccion.Count == 0) { <p class="muted">Todavía no elegiste obras destacadas.</p> }
+<h2>Elegir obras</h2><p class="muted">Solo obras publicadas con recursos listos, públicas o para registrados. La privacidad del perfil también se respeta. Las actualizaciones de texto quedan en la actividad del portafolio.</p>
+<form method="get" class="report-filters"><div><label for="q">Buscar mis obras por título</label><input name="q" id="q" maxlength="100" value="@Model.Q" class="form-control" /></div><button class="btn btn-outline-light">Buscar</button></form>
+<div class="report-list">
+@foreach (var obra in Model.Obras.Items) {
+    <article class="featured-candidate report-card" data-id="@obra.Id"><h3>@obra.Titulo</h3>
+    @if (obra.Posicion.HasValue) { <p>Ya ocupa la posición @obra.Posicion. Podés cambiarla en la selección actual.</p> }
+    else {
+        <form asp-action="Guardar" asp-route-id="@obra.Id" method="post" class="featured-actions">
+            <input type="hidden" name="Version" value="@obra.Version" /><input type="hidden" name="VersionSeleccion" value="@Model.VersionSeleccion" />
+            <label for="elegir-@obra.Id">Destacar en posición</label><select name="Posicion" id="elegir-@obra.Id" class="form-select">@for (var i = 1; i <= 6; i++) { <option value="@i">@i</option> }</select><button type="submit" class="btn btn-lime">Destacar obra</button>
+        </form>
+    }
+    </article>
+}
+</div>
+@if (Model.Obras.Total == 0) { <p class="notice">No hay obras disponibles para esta búsqueda. Podés crear una obra o publicar un borrador desde el editor.</p> }
+<partial name="_Pagination" model="@((Model.Obras.Numero, Model.Obras.Paginas, Model.Obras.Total))" />

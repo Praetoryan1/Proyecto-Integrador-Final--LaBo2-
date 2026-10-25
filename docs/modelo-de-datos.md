@@ -46,6 +46,8 @@ La lectura autorizada se compone con `IQueryable` antes de `Count`, `Skip` y `Ta
 
 ## Estado funcional y pendientes
 
+Desde el incremento 08, `Publicacion.OrdenDestacado` administra seis posiciones opcionales por autor (1..6; null significa no seleccionada). El servicio serializa cambios sobre la fila de Perfil, verifica las versiones de publicación/selección y reemplaza posiciones ocupadas. Son reglas de aplicación, sin nuevo índice único ni migración. La selección pública filtra permisos y elegibilidad; la actividad excluye esos destacados y se pagina. Tema, color y disposición tienen vista previa con opciones cerradas. Ver [reglas y evidencia](incremento-08.md).
+
 Desde el incremento 06 están implementados el envío de reportes, consulta propia, bandeja administrativa, ocultamiento, desestimación y revisión/restauración solicitada por el autor. Se registran resolutor, fecha y explicación. La regla de un pendiente por cuenta/publicación se aplica en el servicio con transacción y `Publicacion.Version`, sin un nuevo índice único. La resolución comparte la versión de publicación y se confirma atómicamente. Ver [reglas y evidencia](incremento-06.md). La política productiva de retención sigue pendiente; el incremento 07 incorpora la administración de suspensiones.
 
 Desde el incremento 02 existen ABM, asociación de etiquetas y cambio de estado editorial de publicaciones. Se permite conservar etiquetas desactivadas ya asociadas, pero no agregar nuevas asociaciones con ellas. No se puede publicar una obra sin un recurso listo. Borrar una publicación con reportes devuelve 409 y permite optar por archivarla.

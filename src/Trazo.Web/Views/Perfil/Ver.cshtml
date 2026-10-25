@@ -28,9 +28,15 @@
 <div class="contact-links">
     @if (!string.IsNullOrWhiteSpace(Model.EmailContacto)) { <a href="mailto:@Model.EmailContacto" class="btn btn-lime">Contactar por email ↗</a> }
     @foreach (var link in Model.Enlaces) { <a href="@link.Url" target="_blank" rel="noopener noreferrer">@link.Etiqueta ↗</a> }
-    @if (Model.Propio) { <a asp-action="Editar" class="btn btn-outline-light">Editar mi perfil</a> }
+    @if (Model.Propio) { <a asp-action="Editar" class="btn btn-outline-light">Editar mi perfil</a><a asp-controller="Destacados" asp-action="Index">Elegir destacados ↗</a> }
 </div>
-<div class="section-heading"><h2>Publicaciones<span class="accent">.</span></h2><span class="muted">@Model.Publicaciones.Total resultados</span></div>
+@if (Model.Propio) { <p class="muted">Esta es tu vista de propietario. Las publicaciones privadas que ves acá no se muestran a otras cuentas. Los borradores y archivados se consultan desde el editor.</p> }
+@if (Model.Destacados.Count > 0) {
+    <section id="obras-destacadas" aria-labelledby="titulo-destacados"><div class="section-heading"><h2 id="titulo-destacados">Obras destacadas<span class="accent">.</span></h2><span class="muted">Selección del creador</span></div>
+        <partial name="_Tarjetas" model="Model.Destacados" />
+    </section>
+}
+<div class="section-heading"><h2>Actividad<span class="accent">.</span></h2><span class="muted">@Model.Publicaciones.Total resultados</span></div>
 <partial name="_Tarjetas" model="Model.Publicaciones.Items" />
 <partial name="_Pagination" model="@((Model.Publicaciones.Numero, Model.Publicaciones.Paginas, Model.Publicaciones.Total))" />
 </section>

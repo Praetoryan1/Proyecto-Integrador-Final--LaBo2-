@@ -3,6 +3,7 @@
 <section class="page-heading"><span class="eyebrow">MI ESTUDIO</span><h1>Hola, @Model.Nombre<span class="accent">.</span></h1><p>Este es tu espacio. Dale forma a cómo querés presentarte.</p></section>
 <div class="stats-grid"><div><span>PUBLICACIONES</span><strong>@Model.Publicaciones</strong></div><div><span>FAVORITOS GUARDADOS</span><strong>@Model.Favoritos</strong></div><div><span>CREADORES QUE SEGUÍS</span><strong>@Model.Seguidos</strong></div></div>
 <a asp-controller="Publicaciones" asp-action="Index" class="btn btn-lime mb-4">Administrar mis publicaciones ↗</a>
+<a asp-controller="Destacados" asp-action="Index" class="btn btn-outline-light mb-4">Obras destacadas ↗</a>
 <a asp-controller="Reportes" asp-action="Index" class="btn btn-outline-light mb-4">Mis reportes ↗</a>
 @if (User.IsInRole(Roles.Administrador)) {
     <a asp-controller="Moderacion" asp-action="Index" class="btn btn-outline-light mb-4">Moderar reportes ↗</a>

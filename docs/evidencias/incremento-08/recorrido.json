@@ -1,0 +1,114 @@
+{
+  "fechaUtc": "2026-10-25T20:19:56.634Z",
+  "completado": true,
+  "obrasTemporalesEliminadas": [
+    35,
+    36
+  ],
+  "preferenciasRestauradas": true,
+  "erroresJavaScript": [],
+  "contrastes": [
+    {
+      "tema": "Oscuro",
+      "color": "#c4f566",
+      "contrasteAcentoFondo": 14.62
+    },
+    {
+      "tema": "Oscuro",
+      "color": "#c4b5fd",
+      "contrasteAcentoFondo": 10.02
+    },
+    {
+      "tema": "Oscuro",
+      "color": "#7dd3fc",
+      "contrasteAcentoFondo": 11.1
+    },
+    {
+      "tema": "Oscuro",
+      "color": "#fda4af",
+      "contrasteAcentoFondo": 9.78
+    },
+    {
+      "tema": "Oscuro",
+      "color": "#fdba74",
+      "contrasteAcentoFondo": 10.97
+    },
+    {
+      "tema": "Claro",
+      "color": "#c4f566",
+      "contrasteAcentoFondo": 7.12
+    },
+    {
+      "tema": "Claro",
+      "color": "#c4b5fd",
+      "contrasteAcentoFondo": 6.53
+    },
+    {
+      "tema": "Claro",
+      "color": "#7dd3fc",
+      "contrasteAcentoFondo": 6.24
+    },
+    {
+      "tema": "Claro",
+      "color": "#fda4af",
+      "contrasteAcentoFondo": 6.23
+    },
+    {
+      "tema": "Claro",
+      "color": "#fdba74",
+      "contrasteAcentoFondo": 6.27
+    }
+  ],
+  "peticiones": [
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/mi-portafolio/destacados/35",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/mi-portafolio/destacados/36",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/mi-portafolio/destacados/35",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mi-portafolio/destacados",
+      "estado": 200
+    }
+  ]
+}
