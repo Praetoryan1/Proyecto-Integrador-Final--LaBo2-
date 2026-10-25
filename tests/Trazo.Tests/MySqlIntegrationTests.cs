@@ -28,12 +28,13 @@ public class MySqlCollection;
 public class MySqlApp : WebApplicationFactory<Program>, IAsyncLifetime
 {
     public string AvatarRoot { get; } = Path.Combine(Path.GetTempPath(), "trazo-tests", Guid.NewGuid().ToString("N"));
+    public string MediaRoot => Path.Combine(AvatarRoot, "medios");
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
         var connection = Environment.GetEnvironmentVariable("TRAZO_TEST_CONNECTION")!;
         builder.ConfigureAppConfiguration((_, c) => c.AddInMemoryCollection(new Dictionary<string, string?>
-        { ["ConnectionStrings:Trazo"] = connection, ["Storage:Root"] = AvatarRoot }));
+        { ["ConnectionStrings:Trazo"] = connection, ["Storage:Root"] = AvatarRoot, ["Media:Root"] = MediaRoot }));
     }
     public async Task InitializeAsync()
     {

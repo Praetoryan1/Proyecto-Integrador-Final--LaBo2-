@@ -12,6 +12,7 @@ coverage/
 
 # Frontend
 node_modules/
+tools/ffmpeg/
 dist/
 # Las bibliotecas distribuidas con MVC deben llegar al clon; no son un build local.
 !src/Trazo.Web/wwwroot/lib/**/dist/

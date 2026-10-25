@@ -1,5 +1,6 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import RecursosEditor from "./RecursosEditor.vue";
 import SelectorEtiquetas from "./SelectorEtiquetas.vue";
 import { solicitar } from "./http";
 
@@ -10,6 +11,7 @@ const listado = ref(null);
 const cargando = ref(false);
 const guardando = ref(false);
 const abriendo = ref(false);
+const mediosOcupados = ref(false);
 const busqueda = ref("");
 const filtroEstado = ref("");
 const consulta = ref({ q: "", estado: "" });
@@ -36,6 +38,7 @@ const vacio = () => ({
     estadoModeracion: 0,
     version: "",
     etiquetas: [],
+    recursos: [],
 });
 const fecha = (value) =>
     new Intl.DateTimeFormat("es-AR", {
@@ -70,8 +73,8 @@ function filtrar() {
 }
 function confirmarSalida() {
     return (
-        !sucio.value ||
-        window.confirm("Tenés cambios sin guardar. ¿Querés descartarlos?")
+        !mediosOcupados.value && (!sucio.value ||
+        window.confirm("Tenés cambios sin guardar. ¿Querés descartarlos?"))
     );
 }
 async function mostrar(model) {
@@ -89,7 +92,7 @@ function nuevo() {
     }
 }
 async function abrir(id) {
-    if (guardando.value || abriendo.value || !confirmarSalida()) return;
+    if (guardando.value || abriendo.value || mediosOcupados.value || !confirmarSalida()) return;
     abriendo.value = true;
     errorLista.value = "";
     try {
@@ -104,7 +107,7 @@ function cerrar() {
     if (confirmarSalida()) form.value = null;
 }
 async function guardar() {
-    if (guardando.value) return;
+    if (guardando.value || mediosOcupados.value) return;
     guardando.value = true;
     errorEditor.value = "";
     conflicto.value = false;
@@ -140,7 +143,7 @@ async function guardar() {
     }
 }
 async function eliminar(item) {
-    if (guardando.value || abriendo.value) return;
+    if (guardando.value || abriendo.value || mediosOcupados.value) return;
     if (form.value?.id === item.id && !confirmarSalida()) return;
     if (
         !window.confirm(
@@ -166,8 +169,12 @@ async function eliminar(item) {
         guardando.value = false;
     }
 }
+function actualizarMedios(model) {
+    form.value = model; original.value = JSON.stringify(model);
+    cargar(listado.value?.numero || 1);
+}
 function salirPagina(event) {
-    if (sucio.value) {
+    if (sucio.value || mediosOcupados.value) {
         event.preventDefault();
         event.returnValue = "";
     }
@@ -216,7 +223,7 @@ onBeforeUnmount(() => {
                     <button
                         type="button"
                         class="btn btn-lime"
-                        :disabled="guardando || abriendo"
+                        :disabled="guardando || abriendo || mediosOcupados"
                         @click="nuevo"
                     >
                         Nueva publicación +
@@ -307,7 +314,7 @@ onBeforeUnmount(() => {
                             <button
                                 type="button"
                                 class="quiet-button"
-                                :disabled="guardando || abriendo"
+                                :disabled="guardando || abriendo || mediosOcupados"
                                 :aria-label="`Editar ${item.titulo}`"
                                 @click="abrir(item.id)"
                             >
@@ -321,7 +328,7 @@ onBeforeUnmount(() => {
                             ><button
                                 type="button"
                                 class="quiet-button danger-link"
-                                :disabled="guardando || abriendo"
+                                :disabled="guardando || abriendo || mediosOcupados"
                                 :aria-label="`Eliminar ${item.titulo}`"
                                 @click="eliminar(item)"
                             >
@@ -379,7 +386,7 @@ onBeforeUnmount(() => {
                     <button
                         type="button"
                         class="quiet-button"
-                        :disabled="guardando"
+                        :disabled="guardando || mediosOcupados"
                         @click="cerrar"
                         aria-label="Cerrar editor"
                     >
@@ -405,7 +412,7 @@ onBeforeUnmount(() => {
                         v-if="conflicto"
                         type="button"
                         class="quiet-button"
-                        :disabled="guardando"
+                        :disabled="guardando || mediosOcupados"
                         @click="abrir(form.id)"
                     >
                         Cargar versión actual
@@ -416,7 +423,7 @@ onBeforeUnmount(() => {
                     restablece su difusión.
                 </p>
                 <form @submit.prevent="guardar">
-                    <fieldset :disabled="guardando || abriendo">
+                    <fieldset :disabled="guardando || abriendo || mediosOcupados">
                         <label for="post-titulo">Título</label
                         ><input
                             id="post-titulo"
@@ -472,7 +479,7 @@ onBeforeUnmount(() => {
                             </div>
                         </div>
                         <p v-if="form.tipo === 0" class="notice">
-                            La carga de medios llegará en el próximo incremento.
+                            Guardá el borrador y agregá sus medios debajo.
                             Podés preparar el borrador de tu obra; para
                             publicarla necesitarás un recurso listo.
                         </p>
@@ -498,7 +505,7 @@ onBeforeUnmount(() => {
                         <SelectorEtiquetas
                             :key="form.id || 'nueva'"
                             v-model="form.etiquetas"
-                            :disabled="guardando || abriendo"
+                            :disabled="guardando || abriendo || mediosOcupados"
                         />
                         <div class="editor-footer">
                             <button class="btn btn-lime" type="submit">
@@ -521,6 +528,8 @@ onBeforeUnmount(() => {
                         </div>
                     </fieldset>
                 </form>
+                <RecursosEditor v-if="form.id" :key="form.id" :post="form" :csrf="csrf" :disabled="sucio || guardando || abriendo" @ocupado="mediosOcupados = $event" @actualizado="actualizarMedios" />
+                <p v-else class="notice">Guardá primero el borrador para agregar archivos o YouTube.</p>
             </section>
         </div>
     </div>

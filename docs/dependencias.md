@@ -6,7 +6,8 @@ Inventario inicial para el primer incremento. Las versiones NuGet exactas y tran
 | --- | --- | --- |
 | ASP.NET Core / Identity / EF Core | MVC, sesión, cuentas y persistencia | MIT, según los paquetes y repositorios de Microsoft |
 | MySql.EntityFrameworkCore 10.0.9 | Proveedor EF para MySQL | El manifiesto NuGet declara `GPL-2.0-only WITH Universal-FOSS-exception-1.0`; incluye dependencia de MySql.Data |
-| SkiaSharp 4.153.1 y recursos nativos | Decodificación y conversión de avatar | MIT para el wrapper; conservar y revisar avisos de componentes nativos al distribuir |
+| SkiaSharp 4.153.1 y recursos nativos | Decodificación y conversión de avatar e imágenes de publicaciones | MIT para el wrapper; conservar y revisar avisos de componentes nativos al distribuir |
+| FFmpeg/ffprobe 9.0.2, build Essentials de Gyan para Windows | Inspección y normalización de GIF/MP4; invocado como proceso por C# | La descarga incluye LICENSE y su configuración; se conserva localmente en tools/ffmpeg. No se versionan ejecutables. Revisar condiciones de la compilación y códecs antes de distribuir |
 | Bootstrap local | Base de estilos | MIT; [licencia incluida](../src/Trazo.Web/wwwroot/lib/bootstrap/LICENSE) |
 | Vue 3.5.44 | Editor y selector reactivos del panel | MIT; [licencia incluida con el bundle](../src/Trazo.Web/wwwroot/js/publicaciones/LICENSE.vue.txt) |
 | Vite 8.3.5 y plugin Vue 6.0.10 | Compilación de componentes; no requieren un servidor Node al ejecutar Trazo | MIT; versiones fijadas en package-lock.json |

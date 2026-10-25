@@ -1,6 +1,6 @@
 # Desarrollo local: VS Code, MySQL y GitHub
 
-Guía actualizada al incremento 02, 24/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
+Guía actualizada al incremento 03, 24/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
 
 ## 1. Abrir el proyecto
 
@@ -74,7 +74,7 @@ Recorrido sugerido:
 
 Desde **Mi estudio → Administrar mis publicaciones** se accede a `/panel/publicaciones`. Crear una actualización, completar título/texto, buscar etiquetas y guardar. Elegir Borrador para conservarla sin difusión, Publicada para habilitar su lectura según privacidad, o Archivada para retirarla sin eliminarla. Todas esas operaciones, los filtros y el paginado se resuelven vía AJAX sin recargar.
 
-Eliminar requiere confirmación y borra de forma permanente una publicación de texto sin reportes ni recursos vinculados. Si otra pestaña ya la cambió, se muestra un conflicto y se conserva el texto local para poder copiarlo antes de recargar su versión actual. Las obras sin recursos todavía no se pueden publicar. No hay carga de imágenes de obras, GIF o videos en este incremento.
+Eliminar requiere confirmación y borra de forma permanente una publicación sin reportes, incluidos sus recursos locales. Si otra pestaña ya la cambió, se muestra un conflicto y se conserva el texto local para poder copiarlo antes de recargar su versión actual. Las obras necesitan al menos un recurso listo para publicarse. Guardar el borrador, agregar imágenes/GIF/MP4 o YouTube debajo del formulario y después publicar. Para GIF/MP4 ejecutar antes `./tools/Preparar-Medios.ps1`; ver [preparación, límites y almacenamiento](medios.md).
 
 ### Editar los componentes Vue
 
@@ -90,7 +90,7 @@ Vite genera `src/Trazo.Web/wwwroot/js/publicaciones/editor.js`. No editar ese ar
 
 Durante el desarrollo, `npm run watch` recompila al guardar; mantenerlo en otra terminal y recargar el navegador después de cambiar el código. Esto es independiente del funcionamiento AJAX del editor, que no recarga al operar publicaciones. Los estilos específicos están en `wwwroot/css/publicaciones.css`.
 
-No cambió el modelo de datos en el incremento 02: no crear otra base ni una nueva migración para usarlo.
+No cambió el modelo de datos en los incrementos 02 y 03: no crear otra base ni una nueva migración para usarlo.
 
 ## 5. Probar cambios
 
@@ -101,7 +101,7 @@ No cambió el modelo de datos en el incremento 02: no crear otra base ni una nue
 
 El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
 
-Resultados esperados de este incremento: sin `-Integracion`, 12 aprobadas y 14 omitidas; con `-Integracion`, 26 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+Resultados esperados de este incremento: sin `-Integracion`, 24 aprobadas y 21 omitidas; con `-Integracion`, 45 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
 
 ### Recorrido de navegador y evidencia
 
@@ -152,15 +152,17 @@ Si aparece “address already in use”, comprobar si otra terminal o el depurad
 
 El repositorio ya está creado y `origin` apunta al proyecto de GitHub. El primer incremento fue subido; no volver a ejecutar `git init` ni `git remote add`.
 
-Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.env`, `node_modules`, `bin`, `obj`, `App_Data`, `TestResults` ni archivos con contraseñas reales. Los datos demo del README son deliberadamente públicos. La licencia del código propio se decidirá por separado; publicar el repositorio no concede automáticamente una licencia de reutilización.
+Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.env`, `tools/ffmpeg`, `node_modules`, `bin`, `obj`, `App_Data`, `TestResults` ni archivos con contraseñas reales. Los datos demo del README son deliberadamente públicos. La licencia del código propio se decidirá por separado; publicar el repositorio no concede automáticamente una licencia de reutilización.
 
 ```powershell
 git add .
 git diff --cached --stat
-git commit -m "feat: editor Vue de publicaciones y selector AJAX de etiquetas"
+git commit -m "feat: obras multimedia con validacion y acceso autorizado"
 git push
 ```
 
-El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: este incremento añade compilación Vue y verificación del bundle a las pruebas .NET/MySQL.
+El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: este incremento añade FFmpeg para las pruebas de medios; conserva compilación Vue, verificación del bundle y pruebas .NET/MySQL.
 
 **Parada acordada:** confirmar el commit/push antes de comenzar el próximo incremento. No realizar todavía un despliegue público de la aplicación.
+
+Para repetir la evidencia multimedia, con FFmpeg portable preparado y la web encendida, ejecutar `node tools/Probar-Medios.mjs`. Crea y elimina una publicación temporal propia y guarda capturas/video/red en `docs/evidencias/incremento-03/`. El iframe de YouTube se simula para comprobar la carga voluntaria sin contactar al proveedor.

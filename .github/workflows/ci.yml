@@ -34,6 +34,7 @@ jobs:
           dotnet-version: "10.0.400"
       - run: dotnet restore --locked-mode Trazo.sln
       - run: dotnet build Trazo.sln --no-restore
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: dotnet test Trazo.sln --no-build --logger 'trx;LogFileName=pruebas.trx'
         env:
           TRAZO_TEST_CONNECTION: "Server=127.0.0.1;Port=3306;Database=trazo_tests;User ID=root;Password=ci-only-password;SslMode=Disabled;AllowPublicKeyRetrieval=True"

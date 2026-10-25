@@ -1,0 +1,127 @@
+{
+  "fechaUtc": "2026-10-24T23:47:44.591Z",
+  "recargasEditor": 0,
+  "comprobaciones": [
+    "PNG/GIF/MP4 normalizados",
+    "YouTube solo tras clic; iframe simulado, reproducción externa no evaluada",
+    "orden y descripción",
+    "publicación y filtros",
+    "MP4 Range 206 y reproducción completa en Edge",
+    "privacidad Range 404",
+    "móvil sin desborde",
+    "baja de recurso"
+  ],
+  "erroresJavaScript": [],
+  "peticiones": [
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/panel-json/publicaciones",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/panel-json/publicaciones/26/recursos/archivo",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/panel-json/publicaciones/26/recursos/archivo",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/panel-json/publicaciones/26/recursos/archivo",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/panel-json/publicaciones/26/recursos/youtube",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/panel-json/publicaciones/26/recursos/orden",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/panel-json/publicaciones/26/recursos/9",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/panel-json/publicaciones/26",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/panel-json/publicaciones/26",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/panel-json/publicaciones/26",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/panel-json/publicaciones",
+      "status": 200
+    },
+    {
+      "method": "DELETE",
+      "path": "/panel-json/publicaciones/26/recursos/12",
+      "status": 200
+    }
+  ]
+}

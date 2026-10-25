@@ -24,8 +24,15 @@
                 <option value="Actualizacion" selected="@(Model.Tipo == TipoPublicacion.Actualizacion)">Actualizaciones</option>
             </select>
         </div>
+        <div><label for="medio" class="visually-hidden">Medio</label><select id="medio" name="medio" class="form-select">
+            <option value="">Todos los medios</option>
+            <option value="Imagen" selected="@(Model.Medio == TipoRecurso.Imagen)">Imágenes</option>
+            <option value="Gif" selected="@(Model.Medio == TipoRecurso.Gif)">GIF</option>
+            <option value="Video" selected="@(Model.Medio == TipoRecurso.Video)">Videos MP4</option>
+            <option value="YouTube" selected="@(Model.Medio == TipoRecurso.YouTube)">YouTube</option>
+        </select></div>
         <button class="btn btn-outline-light" type="submit">Buscar</button>
-        @if (Model.Q != null || Model.Etiqueta != null || Model.Tipo != null) { <a asp-action="Index" class="quiet-link">Limpiar</a> }
+        @if (Model.Q != null || Model.Etiqueta != null || Model.Tipo != null || Model.Medio != null) { <a asp-action="Index" class="quiet-link">Limpiar</a> }
     </form>
     <partial name="_Tarjetas" model="Model.Resultados.Items" />
     <partial name="_Pagination" model="@((Model.Resultados.Numero, Model.Resultados.Paginas, Model.Resultados.Total))" />

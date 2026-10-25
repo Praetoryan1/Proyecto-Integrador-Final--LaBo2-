@@ -8,10 +8,10 @@ export async function solicitar(
     signal,
     headers: {
       Accept: "application/json",
-      ...(data === undefined ? {} : { "Content-Type": "application/json" }),
+      ...(data === undefined || data instanceof FormData ? {} : { "Content-Type": "application/json" }),
       ...(csrf ? { "X-CSRF-TOKEN": csrf } : {}),
     },
-    body: data === undefined ? undefined : JSON.stringify(data),
+    body: data === undefined ? undefined : data instanceof FormData ? data : JSON.stringify(data),
   });
   const contentType = response.headers.get("content-type") || "";
   const body = contentType.includes("json") ? await response.json() : null;

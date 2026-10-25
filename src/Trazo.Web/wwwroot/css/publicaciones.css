@@ -363,3 +363,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+.recursos-editor { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+.recursos-editor h3 { font-size: 21px; }
+.resource-list { padding: 0; list-style: none; }
+.resource-item { display: flex; gap: 16px; border-bottom: 1px solid var(--line); padding: 18px 0; }
+.resource-item > img, .resource-youtube { width: 100px; height: 85px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.resource-youtube { display: grid; place-items: center; background: #28282d; color: #e5e5e7; font-size: 12px; }
+.resource-info { min-width: 0; overflow-wrap: anywhere; }
+.resource-info p { margin: 6px 0; font-size: 14px; }
+.resource-info small { color: var(--muted); }
+.resource-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+.resource-form { padding-top: 20px; }
+.resource-form .btn { margin-top: 20px; }
+@media (max-width: 520px) { .resource-item { gap: 10px; } .resource-item > img, .resource-youtube { width: 68px; height: 68px; } }

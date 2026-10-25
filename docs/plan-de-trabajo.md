@@ -8,6 +8,8 @@ Documento complementario a la entrega preliminar. Investigación consultada el *
 
 ## 1. Concepto y referencias
 
+**Actualización del 24/10/2026, incremento 03:** carga de imágenes/GIF/MP4, enlaces YouTube, orden y descripciones en Vue, portadas, filtro por medio y lectura autorizada de archivos/miniaturas/rangos implementados y probados. [Registro y evidencia](incremento-03.md). Los límites reales están en [medios](medios.md); no son configurables desde el panel todavía. El DER no cambia. Próximo incremento previsto: JWT y colección de pruebas, después del commit/push de Jonathan.
+
 **Propuesta:** un portafolio profesional vivo para diseñadores y animadores, con descubrimiento de obras y una comunidad sencilla. El éxito inicial será que una persona pueda publicar una obra, compartir su perfil y recibir contacto profesional; no se medirá por cantidad de funciones sociales.
 
 La referencia [Amy J. Xu](https://amyjxu.me/) organiza trabajos de animación, ilustración y diseño, incluye categorías y una sección de información. Tomamos la organización alrededor de obras y especialidades como inspiración; no copiamos sus imágenes, identidad ni código. La inspección realizada fue del contenido y la estructura accesibles de la página, no una auditoría visual o de usabilidad completa.

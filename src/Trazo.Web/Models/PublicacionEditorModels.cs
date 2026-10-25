@@ -35,4 +35,4 @@ public record EtiquetaEditor(long Id, string Nombre, bool Activa);
 public record PublicacionResumen(long Id, string Titulo, TipoPublicacion Tipo, EstadoEditorial EstadoEditorial,
     Visibilidad Visibilidad, EstadoModeracion EstadoModeracion, DateTime ActualizadaUtc, string Version);
 public record PublicacionEditor(long Id, string Titulo, string Texto, TipoPublicacion Tipo, EstadoEditorial EstadoEditorial,
-    Visibilidad Visibilidad, EstadoModeracion EstadoModeracion, string Version, IReadOnlyList<EtiquetaEditor> Etiquetas);
+    Visibilidad Visibilidad, EstadoModeracion EstadoModeracion, string Version, IReadOnlyList<EtiquetaEditor> Etiquetas, IReadOnlyList<RecursoVista> Recursos);

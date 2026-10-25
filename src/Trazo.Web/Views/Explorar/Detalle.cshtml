@@ -10,5 +10,35 @@
         <a asp-controller="Publicaciones" asp-action="Index" asp-route-editar="@Model.Publicacion.Id" class="btn btn-outline-light mb-4">Editar publicación ↗</a>
     }
     <div class="publication-text">@Model.Publicacion.Texto</div>
+    <section class="publication-media" aria-label="Recursos de la publicación">
+    @foreach (var recurso in Model.Recursos)
+    {
+        <figure class="media-figure">
+        @if (recurso.Tipo == TipoRecurso.Imagen)
+        {
+            <img src="@recurso.ArchivoUrl" alt="@recurso.TextoAlternativo" loading="lazy" decoding="async" />
+        }
+        else if (recurso.Tipo == TipoRecurso.Gif)
+        {
+            <img id="gif-@recurso.Id" src="@recurso.VistaPreviaUrl" alt="@recurso.TextoAlternativo" loading="lazy" />
+            <button class="btn btn-outline-light mt-3" type="button" data-gif-toggle data-target="gif-@recurso.Id" data-source="@recurso.ArchivoUrl" data-preview="@recurso.VistaPreviaUrl" aria-pressed="false">Reproducir GIF</button>
+        }
+        else if (recurso.Tipo == TipoRecurso.Video)
+        {
+            <video controls preload="none" playsinline poster="@recurso.VistaPreviaUrl" aria-label="@recurso.TextoAlternativo"><source src="@recurso.ArchivoUrl" type="video/mp4" />Tu navegador no puede reproducir este video.</video>
+        }
+        else
+        {
+            <div class="youtube-placeholder" data-youtube-container>
+                <span class="eyebrow">VIDEO EN YOUTUBE</span><p>@recurso.TextoAlternativo</p>
+                <p class="muted">Al cargar el reproductor te conectás con YouTube, que aplica sus propias políticas y permisos.</p>
+                <button type="button" class="btn btn-lime" data-youtube-id="@recurso.YouTubeId">Cargar video de YouTube</button>
+            </div>
+        }
+            <figcaption>@recurso.TextoAlternativo @if (!string.IsNullOrWhiteSpace(recurso.Creditos)) { <span class="media-credits">Créditos: @recurso.Creditos</span> }</figcaption>
+        </figure>
+    }
+    </section>
     <div class="tags mt-4">@foreach (var tag in Model.Publicacion.Etiquetas) { <a asp-action="Index" asp-route-etiqueta="@tag">#@tag</a> }</div>
 </article>
+@section Scripts { <script src="~/js/medios.js" asp-append-version="true"></script> }

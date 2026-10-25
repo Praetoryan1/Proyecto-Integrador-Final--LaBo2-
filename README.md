@@ -4,7 +4,6 @@ Proyecto Integrador Final de **Laboratorio II**. Autor: **Muñoz, Jonathan**.
 
 Trazo reúne portafolios de diseño, ilustración y animación con descubrimiento por etiquetas. Los reclutadores pueden navegar sin cuenta; cada creador decide la visibilidad de su perfil, publicaciones y contacto profesional. Busca resolver la dispersión de trabajos y datos de contacto entre redes generalistas y sitios personales.
 
-**Estado al 24/10/2026: segundo incremento funcional local.** Además de cuentas, perfiles/avatar, exploración y etiquetas administrativas, ya funciona el **ABM de publicaciones con Vue 3 vía AJAX/JSON**, con borradores, publicación, archivo, privacidad y búsqueda asíncrona de etiquetas. Los medios adicionales, JWT y las funciones sociales siguen pendientes.
 
 ![Explorar en Trazo](docs/evidencias/explorar-desktop.png)
 
@@ -16,6 +15,7 @@ En una terminal PowerShell de VS Code, abierta en la raíz del repositorio:
 
 ```powershell
 ./tools/Preparar-Entorno.ps1
+./tools/Preparar-Medios.ps1
 dotnet dev-certs https --trust
 dotnet run --project src/Trazo.Web --launch-profile https -- --seed-demo
 dotnet run --project src/Trazo.Web --launch-profile https
@@ -27,7 +27,7 @@ El script genera contraseñas aleatorias en `.env` y configura la conexión medi
 
 La [guía de desarrollo](docs/desarrollo.md) explica cada paso, la conexión desde Workbench, las migraciones, las pruebas y el primer push.
 
-Para usar el editor: ingresar y abrir **Mi estudio → Administrar mis publicaciones**, o `/panel/publicaciones`. Se pueden crear y publicar actualizaciones de texto; una obra sin recursos solo puede guardarse como borrador o archivada. Este incremento no cambia el esquema ni requiere otra migración.
+Para usar el editor: ingresar y abrir **Mi estudio → Administrar mis publicaciones**, o `/panel/publicaciones`. Guardar el borrador, agregar recursos y elegir Publicada. Una obra necesita al menos un recurso listo; las actualizaciones pueden ser solo texto. Este incremento no cambia el esquema ni requiere otra migración. La [guía de medios](docs/medios.md) explica formatos, cuotas y FFmpeg, necesario para GIF/MP4. El script portable es para Windows; en Linux se instala con el gestor de paquetes.
 
 ## Cuentas de demostración
 
@@ -56,6 +56,7 @@ Un proyecto **ASP.NET Core MVC/Razor** con EF Core y MySQL; ASP.NET Core Identit
 | Vue | 3.5.44, componentes precompilados e integrados en MVC |
 | Vite / plugin Vue | 8.3.5 / 6.0.10, herramientas de compilación |
 | Playwright | 1.64.1, recorrido local de evidencia en Edge |
+| FFmpeg / ffprobe | 9.0.2 portable en Windows; procesamiento de GIF/MP4, fuera de Git |
 | Web API con JWT / colección Postman | Próximos incrementos, aún no implementados |
 
 Las dependencias NuGet están fijadas en los proyectos y en `packages.lock.json`. Docker sigue los parches de la rama 8.4. No se utilizan ADO.NET directo, SignalR ni un frontend separado: no son necesarios para esta fase.
@@ -83,8 +84,8 @@ tools/                Preparación del entorno y ejecución de pruebas
 | --- | --- | --- | --- |
 | 1. Al menos 6 entidades principales, 1:N y N:M | Implementado en persistencia: 7 principales, asociaciones y soporte Identity | [Modelo](src/Trazo.Web/Domain/Modelo.cs), [DbContext](src/Trazo.Web/Data/TrazoDbContext.cs), [migración](src/Trazo.Web/Data/Migrations/20261021051003_ModeloInicial.cs) | [DER](docs/der.png), [correspondencia física](docs/modelo-de-datos.md), [SQL](database/001-modelo-inicial.sql), pruebas con MySQL |
 | 2. Login/logout, roles y avatar | Implementado y probado localmente | [Cuenta](src/Trazo.Web/Controllers/CuentaController.cs), [Perfil](src/Trazo.Web/Controllers/PerfilController.cs), [etiquetas solo administrador](src/Trazo.Web/Controllers/EtiquetasController.cs), [avatar](src/Trazo.Web/Services/AvatarService.cs) | [Login](docs/evidencias/login.png), [edición de perfil](docs/evidencias/perfil-editar.png), [pruebas de acceso y subida](tests/Trazo.Tests/MySqlIntegrationTests.cs) |
-| 3. Archivos adicionales al avatar | Pendiente | Existe la entidad RecursoMultimedia; falta el flujo de archivos de publicación | Captura de subida pendiente; el avatar no cumple este punto adicional |
-| 4. ABM completo Vue + AJAX/JSON | Implementado y probado para publicaciones de texto; medios pendientes | [Componente Vue](src/Trazo.Web/ClientApp/publicaciones/PublicacionesApp.vue), [controladores JSON](src/Trazo.Web/Controllers/PublicacionesJsonController.cs), [servicio](src/Trazo.Web/Services/PublicacionesService.cs) | [Video del ABM](docs/evidencias/incremento-02/editor-abm.webm), [red: cero recargas](docs/evidencias/incremento-02/red.json), [pruebas](tests/Trazo.Tests/PublicacionesIntegrationTests.cs) |
+| 3. Archivos adicionales al avatar | Implementado y probado localmente: imágenes, GIF y MP4 de publicaciones | [Controlador](src/Trazo.Web/Controllers/RecursosController.cs), [almacenamiento y procesamiento](src/Trazo.Web/Services/AlmacenMedios.cs) | [Video de carga y edición](docs/evidencias/incremento-03/medios-abm.webm), [captura](docs/evidencias/incremento-03/editor-medios.png), [pruebas de archivos y privacidad](tests/Trazo.Tests/MediosIntegrationTests.cs) |
+| 4. ABM completo Vue + AJAX/JSON | Implementado para texto y recursos multimedia | [Componente Vue](src/Trazo.Web/ClientApp/publicaciones/PublicacionesApp.vue), [editor de recursos](src/Trazo.Web/ClientApp/publicaciones/RecursosEditor.vue), [controladores JSON](src/Trazo.Web/Controllers/PublicacionesJsonController.cs), [servicio](src/Trazo.Web/Services/PublicacionesService.cs) | [Video del ABM](docs/evidencias/incremento-02/editor-abm.webm), [medios sin recargas](docs/evidencias/incremento-03/red.json), [pruebas](tests/Trazo.Tests/PublicacionesIntegrationTests.cs) |
 | 5. Paginado desde el servidor | Implementado en los listados actuales; debe mantenerse en los próximos | [Pagina](src/Trazo.Web/Models/Pagina.cs), [Explorar](src/Trazo.Web/Controllers/ExplorarController.cs), [Perfil](src/Trazo.Web/Controllers/PerfilController.cs), [servicio del panel](src/Trazo.Web/Services/PublicacionesService.cs) | [Respuesta de página 2](docs/evidencias/incremento-02/paginacion.json), [captura](docs/evidencias/incremento-02/paginacion.png), [peticiones](docs/evidencias/incremento-02/red.json); pruebas de páginas de 12 registros y selector de 10 |
 | 6. Búsqueda asíncrona de relacionados | Implementada y probada: etiquetas de publicaciones | [Selector Vue](src/Trazo.Web/ClientApp/publicaciones/SelectorEtiquetas.vue), [búsqueda JSON](src/Trazo.Web/Controllers/PublicacionesJsonController.cs) | [Captura](docs/evidencias/incremento-02/selector-etiquetas.png), [video](docs/evidencias/incremento-02/editor-abm.webm); relaciones N:M persistidas y comprobadas |
 | 7. Web API REST con JWT | Pendiente | La sesión MVC actual usa cookies | Endpoints JWT y colección Postman pendientes |
@@ -96,7 +97,7 @@ tools/                Preparación del entorno y ejecución de pruebas
 ./tools/Probar.ps1 -Integracion     # Suite completa, con Docker iniciado
 ```
 
-La integración **recrea únicamente `trazo_tests` en localhost**; no usa `trazo_dev`. Resultado actual: **26 pruebas aprobadas, 0 fallidas y 0 omitidas** con MySQL real. Incluye las 19 del primer incremento y 7 nuevas de ABM, privacidad, CSRF en JSON, concurrencia, validación de etiquetas, paginación y conservación de reportes. Ver [registro del incremento 02](docs/incremento-02.md) y [antecedente del incremento 01](docs/incremento-01.md).
+
 
 El [workflow de GitHub Actions](.github/workflows/ci.yml) compila Vue, comprueba que el bundle versionado corresponda a sus fuentes y ejecuta las pruebas .NET con MySQL. La ejecución remota de esta actualización queda pendiente del push; no se presenta como CI aprobada. Estas verificaciones no equivalen a una auditoría de seguridad ni cubren funcionalidades aún no construidas.
 
@@ -106,7 +107,8 @@ Con la web y MySQL encendidos, se puede repetir el recorrido de navegador en Win
 npm ci
 npx playwright install ffmpeg
 npm run test:browser
+node tools/Probar-Medios.mjs
 ```
 
-Usa la cuenta demo Ana y crea/elimina una publicación temporal en `trazo_dev`. Requiere suficientes publicaciones para una segunda página (la semilla original incluye 12 de Ana). Genera video, capturas y metadatos de red sin cookies ni tokens en `docs/evidencias/incremento-02/`.
+Ambos recorridos usan la cuenta demo Ana y crean/eliminan sus publicaciones temporales en `trazo_dev`. El primero requiere suficientes publicaciones para una segunda página (la semilla original incluye 12 de Ana). El segundo requiere además FFmpeg de `Preparar-Medios.ps1`. Generan video, capturas y metadatos de red sin cookies ni tokens en `docs/evidencias/incremento-02/` e `incremento-03/`, respectivamente. El FFmpeg de Playwright graba las evidencias; el portable de Trazo procesa los archivos de publicaciones.
 

@@ -11,7 +11,7 @@ public class PublicacionException(int status, string message) : Exception(messag
 }
 
 // Las mismas reglas de escritura podrán ser usadas por la futura API JWT.
-public class PublicacionesService(TrazoDbContext db)
+public class PublicacionesService(TrazoDbContext db, AlmacenMedios almacen)
 {
     public Task<Pagina<PublicacionResumen>> ListarAsync(string autorId, string? q, EstadoEditorial? estado, int pagina, CancellationToken ct)
     {
@@ -26,7 +26,7 @@ public class PublicacionesService(TrazoDbContext db)
     public async Task<PublicacionEditor> ObtenerAsync(string autorId, long id, CancellationToken ct)
     {
         var post = await db.Publicaciones.AsNoTracking().Where(p => p.AutorId == autorId && p.Id == id)
-            .Include(p => p.Etiquetas).ThenInclude(e => e.Etiqueta).SingleOrDefaultAsync(ct)
+            .Include(p => p.Etiquetas).ThenInclude(e => e.Etiqueta).Include(p => p.Recursos).AsSplitQuery().SingleOrDefaultAsync(ct)
             ?? throw NoEncontrada();
         return Proyectar(post);
     }
@@ -63,12 +63,11 @@ public class PublicacionesService(TrazoDbContext db)
         ComprobarVersion(post, version);
         if (await db.Reportes.AnyAsync(r => r.PublicacionId == id, ct))
             throw new PublicacionException(409, "Esta publicación tiene reportes vinculados. Podés archivarla para retirar su difusión.");
-        // La coordinación de borrado de archivos se incorporará con el módulo de medios.
-        if (await db.Recursos.AnyAsync(r => r.PublicacionId == id, ct))
-            throw new PublicacionException(409, "La eliminación de publicaciones con recursos estará disponible con el módulo de medios. Podés archivarla.");
+        var keys = await db.Recursos.Where(r => r.PublicacionId == id).Select(r => r.ClaveAlmacenamiento).ToListAsync(ct);
         db.Publicaciones.Remove(post);
         try { await GuardarConVersionAsync(ct); }
         catch (DbUpdateException) { throw new PublicacionException(409, "No se pudo eliminar porque cambió una relación. Volvé a cargar la publicación o archivala."); }
+        foreach (var key in keys) almacen.Eliminar(key);
     }
 
     private async Task<Publicacion> PropiaAsync(string autorId, long id, CancellationToken ct) =>
@@ -88,7 +87,7 @@ public class PublicacionesService(TrazoDbContext db)
             throw new PublicacionException(400, "Una etiqueta no existe o fue desactivada. Quitala y buscá otra.");
         if (model.Tipo == TipoPublicacion.Obra && model.EstadoEditorial == EstadoEditorial.Publicada &&
             !await db.Recursos.AnyAsync(r => r.PublicacionId == post.Id && r.EstadoProcesamiento == EstadoProcesamiento.Listo, ct))
-            throw new PublicacionException(400, "Para publicar una obra necesitás al menos un recurso listo. Por ahora guardala como borrador o publicá una actualización de texto.");
+            throw new PublicacionException(400, "Para publicar una obra necesitás al menos un recurso listo. Guardala como borrador, agregá un archivo o enlace de YouTube y luego publicala.");
     }
 
     private static void Aplicar(Publicacion post, GuardarPublicacionModel model)
@@ -118,7 +117,9 @@ public class PublicacionesService(TrazoDbContext db)
 
     private static PublicacionEditor Proyectar(Publicacion p) => new(p.Id, p.Titulo, p.Texto, p.Tipo, p.EstadoEditorial,
         p.Visibilidad, p.EstadoModeracion, p.Version,
-        p.Etiquetas.OrderBy(e => e.Etiqueta.Nombre).Select(e => new EtiquetaEditor(e.EtiquetaId, e.Etiqueta.Nombre, e.Etiqueta.Activa)).ToList());
+        p.Etiquetas.OrderBy(e => e.Etiqueta.Nombre).Select(e => new EtiquetaEditor(e.EtiquetaId, e.Etiqueta.Nombre, e.Etiqueta.Activa)).ToList(),
+        p.Recursos.Where(r => r.EstadoProcesamiento == EstadoProcesamiento.Listo).OrderBy(r => r.Orden)
+            .Select(r => new RecursoVista(r.Id, r.Tipo, r.Orden, r.TextoAlternativo, r.Creditos, r.YouTubeId)).ToList());
     private static PublicacionException NoEncontrada() => new(404, "La publicación no está disponible.");
     private static PublicacionException Conflicto() => new(409, "La publicación cambió en otra pestaña o sesión. Conservá tu texto y volvé a cargar su versión actual antes de guardar.");
 }
