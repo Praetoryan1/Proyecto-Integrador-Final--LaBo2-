@@ -1,6 +1,6 @@
 # Desarrollo local: VS Code, MySQL y GitHub
 
-Guía actualizada al incremento 05, 25/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
+Guía actualizada al incremento 06, 25/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
 
 ## 1. Abrir el proyecto
 
@@ -90,7 +90,7 @@ Vite genera `src/Trazo.Web/wwwroot/js/publicaciones/editor.js`. No editar ese ar
 
 Durante el desarrollo, `npm run watch` recompila al guardar; mantenerlo en otra terminal y recargar el navegador después de cambiar el código. Esto es independiente del funcionamiento AJAX del editor, que no recarga al operar publicaciones. Los estilos específicos están en `wwwroot/css/publicaciones.css`.
 
-No cambió el modelo de datos en los incrementos 02 a 05: no crear otra base ni una nueva migración para usarlo.
+No cambió el modelo de datos en los incrementos 02 a 06: no crear otra base ni una nueva migración para usarlo.
 
 ## 5. Probar cambios
 
@@ -101,7 +101,7 @@ No cambió el modelo de datos en los incrementos 02 a 05: no crear otra base ni 
 
 El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
 
-Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 34 omitidas; con `-Integracion`, 61 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 39 omitidas; con `-Integracion`, 66 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
 
 ### Recorrido de navegador y evidencia
 
@@ -157,7 +157,7 @@ Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.e
 ```powershell
 git add .
 git diff --cached --stat
-git commit -m "feat: favoritos privados y seguimiento de creadores"
+git commit -m "feat: reportes y moderacion con revision del autor"
 git push
 ```
 
@@ -170,3 +170,5 @@ Para repetir la evidencia multimedia, con FFmpeg portable preparado y la web enc
 Para la API, ejecutar una vez `./tools/Preparar-Api.ps1` y reiniciar Trazo. La clave queda en User Secrets. Importar `docs/api/Trazo.postman_collection.json` en Postman y ejecutar el Runner completo según [la guía de API](api.md); el recorrido final revoca las sesiones demo de Ana. La web continúa usando cookies, y no requiere una nueva base ni migración.
 
 Favoritos y seguidos se administran desde Mi estudio. No requieren migraciones ni herramientas adicionales. Para repetir el recorrido local de este módulo: `node tools/Probar-Comunidad.mjs`. Ver [reglas, pantallas y pruebas](incremento-05.md).
+
+Reportes: desde una publicación ajena, elegir Reportar publicación. Cada creador consulta Mis reportes; Admin accede a Moderar reportes desde Mi estudio. Una obra oculta permite al autor solicitar revisión si sigue publicada y con privacidad pública/registrados. Ver [reglas y evidencias](incremento-06.md). El recorrido `node tools/Probar-Reportes.mjs` conserva dos reportes resueltos y archiva su publicación demo; no borra el historial. En la bandeja administrativa seleccionar estado Todos para ver esos casos.

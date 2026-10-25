@@ -7,7 +7,7 @@ using Trazo.Web.Models;
 using Trazo.Web.Services;
 namespace Trazo.Web.Controllers;
 
-public class ExplorarController(TrazoDbContext db) : Controller
+public class ExplorarController(TrazoDbContext db, ReportesService reportes) : Controller
 {
     [HttpGet("/"), HttpGet("/explorar")]
     public async Task<IActionResult> Index(string? q, string? etiqueta, TipoPublicacion? tipo, TipoRecurso? medio, int pagina = 1, CancellationToken ct = default)
@@ -36,7 +36,11 @@ public class ExplorarController(TrazoDbContext db) : Controller
         var resources = await db.Recursos.AsNoTracking().Where(r => query.Select(p => p.Id).Contains(r.PublicacionId) && r.EstadoProcesamiento == EstadoProcesamiento.Listo)
             .OrderBy(r => r.Orden).Select(r => new RecursoVista(r.Id, r.Tipo, r.Orden, r.TextoAlternativo, r.Creditos, r.YouTubeId)).ToListAsync(ct);
         var saved = userId != null && await db.Favoritos.AnyAsync(f => f.UsuarioId == userId && f.PublicacionId == id, ct);
+        var canReport = userId != null && User.IsInRole(Roles.Creador) && await reportes.Reportables(userId).AnyAsync(p => p.Id == id, ct);
+        var reason = state.AutorId == userId && state.EstadoModeracion == EstadoModeracion.Oculta
+            ? await db.Reportes.Where(r => r.PublicacionId == id && r.Estado == EstadoReporte.Resuelto && r.Motivo != ReportesService.Revision)
+                .OrderByDescending(r => r.ResueltoUtc).ThenByDescending(r => r.Id).Select(r => r.Resolucion).FirstOrDefaultAsync(ct) : null;
         return View(new DetallePublicacionModel(card, state.Visibilidad, state.EstadoEditorial, state.AutorId == userId, resources, saved,
-            state.EstadoEditorial == EstadoEditorial.Publicada && state.EstadoModeracion == EstadoModeracion.Visible));
+            state.EstadoEditorial == EstadoEditorial.Publicada && state.EstadoModeracion == EstadoModeracion.Visible, state.EstadoModeracion, reason, canReport));
     }
 }

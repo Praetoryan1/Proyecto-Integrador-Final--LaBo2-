@@ -1,0 +1,22 @@
+@model ReportesLista
+@{ ViewData["Title"] = Model.Administracion ? "Moderación" : "Mis reportes"; }
+<section class="page-heading"><span class="eyebrow">@(Model.Administracion ? "ADMINISTRACIÓN" : "MI ESTUDIO")</span><h1>@ViewData["Title"]<span class="accent">.</span></h1><p>@(Model.Administracion ? "Revisá solicitudes y registrá una decisión fundamentada." : "Consultá tus denuncias y solicitudes de revisión. Esta lista es privada.")</p></section>
+<form method="get" class="report-filters">
+    <div><label for="q">Buscar por motivo o título disponible</label><input id="q" name="q" value="@Model.Q" maxlength="100" class="form-control" /></div>
+    <div><label for="estado">Estado</label><select id="estado" name="estado" class="form-select"><option value="">Todos</option>
+        @foreach (var estado in Enum.GetValues<EstadoReporte>()) { <option value="@((int)estado)" selected="@(Model.Estado == estado)">@estado</option> }
+    </select></div>
+    <button class="btn btn-outline-light">Buscar</button>
+</form>
+<div class="report-list">
+@foreach (var item in Model.Resultados.Items) {
+    <article class="report-card">
+        <span class="eyebrow">SOLICITUD #@item.Id · @item.Estado</span>
+        <h2><a asp-controller="@(Model.Administracion ? "Moderacion" : "Reportes")" asp-action="Detalle" asp-route-id="@item.Id">@(item.Titulo ?? "Contenido no disponible")</a></h2>
+        <p>@item.Motivo · @item.CreadoUtc.ToString("dd/MM/yyyy HH:mm") UTC</p>
+    </article>
+}
+</div>
+@if (Model.Resultados.Total == 0) { <p class="notice">No hay solicitudes para estos filtros.</p> }
+<partial name="_Pagination" model="@((Model.Resultados.Numero, Model.Resultados.Paginas, Model.Resultados.Total))" />
+<a asp-controller="Panel" asp-action="Index" class="quiet-link">← Mi estudio</a>

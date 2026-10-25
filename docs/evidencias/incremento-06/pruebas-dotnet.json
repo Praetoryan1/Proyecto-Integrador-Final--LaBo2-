@@ -1,0 +1,274 @@
+{
+  "fechaUtc": "2026-10-25T06:09:11.2678816Z",
+  "comando": "./tools/Probar.ps1 -Integracion",
+  "total": 66,
+  "aprobadas": 66,
+  "fallidas": 0,
+  "omitidas": 0,
+  "pruebas": [
+    {
+      "nombre": "Trazo.Tests.ComunidadIntegrationTests.Guardar_y_seguir_no_otorgan_acceso_ni_permiten_autoseguimiento",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Estados_no_publicos_solo_son_legibles_por_autor(editorial: Borrador, moderacion: Visible)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Revocacion_invalida_tokens_y_cookies_existentes",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Cuota_limite_de_recursos_y_cargas_simultaneas_no_dejan_archivos_huerfanos",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Una_publicacion_con_reporte_puede_archivarse_pero_no_borrarse",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"https://youtube.com:444/watch?v=abcdefghijk\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Mysql_rechaza_autoseguimiento_y_recursos_con_dos_fuentes",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"https://youtube.com@evil.invalid/watch?v=abcdefghi\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Abm_json_persiste_etiquetas_y_estados_con_privacidad_real",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Cookies_y_bearer_no_se_sustituyen_y_token_por_query_no_se_acepta",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Perfil_y_avatar_respetan_privacidad_y_validan_archivos",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Firma_emisor_audiencia_tiempos_tipo_algoritmo_y_claims_son_obligatorios",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Privada, perfil: Privada, visitante: \"autor\", esperado: True)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Administrador_completa_abm_y_no_borra_etiqueta_en_uso",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"https://youtu.be/short\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Extrae_solo_identificador(url: \"https://youtu.be/abcdefghijk\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Validacion_no_publica_obras_sin_recursos_ni_admite_etiquetas_invalidas",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Login_no_redirige_a_sitios_externos_y_logout_no_acepta_get",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"https://user@youtube.com/watch?v=abcdefghijk\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Medios_respetan_perfil_registrados_moderacion_y_cuenta_suspendida",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ReportesIntegrationTests.Cambios_concurrentes_no_pisan_edicion_ni_duplican_resoluciones",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiEntornoTests.Api_no_se_abre_fuera_del_entorno_permitido_o_sin_clave(environment: \"Testing\", url: \"/api/v1/publicaciones\", expected: 503)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Estados_no_publicos_solo_son_legibles_por_autor(editorial: Archivada, moderacion: Visible)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiEntornoTests.Api_no_se_abre_fuera_del_entorno_permitido_o_sin_clave(environment: \"Production\", url: \"/api/v1/auth/token\", expected: 404)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Listados_paginados_y_etiquetas_inactivas_respetan_el_contrato",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Extrae_solo_identificador(url: \"https://m.youtube.com/shorts/abcdefghijk\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"https://youtube.com.evil.invalid/watch?v=abcdefghi\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ReportesIntegrationTests.Denuncia_oculta_sin_filtrar_identidad_y_revision_restaura_con_auditoria",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ComunidadIntegrationTests.Favoritos_y_seguidos_son_privados_idempotentes_y_no_aceptan_otro_actor",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Contacto_oculto_no_es_visible_para_otra_cuenta",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ComunidadIntegrationTests.Privacidad_filtra_listas_contadores_y_limpieza_sin_revelar_destinos",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Crud_rest_con_jwt_pagina_valida_propiedad_y_comparte_reglas_con_mvc",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Imagen_normalizada_obedece_privacidad_en_archivo_miniatura_head_y_range",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Suspension_oculta_el_contenido_incluso_al_propietario",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Json_exige_sesion_csrf_y_propiedad_incluso_para_administrador",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"http://youtu.be/abcdefghijk\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Publica, perfil: Publica, visitante: null, esperado: True)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Emision_aplica_bloqueo_identity_y_no_emite_con_password_incorrecto",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Registrados, perfil: Registrados, visitante: \"otro\", esperado: True)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Gif_y_mp4_se_procesan_con_ffmpeg_y_video_acepta_rangos",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ComunidadIntegrationTests.Archivo_moderacion_suspension_y_baja_se_reflejan_en_favoritos",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Estados_no_publicos_solo_son_legibles_por_autor(editorial: Publicada, moderacion: Oculta)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ComunidadIntegrationTests.Mutaciones_exigen_sesion_csrf_post_y_retorno_local",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Mp4_rechaza_codec_duracion_y_dimensiones_fuera_de_limite",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ReportesIntegrationTests.Permisos_csrf_motivos_y_campos_privilegiados_se_validan",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ComunidadIntegrationTests.Ambas_listas_paginan_en_mysql_y_filtran_antes_de_contar",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Campos_privilegiados_y_moderacion_no_se_sobrescriben_desde_json",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Registro_es_atomico_asigna_solo_creador_y_exige_csrf",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Extrae_solo_identificador(url: \"https://youtube.com/embed/abcdefghijk\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Publica, perfil: Registrados, visitante: null, esperado: False)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.PublicacionesIntegrationTests.Ediciones_simultaneas_y_bajas_desactualizadas_no_pisan_cambios",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Permisos_y_estado_de_cuenta_se_revisan_en_cada_peticion",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Orden_descripcion_baja_y_version_compartida_funcionan_con_indice_unico",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MediosIntegrationTests.Archivos_falsos_texto_alternativo_y_propiedad_se_validan_antes_de_guardar",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiEntornoTests.Api_no_se_abre_fuera_del_entorno_permitido_o_sin_clave(environment: \"Staging\", url: \"/api/v1/publicaciones\", expected: 404)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Publica, perfil: Privada, visitante: \"otro\", esperado: False)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ReportesIntegrationTests.Listas_paginan_filtran_y_aislan_reportes_sin_ejecutar_html",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Una_sesion_existente_deja_de_funcionar_al_suspender_la_cuenta",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.MySqlIntegrationTests.Explorar_pagina_en_mysql_y_no_filtra_privados",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Registrados, perfil: Publica, visitante: null, esperado: False)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ApiIntegrationTests.Emisor_limita_solicitudes_por_ip_antes_de_validar_credenciales",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.ReportesIntegrationTests.Privacidad_actual_redacta_titulos_busquedas_y_medios_incluso_para_admin",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"<iframe src='https://youtu.be/abcdefghijk'></ifram\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Rechaza_fuentes_no_permitidas(url: \"https://youtube.com/watch?v=abcdefghijk&v=zyxwvuts\"···)",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.YouTubeTests.Extrae_solo_identificador(url: \"https://www.youtube.com/watch?v=abcdefghijk&t=1\")",
+      "resultado": "Passed"
+    },
+    {
+      "nombre": "Trazo.Tests.VisibilidadTests.Se_aplica_la_visibilidad_mas_restrictiva(publicacion: Privada, perfil: Publica, visitante: \"otro\", esperado: False)",
+      "resultado": "Passed"
+    }
+  ]
+}

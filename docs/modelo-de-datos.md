@@ -25,7 +25,7 @@ Identity agrega `UsuarioClaims`, `RolClaims`, `UsuarioLogins` y `UsuarioTokens`.
 
 Los nombres descriptivos del DER `EmailNormalizado`, `NombreUsuarioNormalizado` y `EmailConfirmado` corresponden a las propiedades Identity `NormalizedEmail`, `NormalizedUserName` y `EmailConfirmed`. El nombre normalizado de rol es `NormalizedName`. Los identificadores de usuario/rol son strings; los demás identificadores simples son bigint. Las enumeraciones se persisten como enteros y los campos terminados en Utc contienen fechas UTC. FechaAlta también se genera en UTC.
 
-En este incremento, `Reporte.Motivo` se guarda como texto de hasta 80 caracteres. La fuente Mermaid refleja ese tipo; las imágenes del DER muestran el atributo sin especificar tipo. El catálogo de motivos y su validación se cerrarán con el módulo de reportes.
+`Reporte.Motivo` se guarda como texto de hasta 80 caracteres. La fuente Mermaid refleja ese tipo; las imágenes del DER muestran el atributo sin especificar tipo. El incremento 06 valida cinco motivos de denuncia y reserva «Solicitud de revisión» al autor de una obra oculta.
 
 ## Invariantes implementadas
 
@@ -40,12 +40,14 @@ Usuario y Perfil se crean en una misma transacción durante el registro. La FK g
 
 La lectura autorizada se compone con `IQueryable` antes de `Count`, `Skip` y `Take`. No basta con ocultar tarjetas en Razor. El backend respeta estado de cuenta, autoría, visibilidad de perfil/publicación y estados editorial/de moderación. El contacto tiene una restricción adicional y nunca utiliza automáticamente el correo de acceso.
 
-## Qué está pendiente
+## Estado funcional y pendientes
 
-El esquema de reportes está creado, pero su flujo de usuario y moderación todavía no está implementado. Desde el incremento 02 existen ABM, asociación de etiquetas y cambio de estado editorial de publicaciones. Se permite conservar etiquetas desactivadas ya asociadas, pero no agregar nuevas asociaciones con ellas. No se puede publicar una obra sin un recurso listo. Borrar una publicación con reportes devuelve 409 y permite optar por archivarla.
+Desde el incremento 06 están implementados el envío de reportes, consulta propia, bandeja administrativa, ocultamiento, desestimación y revisión/restauración solicitada por el autor. Se registran resolutor, fecha y explicación. La regla de un pendiente por cuenta/publicación se aplica en el servicio con transacción y `Publicacion.Version`, sin un nuevo índice único. La resolución comparte la versión de publicación y se confirma atómicamente. Ver [reglas y evidencia](incremento-06.md). Quedan pendientes la administración de suspensiones y la política productiva de retención.
+
+Desde el incremento 02 existen ABM, asociación de etiquetas y cambio de estado editorial de publicaciones. Se permite conservar etiquetas desactivadas ya asociadas, pero no agregar nuevas asociaciones con ellas. No se puede publicar una obra sin un recurso listo. Borrar una publicación con reportes devuelve 409 y permite optar por archivarla.
 
 Desde el incremento 03, RecursoMultimedia tiene alta, edición, orden y baja operativas. `Bytes` registra el archivo normalizado más su miniatura; YouTube no usa almacenamiento local. La miniatura se deriva del mismo identificador de `ClaveAlmacenamiento` con sufijo `.preview.png`, sin columna adicional. Los recursos se persisten solo tras terminar el procesamiento. Las modificaciones renuevan `Publicacion.Version`; la baja de una publicación sin reportes retira sus recursos y luego elimina los archivos. Ver [coordinación y límites](medios.md).
 
 Desde el incremento 05, Favorito y Seguimiento tienen altas/bajas y listas personales operativas. El actor se obtiene de la sesión y las claves compuestas evitan duplicados simultáneos. Las consultas y contadores filtran la disponibilidad del destino antes de paginar; las relaciones pueden conservarse mientras el destino esté oculto, salvo que su propietario elija limpiar las no disponibles. Ninguna relación concede acceso adicional. Ver [reglas y pruebas](incremento-05.md).
 
-No hubo cambios de tablas ni relaciones en los incrementos 02 a 05: el DER y la migración inicial siguen representando el esquema actual. El estado de moderación no se modifica desde el editor, ni puede elegirse otro autor enviando campos adicionales.
+No hubo cambios de tablas ni relaciones en los incrementos 02 a 06: el DER y la migración inicial siguen representando el esquema actual. El estado de moderación no se modifica desde el editor, ni puede elegirse otro autor enviando campos adicionales.

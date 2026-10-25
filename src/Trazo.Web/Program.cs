@@ -66,6 +66,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
     });
 builder.Services.AddScoped<EtiquetasConsulta>();
 builder.Services.AddScoped<ComunidadService>();
+builder.Services.AddScoped<ReportesService>();
 builder.Services.AddScoped<AvatarService>();
 builder.Services.AddScoped<PublicacionesService>();
 builder.Services.AddScoped<RecursosService>();
@@ -74,6 +75,9 @@ builder.Services.AddSingleton<AlmacenMedios>();
 builder.Services.AddRateLimiter(o =>
 {
     o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    o.AddPolicy("reportes", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
     o.AddPolicy("cuentas", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));

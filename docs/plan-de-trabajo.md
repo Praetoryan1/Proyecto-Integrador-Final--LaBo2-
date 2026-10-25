@@ -8,6 +8,8 @@ Documento complementario a la entrega preliminar. Investigación consultada el *
 
 ## 1. Concepto y referencias
 
+**Actualización del 25/10/2026, incremento 06:** reportes propios y bandeja administrativa paginados, decisiones con explicación, ocultamiento y revisión/restauración del autor implementados y probados. El acceso administrativo a archivos respeta privacidad y estado actuales. [Registro y evidencia](incremento-06.md). Sin cambios del DER. La gestión de suspensiones queda para el siguiente incremento, después de la parada de push.
+
 **Actualización del 25/10/2026, incremento 05:** favoritos privados y seguimiento de creadores implementados con listas paginadas, búsquedas y permisos aplicados también a contadores. Altas/bajas idempotentes y limpieza de relaciones no disponibles; [registro y evidencia](incremento-05.md). Sin cambios del DER ni nuevas dependencias. Próximo módulo propuesto tras el push: reportes y moderación.
 
 **Actualización del 24/10/2026, incremento 04:** API REST JWT implementada para publicaciones propias y búsqueda de etiquetas. Incluye emisor local, revocación de sesiones y colección Postman comprobada; [registro](incremento-04.md) y [guía](api.md). La API queda deshabilitada fuera de Development/Testing. Sin cambios de DER. Próximo incremento propuesto tras el push: favoritos y seguimiento de creadores.
@@ -191,4 +193,4 @@ La seguridad y autorización se incorporan en cada bloque; la preparación produ
 
 ## 9. Próximas decisiones
 
-El siguiente paso es revisar y subir el incremento 02. Luego se incorporará la carga y lectura autorizada de medios de publicaciones. Las versiones probadas y los pasos de MySQL/VS Code figuran en el README y en desarrollo.md. Queda verificar con el docente cualquier observación sobre el alcance y las herramientas auxiliares. El nombre de trabajo puede cambiar sin afectar el modelo. No publicar contraseñas reales, claves JWT, datos de usuarios ni archivos sin licencia en GitHub.
+El siguiente paso es revisar y subir el incremento 06. Luego se incorporará la gestión administrativa de suspensiones de cuentas. Quedan también destacados/personalización pendiente y el cierre reproducible de la entrega. Las versiones probadas y los pasos de MySQL/VS Code figuran en el README y en desarrollo.md. Queda verificar con el docente cualquier observación sobre el alcance y las herramientas auxiliares. El nombre de trabajo puede cambiar sin afectar el modelo. No publicar contraseñas reales, claves JWT, datos de usuarios ni archivos sin licencia en GitHub.

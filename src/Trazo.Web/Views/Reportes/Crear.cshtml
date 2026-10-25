@@ -1,0 +1,20 @@
+@model ReporteEntrada
+@{ var revision = ViewData["Revision"] is true; ViewData["Title"] = revision ? "Solicitar revisión" : "Reportar publicación"; }
+<section class="reading-page">
+    <a asp-controller="Explorar" asp-action="Detalle" asp-route-id="@ViewData["PublicacionId"]" class="quiet-link">← Volver a la publicación</a>
+    <div class="page-heading"><span class="eyebrow">CUIDAR LA COMUNIDAD</span><h1>@ViewData["Title"]<span class="accent">.</span></h1><p>@ViewData["TituloObra"]</p></div>
+    <p>La solicitud se envía al equipo de moderación. Describí lo ocurrido sin incluir datos personales innecesarios. La identidad del denunciante no se muestra al autor.</p>
+    @if (revision) { <p class="notice">Explicá qué corregiste o por qué pedís revisar la decisión. La publicación continúa oculta hasta que se resuelva.</p> }
+    <form method="post" asp-action="Crear" asp-route-id="@ViewData["PublicacionId"]" class="report-form">
+        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+        @if (revision) { <input type="hidden" asp-for="Motivo" /> }
+        else {
+            <label asp-for="Motivo"></label><select asp-for="Motivo" class="form-select" required><option value="">Elegí un motivo</option>
+                @foreach (var motivo in Trazo.Web.Services.ReportesService.Motivos) { <option value="@motivo">@motivo</option> }
+            </select>
+        }
+        <label asp-for="Detalle"></label><textarea asp-for="Detalle" class="form-control" rows="6" minlength="10" maxlength="2000" required></textarea>
+        <p class="muted">Entre 10 y 2000 caracteres. Solo se conserva una solicitud pendiente tuya por publicación.</p>
+        <button type="submit" class="btn btn-lime">Enviar solicitud</button>
+    </form>
+</section>

@@ -1,0 +1,11 @@
+@model ReporteDetalle
+@{ ViewData["Title"] = "Mi solicitud"; }
+<section class="reading-page">
+    <a asp-action="Index" class="quiet-link">← Mis reportes</a>
+    <div class="page-heading"><span class="eyebrow">SOLICITUD #@Model.Id · @Model.Estado</span><h1>@Model.Motivo<span class="accent">.</span></h1><p>@Model.CreadoUtc.ToString("dd/MM/yyyy HH:mm") UTC</p></div>
+    <h2>Tu descripción</h2><p class="publication-text">@Model.Detalle</p>
+    @if (Model.Titulo is not null) { <a asp-controller="Explorar" asp-action="Detalle" asp-route-id="@Model.PublicacionId">Ver publicación: @Model.Titulo ↗</a> }
+    else { <p class="muted">El contenido ya no está disponible para tu cuenta. Podés seguir consultando esta solicitud.</p> }
+    @if (Model.Resolucion is not null) { <div class="notice mt-4"><h2>Resolución</h2><p class="publication-text">@Model.Resolucion</p><span>@Model.ResueltoUtc?.ToString("dd/MM/yyyy HH:mm") UTC</span></div> }
+    else { <p class="notice mt-4">Pendiente de revisión. Enviar una denuncia no oculta automáticamente la publicación.</p> }
+</section>

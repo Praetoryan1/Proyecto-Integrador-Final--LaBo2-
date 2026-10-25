@@ -8,6 +8,12 @@
     @if (Model.Propia) {
         <p class="notice">Tu publicación · Visibilidad: @Model.Visibilidad · Estado: @Model.Estado</p>
         <a asp-controller="Publicaciones" asp-action="Index" asp-route-editar="@Model.Publicacion.Id" class="btn btn-outline-light mb-4">Editar publicación ↗</a>
+        @if (Model.Moderacion == EstadoModeracion.Oculta) {
+            <div class="notice"><strong>Oculta por moderación.</strong><p class="publication-text">@(Model.MotivoModeracion ?? "Consultá la revisión de esta publicación.")</p>
+                <p>Editar no vuelve a hacer visible la publicación. Para solicitar revisión, debe estar publicada y tanto la obra como el perfil deben permitir acceso público o a registrados.</p>
+                @if (Model.PuedeReportar) { <a asp-controller="Reportes" asp-action="Crear" asp-route-id="@Model.Publicacion.Id">Solicitar revisión ↗</a> }
+            </div>
+        }
     }
     @if (Model.PuedeGuardar || Model.Guardado) {
         <div class="social-controls">
@@ -54,5 +60,8 @@
     }
     </section>
     <div class="tags mt-4">@foreach (var tag in Model.Publicacion.Etiquetas) { <a asp-action="Index" asp-route-etiqueta="@tag">#@tag</a> }</div>
+    @if (!Model.Propia && Model.PuedeReportar) {
+        <a asp-controller="Reportes" asp-action="Crear" asp-route-id="@Model.Publicacion.Id" class="quiet-link d-inline-block mt-4">Reportar publicación</a>
+    }
 </article>
 @section Scripts { <script src="~/js/medios.js" asp-append-version="true"></script> }

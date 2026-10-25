@@ -1,0 +1,36 @@
+@model ReporteDetalle
+@{ ViewData["Title"] = "Revisar solicitud"; }
+<section class="reading-page">
+    <a asp-action="Index" class="quiet-link">← Moderación</a>
+    <div class="page-heading"><span class="eyebrow">SOLICITUD #@Model.Id · @Model.Estado</span><h1>Revisar solicitud<span class="accent">.</span></h1><p>@Model.Motivo · @Model.CreadoUtc.ToString("dd/MM/yyyy HH:mm") UTC</p></div>
+    <h2>Descripción recibida</h2><p class="publication-text">@Model.Detalle</p>
+    @if (Model.Titulo is not null) {
+        <section class="report-preview"><span class="eyebrow">CONTENIDO ACTUAL · @Model.Moderacion</span><h2>@Model.Titulo</h2><p class="publication-text">@Model.Texto</p>
+        @foreach (var recurso in Model.Recursos) {
+            var archivo = Url.Action("Medio", new { id = Model.Id, recursoId = recurso.Id, vista = "archivo" });
+            var preview = Url.Action("Medio", new { id = Model.Id, recursoId = recurso.Id, vista = "vista-previa" });
+            <figure class="media-figure">
+            @if (recurso.Tipo == TipoRecurso.Imagen) { <img src="@archivo" alt="@recurso.TextoAlternativo" loading="lazy" /> }
+            else if (recurso.Tipo == TipoRecurso.Video) { <video controls preload="none" poster="@preview" aria-label="@recurso.TextoAlternativo"><source src="@archivo" type="video/mp4" /></video> }
+            else if (recurso.Tipo == TipoRecurso.Gif) { <img src="@preview" alt="@recurso.TextoAlternativo" loading="lazy" /><a href="@archivo" target="_blank" rel="noopener noreferrer">Abrir GIF ↗</a> }
+            else { <a href="https://www.youtube.com/watch?v=@recurso.YouTubeId" target="_blank" rel="noopener noreferrer">Abrir video en YouTube ↗</a> }
+                <figcaption>@recurso.TextoAlternativo · @recurso.Creditos</figcaption>
+            </figure>
+        }
+        </section>
+    } else { <p class="notice">El contenido no está disponible para moderación: puede ser privado, estar archivado, ser borrador o pertenecer a una cuenta suspendida. No se muestran su título, texto ni archivos. Solo se puede desestimar esta solicitud.</p> }
+    @if (Model.Estado == EstadoReporte.Pendiente) {
+        <form method="post" asp-action="Resolver" asp-route-id="@Model.Id" class="report-form">
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+            <input type="hidden" name="Version" value="@Model.Version" />
+            <label for="decision">Decisión</label><select id="decision" name="Decision" class="form-select">
+                <option value="0">Desestimar sin cambiar la publicación</option>
+                @if (Model.Moderacion == EstadoModeracion.Visible && Model.Motivo != Trazo.Web.Services.ReportesService.Revision) { <option value="1">Ocultar publicación</option> }
+                @if (Model.Moderacion == EstadoModeracion.Oculta && Model.Motivo == Trazo.Web.Services.ReportesService.Revision) { <option value="2">Restaurar visibilidad</option> }
+            </select>
+            <label for="resolucion">Resolución</label><textarea id="resolucion" name="Resolucion" rows="5" minlength="10" maxlength="2000" required class="form-control">@ViewData["ResolucionIngresada"]</textarea>
+            <p class="muted">La explicación se comparte con quien presentó la solicitud y, si se oculta la obra, con su autor. No incluyas la identidad del denunciante ni otros datos personales.</p>
+            <button class="btn btn-lime" type="submit">Registrar resolución</button>
+        </form>
+    } else { <div class="notice mt-4"><h2>Resolución registrada</h2><p class="publication-text">@Model.Resolucion</p><span>@Model.ResueltoUtc?.ToString("dd/MM/yyyy HH:mm") UTC</span></div> }
+</section>

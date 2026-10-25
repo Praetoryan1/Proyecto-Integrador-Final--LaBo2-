@@ -1,0 +1,80 @@
+{
+  "fechaUtc": "2026-10-25T06:10:26.260Z",
+  "publicacionDemo": 32,
+  "reporte": 1,
+  "revision": 2,
+  "archivada": true,
+  "erroresJavaScript": [],
+  "peticiones": [
+    {
+      "metodo": "GET",
+      "ruta": "/publicaciones/32/reportar",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/publicaciones/32/reportar",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mis-reportes/1",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/reportes",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/reportes",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/reportes/1",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/administracion/reportes/1/resolver",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/reportes/1",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/publicaciones/32/reportar",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/publicaciones/32/reportar",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/mis-reportes/2",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/reportes/2",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/administracion/reportes/2/resolver",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/reportes/2",
+      "estado": 200
+    }
+  ]
+}
