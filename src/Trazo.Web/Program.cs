@@ -67,6 +67,7 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 builder.Services.AddScoped<EtiquetasConsulta>();
 builder.Services.AddScoped<ComunidadService>();
 builder.Services.AddScoped<ReportesService>();
+builder.Services.AddScoped<CuentasAdminService>();
 builder.Services.AddScoped<AvatarService>();
 builder.Services.AddScoped<PublicacionesService>();
 builder.Services.AddScoped<RecursosService>();

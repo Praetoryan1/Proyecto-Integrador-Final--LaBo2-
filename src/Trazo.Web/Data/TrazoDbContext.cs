@@ -16,6 +16,7 @@ public class TrazoDbContext(DbContextOptions<TrazoDbContext> options) : Identity
     public DbSet<Favorito> Favoritos => Set<Favorito>();
     public DbSet<Seguimiento> Seguimientos => Set<Seguimiento>();
     public DbSet<Reporte> Reportes => Set<Reporte>();
+    public DbSet<CambioEstadoCuenta> CambiosEstadoCuenta => Set<CambioEstadoCuenta>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -30,6 +31,14 @@ public class TrazoDbContext(DbContextOptions<TrazoDbContext> options) : Identity
         b.Entity<Usuario>().Property(x => x.Id).HasMaxLength(191);
         b.Entity<IdentityRole>().Property(x => x.Id).HasMaxLength(191);
         b.Entity<Usuario>().HasIndex(x => x.NormalizedEmail).IsUnique();
+        b.Entity<CambioEstadoCuenta>(e =>
+        {
+            e.HasOne(x => x.Usuario).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.Administrador).WithMany().HasForeignKey(x => x.AdministradorId).OnDelete(DeleteBehavior.Restrict);
+            e.Property(x => x.Motivo).HasMaxLength(1000);
+            e.HasIndex(x => new { x.UsuarioId, x.CreadoUtc, x.Id });
+            e.ToTable(t => t.HasCheckConstraint("CK_CambioEstadoCuenta_Transicion", "`EstadoAnterior` IN (0, 1) AND `EstadoNuevo` IN (0, 1) AND `EstadoAnterior` <> `EstadoNuevo` AND `UsuarioId` <> `AdministradorId`"));
+        });
 
         b.Entity<Perfil>(e =>
         {

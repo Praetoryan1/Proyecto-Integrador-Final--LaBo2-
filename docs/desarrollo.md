@@ -1,6 +1,6 @@
 # Desarrollo local: VS Code, MySQL y GitHub
 
-Guía actualizada al incremento 06, 25/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
+Guía actualizada al incremento 07, 25/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
 
 ## 1. Abrir el proyecto
 
@@ -90,7 +90,7 @@ Vite genera `src/Trazo.Web/wwwroot/js/publicaciones/editor.js`. No editar ese ar
 
 Durante el desarrollo, `npm run watch` recompila al guardar; mantenerlo en otra terminal y recargar el navegador después de cambiar el código. Esto es independiente del funcionamiento AJAX del editor, que no recarga al operar publicaciones. Los estilos específicos están en `wwwroot/css/publicaciones.css`.
 
-No cambió el modelo de datos en los incrementos 02 a 06: no crear otra base ni una nueva migración para usarlo.
+Los incrementos 02 a 06 no cambiaron el esquema. El incremento 07 agrega el historial de estados de cuentas. Para actualizar una instalación existente, detener la web y ejecutar `dotnet run --project src/Trazo.Web --launch-profile https -- --initialize`; luego iniciarla normalmente. Aplica las migraciones incluidas sin recrear la base ni sembrar datos demo. No ejecutar los SQL manualmente además de las migraciones.
 
 ## 5. Probar cambios
 
@@ -101,7 +101,7 @@ No cambió el modelo de datos en los incrementos 02 a 06: no crear otra base ni 
 
 El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
 
-Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 39 omitidas; con `-Integracion`, 66 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 44 omitidas; con `-Integracion`, 71 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
 
 ### Recorrido de navegador y evidencia
 
@@ -134,7 +134,7 @@ dotnet ef migrations add NombreDelCambio --project src/Trazo.Web
 dotnet run --project src/Trazo.Web --launch-profile https -- --initialize
 ```
 
-No hace falta crear otra migración para instalar el proyecto: la primera ya está incluida. Actualizar el DER y la documentación junto con los cambios de relaciones.
+No hace falta crear otra migración para instalar el proyecto: ambas están incluidas. Actualizar el DER y la documentación junto con los cambios de relaciones.
 
 ## 7. Detener y volver a trabajar
 
@@ -157,7 +157,7 @@ Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.e
 ```powershell
 git add .
 git diff --cached --stat
-git commit -m "feat: reportes y moderacion con revision del autor"
+git commit -m "feat: suspension de cuentas con historial y revocacion de sesiones"
 git push
 ```
 
@@ -167,7 +167,7 @@ El acceso a GitHub se completa mediante su autenticación habitual, nunca guarda
 
 Para repetir la evidencia multimedia, con FFmpeg portable preparado y la web encendida, ejecutar `node tools/Probar-Medios.mjs`. Crea y elimina una publicación temporal propia y guarda capturas/video/red en `docs/evidencias/incremento-03/`. El iframe de YouTube se simula para comprobar la carga voluntaria sin contactar al proveedor.
 
-Para la API, ejecutar una vez `./tools/Preparar-Api.ps1` y reiniciar Trazo. La clave queda en User Secrets. Importar `docs/api/Trazo.postman_collection.json` en Postman y ejecutar el Runner completo según [la guía de API](api.md); el recorrido final revoca las sesiones demo de Ana. La web continúa usando cookies, y no requiere una nueva base ni migración.
+Para la API, ejecutar una vez `./tools/Preparar-Api.ps1` y reiniciar Trazo. La clave queda en User Secrets. Importar `docs/api/Trazo.postman_collection.json` en Postman y ejecutar el Runner completo según [la guía de API](api.md); el recorrido final revoca las sesiones demo de Ana. La web continúa usando cookies. La API no necesita tablas adicionales; aplicar las migraciones generales del proyecto como se indicó arriba.
 
 Favoritos y seguidos se administran desde Mi estudio. No requieren migraciones ni herramientas adicionales. Para repetir el recorrido local de este módulo: `node tools/Probar-Comunidad.mjs`. Ver [reglas, pantallas y pruebas](incremento-05.md).
 

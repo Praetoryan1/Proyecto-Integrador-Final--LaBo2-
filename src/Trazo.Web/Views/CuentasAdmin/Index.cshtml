@@ -1,0 +1,19 @@
+@model CuentasAdminLista
+@{ ViewData["Title"] = "Administrar cuentas"; }
+<section class="page-heading"><span class="eyebrow">ADMINISTRACIÓN</span><h1>Cuentas<span class="accent">.</span></h1><p>Revisá el estado de acceso y registrá cada decisión.</p></section>
+<form method="get" class="report-filters">
+    <div><label for="q">Buscar por nombre de usuario</label><input id="q" name="q" value="@Model.Q" maxlength="100" class="form-control" /></div>
+    <div><label for="estado">Estado</label><select id="estado" name="estado" class="form-select"><option value="">Todos</option>
+        @foreach (var estado in Enum.GetValues<EstadoCuenta>()) { <option value="@((int)estado)" selected="@(Model.Estado == estado)">@estado</option> }
+    </select></div><button class="btn btn-outline-light">Buscar</button>
+</form>
+<div class="report-list">
+@foreach (var cuenta in Model.Resultados.Items) {
+    <article class="account-card report-card"><span class="eyebrow">@cuenta.Estado @(cuenta.Administradora ? "· ADMINISTRADORA PROTEGIDA" : "")</span>
+        <h2><a asp-action="Detalle" asp-route-id="@cuenta.Id">@@@cuenta.Usuario</a></h2><p>Alta: @cuenta.FechaAlta.ToString("dd/MM/yyyy") UTC</p>
+    </article>
+}
+</div>
+@if (Model.Resultados.Total == 0) { <p class="notice">No hay cuentas para estos filtros.</p> }
+<partial name="_Pagination" model="@((Model.Resultados.Numero, Model.Resultados.Paginas, Model.Resultados.Total))" />
+<a asp-controller="Panel" asp-action="Index">← Mi estudio</a>

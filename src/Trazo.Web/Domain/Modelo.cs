@@ -27,6 +27,20 @@ public class Usuario : IdentityUser
     public Perfil Perfil { get; set; } = null!;
 }
 
+// Historial administrativo: solo se agregan decisiones; no se sobrescribe el motivo anterior.
+public class CambioEstadoCuenta
+{
+    public long Id { get; set; }
+    public string UsuarioId { get; set; } = "";
+    public Usuario Usuario { get; set; } = null!;
+    public string AdministradorId { get; set; } = "";
+    public Usuario Administrador { get; set; } = null!;
+    public EstadoCuenta EstadoAnterior { get; set; }
+    public EstadoCuenta EstadoNuevo { get; set; }
+    public string Motivo { get; set; } = "";
+    public DateTime CreadoUtc { get; set; } = DateTime.UtcNow;
+}
+
 public class Perfil
 {
     public string UsuarioId { get; set; } = "";

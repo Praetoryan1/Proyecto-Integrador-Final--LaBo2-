@@ -12,6 +12,8 @@ erDiagram
     Publicacion ||--o{ Reporte : recibe
     Usuario ||--o{ Reporte : denuncia
     Usuario |o--o{ Reporte : resuelve
+    Usuario ||--o{ CambioEstadoCuenta : cuenta_afectada
+    Usuario ||--o{ CambioEstadoCuenta : administrador_decide
     Usuario ||--o{ UsuarioRol : posee
     Rol ||--o{ UsuarioRol : asigna
 
@@ -23,6 +25,8 @@ erDiagram
         boolean EmailConfirmado
         enum Estado
         datetime FechaAlta
+        string SecurityStamp
+        string ConcurrencyStamp
     }
     Perfil {
         string UsuarioId PK,FK
@@ -108,6 +112,15 @@ erDiagram
     Rol {
         string Id PK
         string NombreNormalizado UK
+    }
+    CambioEstadoCuenta {
+        bigint Id PK
+        string UsuarioId FK
+        string AdministradorId FK
+        enum EstadoAnterior
+        enum EstadoNuevo
+        string Motivo
+        datetime CreadoUtc
     }
     UsuarioRol {
         string UsuarioId PK,FK

@@ -257,7 +257,7 @@ for im,title in zip(imgs,['TRAZO · DER 1/2 · Portafolios y publicaciones','TRA
     draw.text((40,y+15),title,font=heading,fill='#172639')
     y+=70
     full.paste(im,(0,y));y+=im.height
-full.save(DOCS/'der.png')
+full.save(DOCS/'der-preliminar.png')  # El DER actual se compone con tools/Generar-Der.mjs.
 
 subprocess.run([pdftoppm,'-png','-r','105',str(pdf),str(TMP/'entrega')],check=True)
 pages=[TMP/f'entrega-{i}.png' for i in range(1,len(PdfReader(pdf).pages)+1)]

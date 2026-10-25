@@ -148,6 +148,46 @@ namespace Trazo.Web.Data.Migrations
                     b.ToTable("UsuarioTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Trazo.Web.Domain.CambioEstadoCuenta", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AdministradorId")
+                        .IsRequired()
+                        .HasColumnType("varchar(191)");
+
+                    b.Property<DateTime>("CreadoUtc")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("EstadoAnterior")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EstadoNuevo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Motivo")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("varchar(191)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdministradorId");
+
+                    b.HasIndex("UsuarioId", "CreadoUtc", "Id");
+
+                    b.ToTable("CambiosEstadoCuenta", t =>
+                        {
+                            t.HasCheckConstraint("CK_CambioEstadoCuenta_Transicion", "`EstadoAnterior` IN (0, 1) AND `EstadoNuevo` IN (0, 1) AND `EstadoAnterior` <> `EstadoNuevo` AND `UsuarioId` <> `AdministradorId`");
+                        });
+                });
+
             modelBuilder.Entity("Trazo.Web.Domain.EnlacePerfil", b =>
                 {
                     b.Property<long>("Id")
@@ -596,6 +636,25 @@ namespace Trazo.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Trazo.Web.Domain.CambioEstadoCuenta", b =>
+                {
+                    b.HasOne("Trazo.Web.Domain.Usuario", "Administrador")
+                        .WithMany()
+                        .HasForeignKey("AdministradorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Trazo.Web.Domain.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Administrador");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Trazo.Web.Domain.EnlacePerfil", b =>

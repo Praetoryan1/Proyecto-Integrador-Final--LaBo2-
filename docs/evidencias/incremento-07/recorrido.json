@@ -1,0 +1,54 @@
+{
+  "fechaUtc": "2026-10-25T19:21:50.877Z",
+  "completado": true,
+  "cuentaDemo": "bruno",
+  "permaneceSuspendida": false,
+  "erroresJavaScript": [],
+  "peticiones": [
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas/3d11db1f-15f7-441e-a47a-b3d7e2390c23",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/administracion/cuentas/3d11db1f-15f7-441e-a47a-b3d7e2390c23/estado",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas/3d11db1f-15f7-441e-a47a-b3d7e2390c23",
+      "estado": 200
+    },
+    {
+      "metodo": "POST",
+      "ruta": "/administracion/cuentas/3d11db1f-15f7-441e-a47a-b3d7e2390c23/estado",
+      "estado": 302
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas/3d11db1f-15f7-441e-a47a-b3d7e2390c23",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas",
+      "estado": 200
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/administracion/cuentas/f3bd05cf-56db-4f3e-8419-f0ce0fbf944f",
+      "estado": 200
+    }
+  ]
+}

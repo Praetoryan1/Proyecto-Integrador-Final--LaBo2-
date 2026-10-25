@@ -1,0 +1,33 @@
+@model CuentaAdminDetalle
+@{ ViewData["Title"] = "Estado de cuenta"; }
+<section class="reading-page">
+    <a asp-action="Index" class="quiet-link">← Administrar cuentas</a>
+    <div class="page-heading"><span class="eyebrow">ESTADO: @Model.Cuenta.Estado</span><h1>@@@Model.Cuenta.Usuario<span class="accent">.</span></h1><p>Alta: @Model.Cuenta.FechaAlta.ToString("dd/MM/yyyy HH:mm") UTC</p></div>
+    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+    @if (Model.Protegida) { <p class="notice">La cuenta propia y las cuentas administradoras están protegidas. No se pueden suspender ni reactivar desde este panel.</p> }
+    else if (ViewData["Recargar"] is true) {
+        <p class="notice">Conservá el motivo y volvé a revisar el estado actual antes de confirmar.</p>
+        <p class="publication-text">@ViewData["MotivoIngresado"]</p><a asp-action="Detalle" asp-route-id="@Model.Cuenta.Id" class="btn btn-lime">Volver a revisar</a>
+    }
+    else {
+        var suspender = Model.Cuenta.Estado == EstadoCuenta.Activa;
+        <p class="notice">@(suspender ? "Suspender impide nuevos accesos y oculta el perfil, sus publicaciones y archivos. Se revocan las sesiones existentes; no se eliminan los datos." : "Reactivar permite iniciar sesión otra vez. El contenido reaparece según su privacidad y moderación; las sesiones anteriores siguen revocadas.")</p>
+        <form method="post" asp-action="CambiarEstado" asp-route-id="@Model.Cuenta.Id" class="report-form">
+            <input type="hidden" name="Version" value="@Model.Version" />
+            <input type="hidden" name="EstadoNuevo" value="@(suspender ? 1 : 0)" />
+            <label for="motivo">Motivo de la decisión</label><textarea id="motivo" name="Motivo" rows="5" minlength="10" maxlength="1000" class="form-control" required>@ViewData["MotivoIngresado"]</textarea>
+            <p class="muted">De 10 a 1000 caracteres. Queda en el historial administrativo. Evitá datos personales innecesarios.</p>
+            <button class="btn btn-lime" type="submit">@(suspender ? "Confirmar suspensión" : "Confirmar reactivación")</button>
+        </form>
+    }
+    <h2 class="mt-5">Historial de decisiones</h2>
+    <div class="report-list">
+    @foreach (var cambio in Model.Historial.Items) {
+        <article class="account-history report-card"><span class="eyebrow">@cambio.Anterior → @cambio.Nuevo</span>
+            <p class="mt-3">Por @@@cambio.Administrador · @cambio.Fecha.ToString("dd/MM/yyyy HH:mm") UTC</p><p class="publication-text">@cambio.Motivo</p>
+        </article>
+    }
+    </div>
+    @if (Model.Historial.Total == 0) { <p class="muted">Todavía no se registraron cambios de estado.</p> }
+    <partial name="_Pagination" model="@((Model.Historial.Numero, Model.Historial.Paginas, Model.Historial.Total))" />
+</section>

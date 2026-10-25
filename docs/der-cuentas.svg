@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="490" viewBox="0 0 1100 490">
+  <rect width="1100" height="490" fill="#ffffff"/>
+  <g font-family="Arial, sans-serif" fill="#172639">
+    <text x="30" y="40" font-size="25" font-weight="bold">Cuentas · historial administrativo (incremento 07)</text>
+    <text x="30" y="70" font-size="16">Extensión del DER: la entidad Usuario es la misma de las vistas anteriores.</text>
+    <g stroke="#215987" stroke-width="2" fill="none">
+      <path d="M340 180 H620"/>
+      <path d="M340 295 H470 V330 H620"/>
+    </g>
+    <text x="360" y="167" font-size="17">1</text><text x="565" y="167" font-size="17">0..N</text>
+    <text x="390" y="210" font-size="16">cuenta afectada</text>
+    <text x="360" y="281" font-size="17">1</text><text x="565" y="318" font-size="17">0..N</text>
+    <text x="370" y="364" font-size="16">administrador que decide</text>
+    <rect x="30" y="115" width="310" height="245" rx="8" fill="#f7f9fc" stroke="#c8d2df"/>
+    <rect x="30" y="115" width="310" height="42" rx="8" fill="#215987"/>
+    <text x="47" y="143" font-size="21" fill="white" font-weight="bold">Usuario</text>
+    <g font-size="17"><text x="47" y="190">PK Id</text><text x="47" y="222">NombreUsuarioNormalizado</text><text x="47" y="254">Estado · FechaAlta</text><text x="47" y="286">SecurityStamp (Identity)</text><text x="47" y="318">ConcurrencyStamp (Identity)</text></g>
+    <rect x="620" y="115" width="450" height="280" rx="8" fill="#f7f9fc" stroke="#c8d2df"/>
+    <rect x="620" y="115" width="450" height="42" rx="8" fill="#246b58"/>
+    <text x="637" y="143" font-size="21" fill="white" font-weight="bold">CambioEstadoCuenta</text>
+    <g font-size="17"><text x="637" y="190">PK Id</text><text x="637" y="220">FK UsuarioId → Usuario.Id</text><text x="637" y="250">FK AdministradorId → Usuario.Id</text><text x="637" y="280">EstadoAnterior · EstadoNuevo</text><text x="637" y="310">Motivo (máximo 1000 caracteres)</text><text x="637" y="340">CreadoUtc</text><text x="637" y="376">Índice: UsuarioId + CreadoUtc + Id</text></g>
+    <text x="30" y="432" font-size="16">FK con borrado restringido. CHECK: estados válidos y distintos; actor distinto de la cuenta afectada.</text>
+    <text x="30" y="461" font-size="16">El backend exige rol Administrador, protege cuentas administradoras y registra cada transición.</text>
+  </g>
+</svg>

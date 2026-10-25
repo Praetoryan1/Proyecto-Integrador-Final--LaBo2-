@@ -6,6 +6,7 @@
 <a asp-controller="Reportes" asp-action="Index" class="btn btn-outline-light mb-4">Mis reportes ↗</a>
 @if (User.IsInRole(Roles.Administrador)) {
     <a asp-controller="Moderacion" asp-action="Index" class="btn btn-outline-light mb-4">Moderar reportes ↗</a>
+    <a asp-controller="CuentasAdmin" asp-action="Index" class="btn btn-outline-light mb-4">Administrar cuentas ↗</a>
 }
 <div class="social-controls"><a asp-controller="Comunidad" asp-action="Favoritos" class="btn btn-outline-light">Mis favoritos ↗</a><a asp-controller="Comunidad" asp-action="Seguidos" class="btn btn-outline-light">Creadores que sigo ↗</a><span class="field-help">Los contadores incluyen solo contenido disponible para vos.</span></div>
 <div class="action-grid"><a asp-controller="Perfil" asp-action="Editar" class="action-card"><span class="eyebrow">01 / IDENTIDAD</span><h2>Editá tu perfil ↗</h2><p>Avatar, presentación, contacto y apariencia.</p></a><a asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@Model.Usuario" class="action-card"><span class="eyebrow">02 / PORTAFOLIO</span><h2>Visitá tu espacio ↗</h2><p>Recorré tu perfil y las publicaciones que podés ver.</p></a></div>
