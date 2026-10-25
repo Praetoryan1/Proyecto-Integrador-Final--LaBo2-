@@ -5,6 +5,7 @@ Inventario inicial para el primer incremento. Las versiones NuGet exactas y tran
 | Componente | Uso | Información de licencia |
 | --- | --- | --- |
 | ASP.NET Core / Identity / EF Core | MVC, sesión, cuentas y persistencia | MIT, según los paquetes y repositorios de Microsoft |
+| Microsoft.AspNetCore.Authentication.JwtBearer 10.0.13 / Microsoft.IdentityModel 8.19.2 | Validación y emisión académica de JWT; versiones transitivas en packages.lock.json | MIT según los manifiestos de los paquetes de Microsoft |
 | MySql.EntityFrameworkCore 10.0.9 | Proveedor EF para MySQL | El manifiesto NuGet declara `GPL-2.0-only WITH Universal-FOSS-exception-1.0`; incluye dependencia de MySql.Data |
 | SkiaSharp 4.153.1 y recursos nativos | Decodificación y conversión de avatar e imágenes de publicaciones | MIT para el wrapper; conservar y revisar avisos de componentes nativos al distribuir |
 | FFmpeg/ffprobe 9.0.2, build Essentials de Gyan para Windows | Inspección y normalización de GIF/MP4; invocado como proceso por C# | La descarga incluye LICENSE y su configuración; se conserva localmente en tools/ffmpeg. No se versionan ejecutables. Revisar condiciones de la compilación y códecs antes de distribuir |

@@ -3,8 +3,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
-using Trazo.Web.Data;
 using Trazo.Web.Domain;
 using Trazo.Web.Models;
 using Trazo.Web.Services;
@@ -21,7 +19,7 @@ public class PublicacionExceptionFilter : IExceptionFilter
     }
 }
 
-// API del panel del mismo origen: cookies + antiforgery. No sustituye la futura API JWT.
+// API del panel del mismo origen: cookies + antiforgery. JWT usa /api/v1/.
 [ApiController, Authorize(Roles = Roles.Creador), Route("/panel-json/publicaciones")]
 [TypeFilter(typeof(PublicacionExceptionFilter)), RequestSizeLimit(100_000)]
 public class PublicacionesJsonController(PublicacionesService service) : ControllerBase
@@ -56,14 +54,9 @@ public class PublicacionesJsonController(PublicacionesService service) : Control
 }
 
 [ApiController, Authorize(Roles = Roles.Creador), Route("/panel-json/etiquetas")]
-public class EtiquetasJsonController(TrazoDbContext db) : ControllerBase
+public class EtiquetasJsonController(EtiquetasConsulta service) : ControllerBase
 {
     [HttpGet]
     public Task<Pagina<EtiquetaEditor>> Buscar([FromQuery, StringLength(40)] string? q, int pagina = 1, CancellationToken ct = default)
-    {
-        var query = db.Etiquetas.AsNoTracking().Where(e => e.Activa);
-        if (!string.IsNullOrWhiteSpace(q)) query = query.Where(e => e.Nombre.Contains(q.Trim()));
-        return query.OrderBy(e => e.Nombre).ThenBy(e => e.Id).Select(e => new EtiquetaEditor(e.Id, e.Nombre, e.Activa))
-            .PaginarAsync(pagina, tamano: 10, ct: ct);
-    }
+        => service.BuscarAsync(q, pagina, ct);
 }

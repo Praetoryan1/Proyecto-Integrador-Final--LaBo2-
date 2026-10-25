@@ -16,6 +16,7 @@ En una terminal PowerShell de VS Code, abierta en la raíz del repositorio:
 ```powershell
 ./tools/Preparar-Entorno.ps1
 ./tools/Preparar-Medios.ps1
+./tools/Preparar-Api.ps1
 dotnet dev-certs https --trust
 dotnet run --project src/Trazo.Web --launch-profile https -- --seed-demo
 dotnet run --project src/Trazo.Web --launch-profile https
@@ -57,11 +58,13 @@ Un proyecto **ASP.NET Core MVC/Razor** con EF Core y MySQL; ASP.NET Core Identit
 | Vite / plugin Vue | 8.3.5 / 6.0.10, herramientas de compilación |
 | Playwright | 1.64.1, recorrido local de evidencia en Edge |
 | FFmpeg / ffprobe | 9.0.2 portable en Windows; procesamiento de GIF/MP4, fuera de Git |
-| Web API con JWT / colección Postman | Próximos incrementos, aún no implementados |
+| Web API con JWT | Microsoft.AspNetCore.Authentication.JwtBearer 10.0.13; API de evaluación local |
 
 Las dependencias NuGet están fijadas en los proyectos y en `packages.lock.json`. Docker sigue los parches de la rama 8.4. No se utilizan ADO.NET directo, SignalR ni un frontend separado: no son necesarios para esta fase.
 
 Las dependencias del editor están fijadas en `package-lock.json`. Los endpoints `/panel-json/` usan **cookies y antiforgery**, y devuelven JSON; no equivalen al requisito de API autenticada con JWT. Vue se compila antes de servirlo, conservando la CSP sin `unsafe-eval` ni scripts inline.
+
+La API **`/api/v1/` usa JWT Bearer** y comparte las reglas de publicaciones con MVC. Incluye CRUD propio, paginación, consulta de etiquetas y revocación de sesiones. Importar la [colección Postman](docs/api/Trazo.postman_collection.json) y seguir la [guía de API](docs/api.md). El emisor es exclusivamente local para evaluación; la API está deshabilitada en Production/Staging. No cambia el esquema de MySQL.
 
 ```text
 src/Trazo.Web/          Aplicación MVC
@@ -88,7 +91,7 @@ tools/                Preparación del entorno y ejecución de pruebas
 | 4. ABM completo Vue + AJAX/JSON | Implementado para texto y recursos multimedia | [Componente Vue](src/Trazo.Web/ClientApp/publicaciones/PublicacionesApp.vue), [editor de recursos](src/Trazo.Web/ClientApp/publicaciones/RecursosEditor.vue), [controladores JSON](src/Trazo.Web/Controllers/PublicacionesJsonController.cs), [servicio](src/Trazo.Web/Services/PublicacionesService.cs) | [Video del ABM](docs/evidencias/incremento-02/editor-abm.webm), [medios sin recargas](docs/evidencias/incremento-03/red.json), [pruebas](tests/Trazo.Tests/PublicacionesIntegrationTests.cs) |
 | 5. Paginado desde el servidor | Implementado en los listados actuales; debe mantenerse en los próximos | [Pagina](src/Trazo.Web/Models/Pagina.cs), [Explorar](src/Trazo.Web/Controllers/ExplorarController.cs), [Perfil](src/Trazo.Web/Controllers/PerfilController.cs), [servicio del panel](src/Trazo.Web/Services/PublicacionesService.cs) | [Respuesta de página 2](docs/evidencias/incremento-02/paginacion.json), [captura](docs/evidencias/incremento-02/paginacion.png), [peticiones](docs/evidencias/incremento-02/red.json); pruebas de páginas de 12 registros y selector de 10 |
 | 6. Búsqueda asíncrona de relacionados | Implementada y probada: etiquetas de publicaciones | [Selector Vue](src/Trazo.Web/ClientApp/publicaciones/SelectorEtiquetas.vue), [búsqueda JSON](src/Trazo.Web/Controllers/PublicacionesJsonController.cs) | [Captura](docs/evidencias/incremento-02/selector-etiquetas.png), [video](docs/evidencias/incremento-02/editor-abm.webm); relaciones N:M persistidas y comprobadas |
-| 7. Web API REST con JWT | Pendiente | La sesión MVC actual usa cookies | Endpoints JWT y colección Postman pendientes |
+| 7. Web API REST con JWT | Implementado y probado localmente | [CRUD REST](src/Trazo.Web/Controllers/Api/PublicacionesApiController.cs), [autenticación](src/Trazo.Web/Controllers/Api/AuthApiController.cs), [validación JWT](src/Trazo.Web/Services/JwtLocal.cs) | [Colección Postman](docs/api/Trazo.postman_collection.json), [19 solicitudes y 31 aserciones](docs/evidencias/incremento-04/postman-resultados.json), [pruebas de autenticación y permisos](tests/Trazo.Tests/ApiIntegrationTests.cs) |
 
 ## Pruebas
 

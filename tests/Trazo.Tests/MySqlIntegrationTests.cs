@@ -29,12 +29,13 @@ public class MySqlApp : WebApplicationFactory<Program>, IAsyncLifetime
 {
     public string AvatarRoot { get; } = Path.Combine(Path.GetTempPath(), "trazo-tests", Guid.NewGuid().ToString("N"));
     public string MediaRoot => Path.Combine(AvatarRoot, "medios");
+    public string JwtKey { get; } = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32));
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
         var connection = Environment.GetEnvironmentVariable("TRAZO_TEST_CONNECTION")!;
         builder.ConfigureAppConfiguration((_, c) => c.AddInMemoryCollection(new Dictionary<string, string?>
-        { ["ConnectionStrings:Trazo"] = connection, ["Storage:Root"] = AvatarRoot, ["Media:Root"] = MediaRoot }));
+        { ["ConnectionStrings:Trazo"] = connection, ["Storage:Root"] = AvatarRoot, ["Media:Root"] = MediaRoot, ["Jwt:SigningKey"] = JwtKey }));
     }
     public async Task InitializeAsync()
     {

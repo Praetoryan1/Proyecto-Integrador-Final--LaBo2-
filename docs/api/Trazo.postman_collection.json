@@ -1,0 +1,679 @@
+{
+  "info": {
+    "name": "Trazo · API JWT · Incremento 04",
+    "description": "Ejecutar completa con Collection Runner y datos demo locales. Crea y elimina UNA publicación temporal de Ana; al finalizar revoca TODAS las sesiones de Ana (cookies y JWT). Los tokens se guardan solo en variables temporales de la ejecución; no exportar resultados con cuerpos o credenciales. Requiere MySQL, semilla original (12 publicaciones de Ana), HTTPS local y Preparar-Api.ps1. API limitada a Development/Testing. Ver docs/api.md.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7280",
+      "type": "string"
+    },
+    {
+      "key": "demoPassword",
+      "value": "Trazo.Demo2026!",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 · Sin Bearer: acceso rechazado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+              "pm.test('Desafío Bearer', () => pm.expect(pm.response.headers.get('WWW-Authenticate')).to.include('Bearer'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones",
+        "auth": {
+          "type": "noauth"
+        }
+      }
+    },
+    {
+      "name": "02 · Contraseña incorrecta",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/auth/token",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"ana@trazo.test\",\n  \"password\": \"Incorrecta.Demo123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "03 · Emitir JWT de Ana",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.variables.set('marca', String(Date.now()));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo = pm.response.json();",
+              "pm.test('JWT y duración de 10 minutos', () => { pm.expect(respuestaTrazo.accessToken.split('.')).to.have.lengthOf(3); pm.expect(respuestaTrazo.tokenType).to.eql('Bearer'); pm.expect(respuestaTrazo.expiresIn).to.eql(600); });",
+              "pm.test('Sin cookie y sin caché', () => { pm.expect(pm.response.headers.has('Set-Cookie')).to.eql(false); pm.expect(pm.response.headers.get('Cache-Control')).to.include('no-store'); });",
+              "pm.variables.set('token', respuestaTrazo.accessToken);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/auth/token",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"ana@trazo.test\",\n  \"password\": \"{{demoPassword}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 · Buscar etiquetas relacionadas",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo=pm.response.json(); pm.test('Selector paginado', () => { pm.expect(respuestaTrazo.tamano).to.eql(10); pm.expect(respuestaTrazo.items.length).to.be.within(1,10); });",
+              "pm.variables.set('etiquetaId', respuestaTrazo.items[0].id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/etiquetas?q=Anima&pagina=1"
+      }
+    },
+    {
+      "name": "05 · Crear publicación propia",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "const respuestaTrazo=pm.response.json(); pm.variables.set('id', respuestaTrazo.id); pm.variables.set('version', respuestaTrazo.version);",
+              "pm.test('Location y relación persistida', () => { pm.expect(pm.response.headers.get('Location')).to.include('/api/v1/publicaciones/'+respuestaTrazo.id); pm.expect(respuestaTrazo.etiquetas).to.have.lengthOf(1); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Colección Postman · {{marca}}\",\n  \"texto\": \"Publicación temporal para comprobar la API JWT.\",\n  \"tipo\": 1,\n  \"estadoEditorial\": 0,\n  \"visibilidad\": 2,\n  \"etiquetaIds\": [\n    {{etiquetaId}}\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "06 · Leer publicación propia",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo=pm.response.json(); pm.test('Privada y sin campos sensibles', () => { pm.expect(respuestaTrazo.visibilidad).to.eql(2); pm.expect(respuestaTrazo).not.to.have.property('autorId'); pm.expect(respuestaTrazo).not.to.have.property('passwordHash'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}"
+      }
+    },
+    {
+      "name": "07 · Solicitar segunda página",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo=pm.response.json(); pm.test('Solo página actual', () => { pm.expect(respuestaTrazo.numero).to.eql(2); pm.expect(respuestaTrazo.tamano).to.eql(12); pm.expect(respuestaTrazo.items.length).to.be.at.most(12); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones?pagina=2"
+      }
+    },
+    {
+      "name": "08 · Editar con versión actual",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo=pm.response.json(); const old=pm.variables.get('version'); pm.test('Versión renovada', () => pm.expect(respuestaTrazo.version).not.to.eql(old)); pm.variables.set('versionAnterior',old); pm.variables.set('version',respuestaTrazo.version);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Colección Postman · {{marca}}\",\n  \"texto\": \"Texto actualizado desde Postman.\",\n  \"tipo\": 1,\n  \"estadoEditorial\": 0,\n  \"visibilidad\": 2,\n  \"etiquetaIds\": [\n    {{etiquetaId}}\n  ],\n  \"version\": \"{{version}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "09 · Rechazar edición desactualizada",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 409', () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Colección Postman · {{marca}}\",\n  \"texto\": \"Publicación temporal para comprobar la API JWT.\",\n  \"tipo\": 1,\n  \"estadoEditorial\": 0,\n  \"visibilidad\": 2,\n  \"etiquetaIds\": [\n    {{etiquetaId}}\n  ],\n  \"version\": \"{{versionAnterior}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10 · Rechazar obra sin recursos",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Colección Postman · {{marca}}\",\n  \"texto\": \"Publicación temporal para comprobar la API JWT.\",\n  \"tipo\": 0,\n  \"estadoEditorial\": 1,\n  \"visibilidad\": 2,\n  \"etiquetaIds\": [\n    {{etiquetaId}}\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11 · Emitir JWT de Bruno",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo = pm.response.json();",
+              "pm.test('JWT y duración de 10 minutos', () => { pm.expect(respuestaTrazo.accessToken.split('.')).to.have.lengthOf(3); pm.expect(respuestaTrazo.tokenType).to.eql('Bearer'); pm.expect(respuestaTrazo.expiresIn).to.eql(600); });",
+              "pm.test('Sin cookie y sin caché', () => { pm.expect(pm.response.headers.has('Set-Cookie')).to.eql(false); pm.expect(pm.response.headers.get('Cache-Control')).to.include('no-store'); });",
+              "pm.variables.set('tokenBruno', respuestaTrazo.accessToken);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/auth/token",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"bruno@trazo.test\",\n  \"password\": \"{{demoPassword}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "12 · Bruno no lee la publicación de Ana",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenBruno}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "13 · Emitir JWT de administrador",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const respuestaTrazo = pm.response.json();",
+              "pm.test('JWT y duración de 10 minutos', () => { pm.expect(respuestaTrazo.accessToken.split('.')).to.have.lengthOf(3); pm.expect(respuestaTrazo.tokenType).to.eql('Bearer'); pm.expect(respuestaTrazo.expiresIn).to.eql(600); });",
+              "pm.test('Sin cookie y sin caché', () => { pm.expect(pm.response.headers.has('Set-Cookie')).to.eql(false); pm.expect(pm.response.headers.get('Cache-Control')).to.include('no-store'); });",
+              "pm.variables.set('tokenAdmin', respuestaTrazo.accessToken);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/auth/token",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@trazo.test\",\n  \"password\": \"{{demoPassword}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "14 · Administrador tampoco lee la publicación ajena",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenAdmin}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "15 · JWT inválido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "token.invalido.prueba",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "16 · Eliminar publicación temporal",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"version\": \"{{version}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "17 · Comprobar la baja",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones/{{id}}"
+      }
+    },
+    {
+      "name": "18 · Revocar todas las sesiones de Ana",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/auth/revocar-sesiones"
+      }
+    },
+    {
+      "name": "19 · JWT revocado rechazado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+              "['token','tokenBruno','tokenAdmin','id','version','versionAnterior','marca','etiquetaId'].forEach(key=>pm.variables.unset(key));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/v1/publicaciones"
+      }
+    }
+  ]
+}

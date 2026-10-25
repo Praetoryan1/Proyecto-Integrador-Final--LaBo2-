@@ -1,6 +1,6 @@
 # Desarrollo local: VS Code, MySQL y GitHub
 
-Guía actualizada al incremento 03, 24/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
+Guía actualizada al incremento 04, 24/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
 
 ## 1. Abrir el proyecto
 
@@ -15,7 +15,7 @@ docker version
 git --version
 ```
 
-El SDK fijado es 10.0.400; `global.json` permite parches posteriores de esa banda. Los scripts requieren PowerShell 7.2 o superior. Docker Desktop debe mostrar el motor Linux funcionando. Vue ya está integrado; Postman se incorporará con la API JWT.
+El SDK fijado es 10.0.400; `global.json` permite parches posteriores de esa banda. Los scripts requieren PowerShell 7.2 o superior. Docker Desktop debe mostrar el motor Linux funcionando. Vue ya está integrado; La API JWT y la colección Postman ya están disponibles; ver docs/api.md.
 
 ## 2. Preparar la base de datos
 
@@ -90,7 +90,7 @@ Vite genera `src/Trazo.Web/wwwroot/js/publicaciones/editor.js`. No editar ese ar
 
 Durante el desarrollo, `npm run watch` recompila al guardar; mantenerlo en otra terminal y recargar el navegador después de cambiar el código. Esto es independiente del funcionamiento AJAX del editor, que no recarga al operar publicaciones. Los estilos específicos están en `wwwroot/css/publicaciones.css`.
 
-No cambió el modelo de datos en los incrementos 02 y 03: no crear otra base ni una nueva migración para usarlo.
+No cambió el modelo de datos en los incrementos 02, 03 y 04: no crear otra base ni una nueva migración para usarlo.
 
 ## 5. Probar cambios
 
@@ -101,7 +101,7 @@ No cambió el modelo de datos en los incrementos 02 y 03: no crear otra base ni 
 
 El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
 
-Resultados esperados de este incremento: sin `-Integracion`, 24 aprobadas y 21 omitidas; con `-Integracion`, 45 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 28 omitidas; con `-Integracion`, 55 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
 
 ### Recorrido de navegador y evidencia
 
@@ -157,12 +157,14 @@ Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.e
 ```powershell
 git add .
 git diff --cached --stat
-git commit -m "feat: obras multimedia con validacion y acceso autorizado"
+git commit -m "feat: API REST con JWT y coleccion Postman"
 git push
 ```
 
-El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: este incremento añade FFmpeg para las pruebas de medios; conserva compilación Vue, verificación del bundle y pruebas .NET/MySQL.
+El acceso a GitHub se completa mediante su autenticación habitual, nunca guardando un token en la URL. Después, revisar la pestaña Actions: la suite incorpora comprobaciones JWT con una clave efímera de pruebas; conserva compilación Vue, verificación del bundle y pruebas .NET/MySQL/FFmpeg.
 
 **Parada acordada:** confirmar el commit/push antes de comenzar el próximo incremento. No realizar todavía un despliegue público de la aplicación.
 
 Para repetir la evidencia multimedia, con FFmpeg portable preparado y la web encendida, ejecutar `node tools/Probar-Medios.mjs`. Crea y elimina una publicación temporal propia y guarda capturas/video/red en `docs/evidencias/incremento-03/`. El iframe de YouTube se simula para comprobar la carga voluntaria sin contactar al proveedor.
+
+Para la API, ejecutar una vez `./tools/Preparar-Api.ps1` y reiniciar Trazo. La clave queda en User Secrets. Importar `docs/api/Trazo.postman_collection.json` en Postman y ejecutar el Runner completo según [la guía de API](api.md); el recorrido final revoca las sesiones demo de Ana. La web continúa usando cookies, y no requiere una nueva base ni migración.

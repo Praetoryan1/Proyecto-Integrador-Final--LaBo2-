@@ -1,4 +1,5 @@
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +52,19 @@ builder.Services.AddAntiforgery(o =>
     o.HeaderName = "X-CSRF-TOKEN";
 });
 builder.Services.AddControllersWithViews(o => o.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+builder.Services.AddSingleton<JwtLocalSettings>();
+builder.Services.AddScoped<JwtLocalService>();
+// AddAuthentication sin default conserva las cookies Identity como esquema MVC.
+builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+    .Configure<JwtLocalSettings>((options, settings) =>
+    {
+        options.MapInboundClaims = false;
+        options.IncludeErrorDetails = false;
+        options.TokenValidationParameters = settings.Validacion();
+        options.Events = new JwtBearerEvents { OnTokenValidated = JwtLocalService.ValidarCuentaAsync };
+    });
+builder.Services.AddScoped<EtiquetasConsulta>();
 builder.Services.AddScoped<AvatarService>();
 builder.Services.AddScoped<PublicacionesService>();
 builder.Services.AddScoped<RecursosService>();
@@ -87,6 +101,17 @@ app.Use(async (context, next) =>
     context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
     context.Response.Headers.ContentSecurityPolicy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
     context.Response.Headers.CacheControl = "no-store";
+    if (context.Request.Path.StartsWithSegments("/api"))
+    {
+        var jwt = context.RequestServices.GetRequiredService<JwtLocalSettings>();
+        if (!jwt.EntornoPermitido) { context.Response.StatusCode = 404; return; }
+        if (!jwt.Disponible)
+        {
+            context.Response.StatusCode = 503;
+            await context.Response.WriteAsJsonAsync(new ProblemDetails { Status = 503, Title = "API local sin configurar", Detail = "Ejecutá tools/Preparar-Api.ps1 y reiniciá la aplicación." });
+            return;
+        }
+    }
     await next();
 });
 app.UseStaticFiles();
