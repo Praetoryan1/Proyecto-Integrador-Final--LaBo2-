@@ -29,7 +29,7 @@ public class PerfilController(TrazoDbContext db, AvatarService avatars) : Contro
             profile.DisponibleParaTrabajar, profile.Tema, profile.Disposicion, profile.ColorAcento, profile.AvatarClave != null,
             contact ? profile.EmailContacto : null,
             contact ? profile.Enlaces.OrderBy(x => x.Orden).Select(e => new EnlaceModel { Etiqueta = e.Etiqueta, Url = e.Url }).ToList() : [],
-            posts, viewer == profile.UsuarioId));
+            posts, viewer == profile.UsuarioId, viewer != null && await db.Seguimientos.AnyAsync(s => s.SeguidorId == viewer && s.SeguidoId == profile.UsuarioId, ct)));
     }
 
     [HttpGet("/mi-perfil"), Authorize]

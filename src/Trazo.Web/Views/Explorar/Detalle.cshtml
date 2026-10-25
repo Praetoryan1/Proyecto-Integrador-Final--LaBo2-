@@ -9,6 +9,20 @@
         <p class="notice">Tu publicación · Visibilidad: @Model.Visibilidad · Estado: @Model.Estado</p>
         <a asp-controller="Publicaciones" asp-action="Index" asp-route-editar="@Model.Publicacion.Id" class="btn btn-outline-light mb-4">Editar publicación ↗</a>
     }
+    @if (Model.PuedeGuardar || Model.Guardado) {
+        <div class="social-controls">
+        @if (User.IsInRole(Roles.Creador)) {
+            <form asp-controller="Comunidad" asp-action="@(Model.Guardado ? "Quitar" : "Guardar")" asp-route-id="@Model.Publicacion.Id" method="post">
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                <button class="btn btn-outline-light" type="submit">@(Model.Guardado ? "Quitar de favoritos" : "Guardar en favoritos")</button>
+            </form>
+            <a asp-controller="Comunidad" asp-action="Favoritos" class="quiet-link">Ver mis favoritos ↗</a>
+        } else if (User.Identity?.IsAuthenticated != true) {
+            <a asp-controller="Cuenta" asp-action="Ingresar" asp-route-returnUrl="@Context.Request.Path" class="btn btn-outline-light">Ingresar para guardar</a>
+        }
+        <span class="field-help">Tus favoritos son privados.</span>
+        </div>
+    }
     <div class="publication-text">@Model.Publicacion.Texto</div>
     <section class="publication-media" aria-label="Recursos de la publicación">
     @foreach (var recurso in Model.Recursos)

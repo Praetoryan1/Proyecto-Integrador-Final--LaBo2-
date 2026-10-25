@@ -19,6 +19,12 @@
         <div class="tags">
         @foreach (var tag in item.Etiquetas) { <a asp-controller="Explorar" asp-action="Index" asp-route-etiqueta="@tag">#@tag</a> }
         </div>
+        @if (ViewData["ListaFavoritos"] is true) {
+            <form asp-controller="Comunidad" asp-action="Quitar" asp-route-id="@item.Id" method="post" class="favorite-remove">
+                <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                <button class="quiet-button" type="submit" aria-label="Quitar @item.Titulo de favoritos">Quitar de favoritos</button>
+            </form>
+        }
     </article>
 }
 </div>

@@ -1,0 +1,51 @@
+{
+  "fechaUtc": "2026-10-25T05:46:40.296Z",
+  "flujo": "MVC con formularios POST, antiforgery y redirección local",
+  "comprobaciones": [
+    "alta y baja de favorito",
+    "filtro privado de favoritos",
+    "seguir y dejar de seguir (conserva relaciones anteriores)",
+    "privacidad efectiva tras guardar y seguir",
+    "visitantes sin acceso a listas",
+    "móvil 390 px sin desborde"
+  ],
+  "seguimientoPreexistente": false,
+  "erroresJavaScript": [],
+  "peticiones": [
+    {
+      "method": "POST",
+      "path": "/favoritos/31/guardar",
+      "status": 302
+    },
+    {
+      "method": "GET",
+      "path": "/mis-favoritos",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/mis-favoritos?q=Cuaderno+de+referencias",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/seguimientos/bruno/seguir",
+      "status": 302
+    },
+    {
+      "method": "GET",
+      "path": "/mis-seguidos",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/mis-favoritos?q=Cuaderno%20de%20referencias%20%C2%B7%20prueba%20de%20comunidad%201792907198334",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/seguimientos/bruno/quitar",
+      "status": 302
+    }
+  ]
+}

@@ -8,6 +8,8 @@ Documento complementario a la entrega preliminar. Investigación consultada el *
 
 ## 1. Concepto y referencias
 
+**Actualización del 25/10/2026, incremento 05:** favoritos privados y seguimiento de creadores implementados con listas paginadas, búsquedas y permisos aplicados también a contadores. Altas/bajas idempotentes y limpieza de relaciones no disponibles; [registro y evidencia](incremento-05.md). Sin cambios del DER ni nuevas dependencias. Próximo módulo propuesto tras el push: reportes y moderación.
+
 **Actualización del 24/10/2026, incremento 04:** API REST JWT implementada para publicaciones propias y búsqueda de etiquetas. Incluye emisor local, revocación de sesiones y colección Postman comprobada; [registro](incremento-04.md) y [guía](api.md). La API queda deshabilitada fuera de Development/Testing. Sin cambios de DER. Próximo incremento propuesto tras el push: favoritos y seguimiento de creadores.
 
 **Actualización del 24/10/2026, incremento 03:** carga de imágenes/GIF/MP4, enlaces YouTube, orden y descripciones en Vue, portadas, filtro por medio y lectura autorizada de archivos/miniaturas/rangos implementados y probados. [Registro y evidencia](incremento-03.md). Los límites reales están en [medios](medios.md); no son configurables desde el panel todavía. El DER no cambia. Próximo incremento previsto: JWT y colección de pruebas, después del commit/push de Jonathan.

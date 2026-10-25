@@ -1,0 +1,36 @@
+@model SeguidosModel
+@{ ViewData["Title"] = "Creadores que sigo"; }
+<section class="page-heading">
+    <a asp-controller="Panel" asp-action="Index" class="quiet-link">← Mi estudio</a>
+    <span class="eyebrow mt-4">MIRADAS PARA VOLVER</span>
+    <h1>Creadores que sigo<span class="accent">.</span></h1>
+    <p>Tu selección privada de portafolios. Seguir a alguien no te da acceso a sus obras privadas.</p>
+</section>
+<form asp-action="Seguidos" method="get" class="filter-bar" role="search">
+    <div class="search-field"><label for="buscar-seguidos" class="visually-hidden">Buscar creadores seguidos</label><input id="buscar-seguidos" name="q" value="@Model.Q" maxlength="100" placeholder="Nombre, usuario o especialidad…" /></div>
+    <button class="btn btn-outline-light" type="submit">Buscar</button>
+    @if (!string.IsNullOrWhiteSpace(Model.Q)) { <a asp-action="Seguidos" class="quiet-link">Limpiar búsqueda</a> }
+</form>
+<div class="follow-grid">
+@foreach (var creator in Model.Resultados.Items) {
+    <article class="follow-card">
+        <a asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@creator.Usuario" class="follow-identity">
+            @if (creator.TieneAvatar) { <img src="/p/@creator.Usuario/avatar" alt="" width="64" height="64" loading="lazy" /> }
+            else { <span class="follow-avatar" aria-hidden="true">@creator.Nombre[..1]</span> }
+            <div><h2>@creator.Nombre</h2><span class="muted">@@@creator.Usuario</span></div>
+        </a>
+        <p>@creator.Especialidad</p>
+        @if (creator.Disponible) { <span class="availability"><span class="status-dot"></span> Disponible para trabajar</span> }
+        <div class="follow-actions"><a asp-controller="Perfil" asp-action="Ver" asp-route-usuario="@creator.Usuario" class="quiet-link">Ver portafolio ↗</a>
+        <form asp-action="DejarDeSeguir" asp-route-usuario="@creator.Usuario" method="post">
+            <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+            <button class="quiet-button" type="submit" aria-label="Dejar de seguir a @creator.Nombre">Dejar de seguir</button>
+        </form></div>
+    </article>
+}
+</div>
+@if (Model.Resultados.Total == 0) {
+    <div class="empty-state"><h2>@(string.IsNullOrWhiteSpace(Model.Q) ? "Todavía no seguís creadores disponibles." : "No encontramos creadores con esa búsqueda.")</h2><p>Visitá un perfil y elegí Seguir creador.</p><a asp-controller="Explorar" asp-action="Index" class="btn btn-lime">Descubrir portafolios ↗</a></div>
+}
+<partial name="_Pagination" model="@((Model.Resultados.Numero, Model.Resultados.Paginas, Model.Resultados.Total))" />
+<div class="social-cleanup"><p class="field-help">Los perfiles que ya no podés consultar se ocultan de esta lista y pueden reaparecer si vuelven a estar disponibles.</p><form asp-action="LimpiarSeguidos" method="post"><button class="quiet-button" type="submit">Quitar seguimientos no disponibles</button></form></div>

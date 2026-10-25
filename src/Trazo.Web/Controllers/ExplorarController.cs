@@ -30,11 +30,13 @@ public class ExplorarController(TrazoDbContext db) : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var query = db.Publicaciones.AsNoTracking().LegiblesPor(userId).Where(p => p.Id == id);
-        var state = await query.Select(p => new { p.Visibilidad, p.EstadoEditorial, p.AutorId }).SingleOrDefaultAsync(ct);
+        var state = await query.Select(p => new { p.Visibilidad, p.EstadoEditorial, p.EstadoModeracion, p.AutorId }).SingleOrDefaultAsync(ct);
         if (state is null) return NotFound();
         var card = await query.Tarjetas().SingleAsync(ct);
         var resources = await db.Recursos.AsNoTracking().Where(r => query.Select(p => p.Id).Contains(r.PublicacionId) && r.EstadoProcesamiento == EstadoProcesamiento.Listo)
             .OrderBy(r => r.Orden).Select(r => new RecursoVista(r.Id, r.Tipo, r.Orden, r.TextoAlternativo, r.Creditos, r.YouTubeId)).ToListAsync(ct);
-        return View(new DetallePublicacionModel(card, state.Visibilidad, state.EstadoEditorial, state.AutorId == userId, resources));
+        var saved = userId != null && await db.Favoritos.AnyAsync(f => f.UsuarioId == userId && f.PublicacionId == id, ct);
+        return View(new DetallePublicacionModel(card, state.Visibilidad, state.EstadoEditorial, state.AutorId == userId, resources, saved,
+            state.EstadoEditorial == EstadoEditorial.Publicada && state.EstadoModeracion == EstadoModeracion.Visible));
     }
 }

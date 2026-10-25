@@ -1,0 +1,20 @@
+@model FavoritosModel
+@{ ViewData["Title"] = "Mis favoritos"; ViewData["ListaFavoritos"] = true; }
+<section class="page-heading">
+    <a asp-controller="Panel" asp-action="Index" class="quiet-link">← Mi estudio</a>
+    <span class="eyebrow mt-4">TU COLECCIÓN PERSONAL</span>
+    <h1>Mis favoritos<span class="accent">.</span></h1>
+    <p>Ideas y procesos que querés volver a mirar. Esta lista solo la ves vos.</p>
+</section>
+<form asp-action="Favoritos" method="get" class="filter-bar" role="search">
+    <div class="search-field"><label for="buscar-favoritos" class="visually-hidden">Buscar favoritos por título</label><input id="buscar-favoritos" name="q" value="@Model.Q" maxlength="100" placeholder="Buscá entre tus favoritos…" /></div>
+    <button class="btn btn-outline-light" type="submit">Buscar</button>
+    @if (!string.IsNullOrWhiteSpace(Model.Q)) { <a asp-action="Favoritos" class="quiet-link">Limpiar búsqueda</a> }
+</form>
+@if (Model.Resultados.Total > 0) {
+    <partial name="_Tarjetas" model="Model.Resultados.Items" />
+} else {
+    <div class="empty-state"><span class="eyebrow">UN ARCHIVO A TU MEDIDA</span><h2>@(string.IsNullOrWhiteSpace(Model.Q) ? "Todavía no tenés favoritos disponibles." : "No encontramos favoritos con ese título.")</h2><p>Podés guardar una publicación desde su detalle.</p><a asp-controller="Explorar" asp-action="Index" class="btn btn-lime">Explorar publicaciones ↗</a></div>
+}
+<partial name="_Pagination" model="@((Model.Resultados.Numero, Model.Resultados.Paginas, Model.Resultados.Total))" />
+<div class="social-cleanup"><p class="field-help">Si una obra se archiva, se oculta o cambia su privacidad, deja de mostrarse acá. Puede reaparecer si vuelve a estar disponible.</p><form asp-action="LimpiarFavoritos" method="post"><button class="quiet-button" type="submit">Quitar guardados no disponibles</button></form></div>

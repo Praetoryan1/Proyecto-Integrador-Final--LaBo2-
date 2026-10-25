@@ -42,8 +42,10 @@ La lectura autorizada se compone con `IQueryable` antes de `Count`, `Skip` y `Ta
 
 ## Qué está pendiente
 
-El esquema de favoritos, seguimientos y reportes está creado, pero sus operaciones de usuario todavía no están implementadas. Desde el incremento 02 existen ABM, asociación de etiquetas y cambio de estado editorial de publicaciones. Se permite conservar etiquetas desactivadas ya asociadas, pero no agregar nuevas asociaciones con ellas. No se puede publicar una obra sin un recurso listo. Borrar una publicación con reportes devuelve 409 y permite optar por archivarla.
+El esquema de reportes está creado, pero su flujo de usuario y moderación todavía no está implementado. Desde el incremento 02 existen ABM, asociación de etiquetas y cambio de estado editorial de publicaciones. Se permite conservar etiquetas desactivadas ya asociadas, pero no agregar nuevas asociaciones con ellas. No se puede publicar una obra sin un recurso listo. Borrar una publicación con reportes devuelve 409 y permite optar por archivarla.
 
 Desde el incremento 03, RecursoMultimedia tiene alta, edición, orden y baja operativas. `Bytes` registra el archivo normalizado más su miniatura; YouTube no usa almacenamiento local. La miniatura se deriva del mismo identificador de `ClaveAlmacenamiento` con sufijo `.preview.png`, sin columna adicional. Los recursos se persisten solo tras terminar el procesamiento. Las modificaciones renuevan `Publicacion.Version`; la baja de una publicación sin reportes retira sus recursos y luego elimina los archivos. Ver [coordinación y límites](medios.md).
 
-No hubo cambios de tablas ni relaciones en los incrementos 02 y 03: el DER y la migración inicial siguen representando el esquema actual. El estado de moderación no se modifica desde el editor, ni puede elegirse otro autor enviando campos adicionales.
+Desde el incremento 05, Favorito y Seguimiento tienen altas/bajas y listas personales operativas. El actor se obtiene de la sesión y las claves compuestas evitan duplicados simultáneos. Las consultas y contadores filtran la disponibilidad del destino antes de paginar; las relaciones pueden conservarse mientras el destino esté oculto, salvo que su propietario elija limpiar las no disponibles. Ninguna relación concede acceso adicional. Ver [reglas y pruebas](incremento-05.md).
+
+No hubo cambios de tablas ni relaciones en los incrementos 02 a 05: el DER y la migración inicial siguen representando el esquema actual. El estado de moderación no se modifica desde el editor, ni puede elegirse otro autor enviando campos adicionales.

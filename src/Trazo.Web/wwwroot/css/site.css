@@ -1121,3 +1121,24 @@ textarea {
 .youtube-placeholder { padding: 32px; border: 1px solid var(--line); border-radius: 12px; }
 .media-figure iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; }
 .filter-bar { flex-wrap: wrap; }
+
+/* Colecciones personales y seguimiento de portafolios. */
+.social-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin: 24px 0 32px; }
+.social-controls .field-help { margin: 0; }
+.social-controls .field-help, .social-cleanup .field-help { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.social-controls form, .follow-actions form { margin: 0; }
+.favorite-remove { margin-top: 16px; }
+.favorite-remove .quiet-button, .social-cleanup .quiet-button, .follow-actions .quiet-button { text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.social-cleanup { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 24px; }
+.follow-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.follow-card { border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px; overflow-wrap: anywhere; }
+.follow-identity { display: flex; gap: 16px; align-items: center; color: inherit; text-decoration: none; }
+.follow-identity h2 { font-size: 21px; margin-bottom: 4px; }
+.follow-identity > div { min-width: 0; }
+.follow-identity img, .follow-avatar { border-radius: 50%; width: 64px; height: 64px; flex-shrink: 0; object-fit: cover; }
+.follow-avatar { display: grid; place-items: center; background: #293421; color: #c4f566; font-size: 28px; }
+.follow-card > p { margin: 0; }
+.follow-card .availability { font-size: 12px; align-self: flex-start; }
+.follow-actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; margin-top: auto; padding-top: 12px; font-size: 14px; }
+@media (max-width: 1050px) { .follow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .follow-grid { grid-template-columns: 1fr; } .social-controls { align-items: flex-start; } }
