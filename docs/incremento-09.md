@@ -8,7 +8,7 @@ Fecha de cierre: **28/10/2026**. Se agrega un paquete de entrega académica sepa
 - `DemoAssets`: 17 archivos geométricos propios con manifiesto SHA-256. Cada recurso posee archivo y miniatura independientes, fuera de la raíz web pública.
 - `compose.entrega.yaml` y `Preparar-Entrega.ps1`: MySQL, secretos y almacenamiento separados; importación en base vacía, ejecución y exportación limitada a una demo recién sembrada.
 - `database/003-demo-completa.sql`: esquema completo, historial de migraciones y datos ficticios. Se acompaña de los medios binarios; no contiene credenciales de MySQL/JWT ni datos de `trazo_dev`.
-- [Guía de instalación y defensa](entrega-y-defensa.md), recorrido automatizado y nueva prueba de integración.
+- [Instrucciones de instalación](../README.md#ejecución-local), recorrido automatizado y nueva prueba de integración.
 
 ## Validación realizada
 

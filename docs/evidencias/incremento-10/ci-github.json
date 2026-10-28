@@ -1,0 +1,112 @@
+{
+  "consultadoUtc": "2026-10-28T03:26:07.3453538Z",
+  "repositorio": "Praetoryan1/Proyecto-Integrador-Final--LaBo2-",
+  "commit": "24ed4b56b2596bf0761934a5d09f85db9f5a006b",
+  "rama": "main",
+  "ejecucion": 40625542623,
+  "url": "https://github.com/Praetoryan1/Proyecto-Integrador-Final--LaBo2-/actions/runs/40625542623",
+  "estado": "completed",
+  "conclusion": "success",
+  "iniciadaUtc": "2026-10-28T03:14:28Z",
+  "jobs": [
+    {
+      "nombre": "build-and-test",
+      "estado": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Praetoryan1/Proyecto-Integrador-Final--LaBo2-/actions/runs/40625542623/job/122609446513",
+      "pasos": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm ci",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run npm run build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run git diff --exit-code -- src/Trazo.Web/wwwroot/js/publicaciones/editor.js",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-dotnet@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run dotnet restore --locked-mode Trazo.sln",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run dotnet build Trazo.sln --no-restore",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run sudo apt-get update && sudo apt-get install -y ffmpeg",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run dotnet test Trazo.sln --no-build --logger 'trx;LogFileName=pruebas.trx'",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "alcance": "Resultado remoto del commit indicado. No incluye la verificación local de navegador ni la restauración de SQL."
+}

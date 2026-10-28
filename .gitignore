@@ -2,6 +2,13 @@
 # Instrucciones locales del asistente (en cualquier carpeta)
 AGENTS.md
 
+# Documentación de consulta local
+/docs/desarrollo.md
+/docs/entrega-y-defensa.md
+/docs/guion-defensa.md
+/docs/incremento-10.md
+/docs/plan-de-trabajo.md
+
 bin/
 obj/
 .vs/

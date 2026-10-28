@@ -9,13 +9,20 @@ Trazo reúne portafolios de diseño, ilustración y animación con descubrimient
 
 ## Ejecución local
 
-Para evaluar el proyecto con imágenes, GIF, MP4 y casos precargados, seguir la **[guía de entrega y defensa](docs/entrega-y-defensa.md)**. La demo completa se instala con `./tools/Preparar-Entrega.ps1 -DesdeSql -IniciarWeb`, usa MySQL separado y abre **https://localhost:7281**. El [SQL completo](database/003-demo-completa.sql) incluye datos ficticios; sus archivos se distribuyen en `DemoAssets`. [Prueba de restauración y evidencia](docs/incremento-09.md).
-
-Los pasos siguientes mantienen el entorno habitual de desarrollo en el puerto 7280 y su semilla básica.
-
 Requisitos: .NET SDK **10.0.400**, Docker Desktop con motor Linux activo, **PowerShell 7.2 o superior**, Git y VS Code. No hace falta instalar MySQL directamente ni modificar bases de otros proyectos. El JavaScript compilado de Vue está incluido: **Node no es necesario para ejecutar la web**. Para modificar sus componentes se requiere Node >=22.12 y `npm ci` / `npm run build`.
 
-En una terminal PowerShell de VS Code, abierta en la raíz del repositorio:
+Para instalar la demo con imágenes, GIF, MP4 y casos precargados, ejecutar desde la raíz del repositorio en PowerShell 7:
+
+```powershell
+dotnet dev-certs https --trust
+./tools/Preparar-Entrega.ps1 -DesdeSql -IniciarWeb
+```
+
+Abrir **https://localhost:7281** y mantener la terminal abierta; `Ctrl+C` detiene la web. El script usa una instancia MySQL separada en `127.0.0.1:3308`, base `trazo_entrega`. Importa el [SQL completo](database/003-demo-completa.sql) solo si la base está vacía y verifica/copia los medios incluidos en `DemoAssets`. No ejecutar además los SQL 001 y 002. Al repetir el comando conserva los datos existentes. [Prueba de restauración y evidencia](docs/incremento-09.md).
+
+Las credenciales de esa instancia quedan en `.env.entrega` y sus archivos en `tmp/trazo-entrega/`; ambos se conservan localmente y no se versionan. No borrarlos si se quiere conservar la instalación. Para detener solo su MySQL sin borrar datos: `docker compose -p trazo-entrega --env-file .env.entrega -f compose.entrega.yaml stop`. La reproducción de los medios demo no requiere FFmpeg; para subir GIF/MP4 nuevos, ejecutar `./tools/Preparar-Medios.ps1` y reiniciar la web.
+
+Como alternativa, los pasos siguientes preparan el entorno habitual de desarrollo en el puerto 7280 con la semilla básica. En una terminal PowerShell de VS Code, abierta en la raíz del repositorio:
 
 ```powershell
 ./tools/Preparar-Entorno.ps1
@@ -29,8 +36,6 @@ dotnet run --project src/Trazo.Web --launch-profile https
 Abrir **https://localhost:7280**. El comando `--seed-demo` aplica migraciones, crea roles y carga datos ficticios; termina sin iniciar el servidor. La última línea inicia la web. El certificado requiere la confirmación del sistema operativo la primera vez. Usar HTTPS para que funcionen las cookies de sesión.
 
 El script genera contraseñas aleatorias en `.env` y configura la conexión mediante .NET User Secrets. Estos secretos, la base y los archivos subidos **no se versionan**. MySQL queda disponible solo en la máquina local, en `127.0.0.1:3307`. Para detenerlo conservando los datos: `docker compose stop`.
-
-La [guía de desarrollo](docs/desarrollo.md) explica cada paso, la conexión desde Workbench, las migraciones, las pruebas y el primer push.
 
 Para usar el editor: ingresar y abrir **Mi estudio → Administrar mis publicaciones**, o `/panel/publicaciones`. Guardar el borrador, agregar recursos y elegir Publicada. Una obra necesita al menos un recurso listo; las actualizaciones pueden ser solo texto. La [guía de medios](docs/medios.md) explica formatos, cuotas y FFmpeg, necesario para GIF/MP4. El script portable es para Windows; en Linux se instala con el gestor de paquetes.
 
@@ -118,7 +123,7 @@ La [validación del incremento 09](docs/incremento-09.md) agrega instalación de
 
 
 
-El [workflow de GitHub Actions](.github/workflows/ci.yml) compila Vue, comprueba que el bundle versionado corresponda a sus fuentes y ejecuta las pruebas .NET con MySQL. La ejecución remota de esta actualización queda pendiente del push; no se presenta como CI aprobada. Estas verificaciones no equivalen a una auditoría de seguridad ni cubren funcionalidades aún no construidas.
+El [workflow de GitHub Actions](.github/workflows/ci.yml) compila Vue, comprueba que el bundle versionado corresponda a sus fuentes y ejecuta las pruebas .NET con MySQL. La [ejecución del commit 24ed4b5](https://github.com/Praetoryan1/Proyecto-Integrador-Final--LaBo2-/actions/runs/40625542623), que incluye la demo completa, terminó correctamente; [registro de la verificación](docs/evidencias/incremento-10/ci-github.json). Cada nuevo commit requiere su propia ejecución. Estas verificaciones no equivalen a una auditoría de seguridad ni cubren funcionalidades aún no construidas.
 
 Con la web y MySQL encendidos, se puede repetir el recorrido de navegador en Windows con Edge:
 

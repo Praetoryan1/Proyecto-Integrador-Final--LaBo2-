@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TrazoDbContext>((services, options) =>
 {
     var connection = services.GetRequiredService<IConfiguration>().GetConnectionString("Trazo")
-        ?? throw new InvalidOperationException("Configurá ConnectionStrings:Trazo con tools/Preparar-Entorno.ps1 o dotnet user-secrets. Consultá docs/desarrollo.md.");
+        ?? throw new InvalidOperationException("Configurá ConnectionStrings:Trazo con tools/Preparar-Entorno.ps1 o dotnet user-secrets. Consultá README.md.");
     options.UseMySQL(connection);
 });
 builder.Services.AddIdentity<Usuario, IdentityRole>(o =>
