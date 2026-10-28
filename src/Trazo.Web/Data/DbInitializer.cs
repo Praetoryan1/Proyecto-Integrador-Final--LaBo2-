@@ -6,10 +6,12 @@ namespace Trazo.Web.Data;
 public static class DbInitializer
 {
     public const string DemoPassword = "Trazo.Demo2026!";
-    public static async Task InitializeAsync(IServiceProvider services, bool demo)
+    public static async Task InitializeAsync(IServiceProvider services, bool demo, bool entrega = false)
     {
         var db = services.GetRequiredService<TrazoDbContext>();
         await db.Database.MigrateAsync();
+        if (entrega && (!demo || !services.GetRequiredService<IWebHostEnvironment>().IsDevelopment() || await db.Users.AnyAsync()))
+            throw new InvalidOperationException("La demo de entrega requiere Development y una base sin usuarios. No se sobrescribe una instalación existente.");
         var roles = services.GetRequiredService<RoleManager<IdentityRole>>();
         foreach (var role in new[] { Roles.Creador, Roles.Administrador })
             if (!await roles.RoleExistsAsync(role)) Check(await roles.CreateAsync(new IdentityRole(role)));
@@ -50,6 +52,7 @@ public static class DbInitializer
                 new Publicacion { AutorId = ana.Id, Tipo = TipoPublicacion.Actualizacion, Titulo = "Borrador de Ana", Texto = "Todavía no está publicado.", EstadoEditorial = EstadoEditorial.Borrador });
         }
         await db.SaveChangesAsync();
+        if (entrega) await EntregaDemo.CompletarAsync(services, db);
         await transaction.CommitAsync();
     }
     private static async Task<Usuario> CrearUsuario(string slug, string name, string specialty, UserManager<Usuario> users, TrazoDbContext db)

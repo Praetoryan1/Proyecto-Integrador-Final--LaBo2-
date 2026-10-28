@@ -85,12 +85,12 @@ builder.Services.AddRateLimiter(o =>
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
 });
 var app = builder.Build();
-if (args.Contains("--initialize") || args.Contains("--seed-demo"))
+if (args.Contains("--initialize") || args.Contains("--seed-demo") || args.Contains("--seed-entrega"))
 {
-    if (args.Contains("--seed-demo") && !app.Environment.IsDevelopment())
+    if ((args.Contains("--seed-demo") || args.Contains("--seed-entrega")) && !app.Environment.IsDevelopment())
         throw new InvalidOperationException("Los datos de demostración solo se permiten en Development.");
     using var scope = app.Services.CreateScope();
-    await DbInitializer.InitializeAsync(scope.ServiceProvider, args.Contains("--seed-demo"));
+    await DbInitializer.InitializeAsync(scope.ServiceProvider, args.Contains("--seed-demo") || args.Contains("--seed-entrega"), args.Contains("--seed-entrega"));
     return;
 }
 app.UseRequestLocalization(new RequestLocalizationOptions().SetDefaultCulture("es-AR").AddSupportedCultures("es-AR").AddSupportedUICultures("es-AR"));

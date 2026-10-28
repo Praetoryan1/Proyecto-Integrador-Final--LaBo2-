@@ -1,0 +1,313 @@
+{
+  "fechaUtc": "2026-10-28T03:09:48.706Z",
+  "herramienta": "Newman 6.2.3",
+  "destino": "https://localhost:7282",
+  "certificado": "Excepción TLS solo para certificado local de desarrollo.",
+  "solicitudes": [
+    {
+      "nombre": "01 · Sin Bearer: acceso rechazado",
+      "metodo": "GET",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true
+        },
+        {
+          "nombre": "Desafío Bearer",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "02 · Contraseña incorrecta",
+      "metodo": "POST",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "03 · Emitir JWT de Ana",
+      "metodo": "POST",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "JWT y duración de 10 minutos",
+          "aprobada": true
+        },
+        {
+          "nombre": "Sin cookie y sin caché",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "04 · Buscar etiquetas relacionadas",
+      "metodo": "GET",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "Selector paginado",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "05 · Crear publicación propia",
+      "metodo": "POST",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true
+        },
+        {
+          "nombre": "Location y relación persistida",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "06 · Leer publicación propia",
+      "metodo": "GET",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "Privada y sin campos sensibles",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "07 · Solicitar segunda página",
+      "metodo": "GET",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "Solo página actual",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "08 · Editar con versión actual",
+      "metodo": "PUT",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "Versión renovada",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "09 · Rechazar edición desactualizada",
+      "metodo": "PUT",
+      "estado": 409,
+      "aserciones": [
+        {
+          "nombre": "HTTP 409",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "10 · Rechazar obra sin recursos",
+      "metodo": "POST",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "11 · Emitir JWT de Bruno",
+      "metodo": "POST",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "JWT y duración de 10 minutos",
+          "aprobada": true
+        },
+        {
+          "nombre": "Sin cookie y sin caché",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "12 · Bruno no lee la publicación de Ana",
+      "metodo": "GET",
+      "estado": 404,
+      "aserciones": [
+        {
+          "nombre": "HTTP 404",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "13 · Emitir JWT de administrador",
+      "metodo": "POST",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true
+        },
+        {
+          "nombre": "JWT y duración de 10 minutos",
+          "aprobada": true
+        },
+        {
+          "nombre": "Sin cookie y sin caché",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "14 · Administrador tampoco lee la publicación ajena",
+      "metodo": "GET",
+      "estado": 404,
+      "aserciones": [
+        {
+          "nombre": "HTTP 404",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "15 · JWT inválido",
+      "metodo": "GET",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "16 · Eliminar publicación temporal",
+      "metodo": "DELETE",
+      "estado": 204,
+      "aserciones": [
+        {
+          "nombre": "HTTP 204",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "17 · Comprobar la baja",
+      "metodo": "GET",
+      "estado": 404,
+      "aserciones": [
+        {
+          "nombre": "HTTP 404",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "18 · Revocar todas las sesiones de Ana",
+      "metodo": "POST",
+      "estado": 204,
+      "aserciones": [
+        {
+          "nombre": "HTTP 204",
+          "aprobada": true
+        }
+      ]
+    },
+    {
+      "nombre": "19 · JWT revocado rechazado",
+      "metodo": "GET",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true
+        }
+      ]
+    }
+  ],
+  "estadisticas": {
+    "iterations": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    },
+    "items": {
+      "total": 19,
+      "pending": 0,
+      "failed": 0
+    },
+    "scripts": {
+      "total": 20,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequests": {
+      "total": 19,
+      "pending": 0,
+      "failed": 0
+    },
+    "requests": {
+      "total": 19,
+      "pending": 0,
+      "failed": 0
+    },
+    "tests": {
+      "total": 19,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 31,
+      "pending": 0,
+      "failed": 0
+    },
+    "testScripts": {
+      "total": 19,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequestScripts": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "fallos": []
+}

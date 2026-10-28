@@ -1,0 +1,210 @@
+{
+  "fecha": "2026-10-28T03:06:31.717Z",
+  "origen": "SQL en copia limpia de archivos versionables",
+  "comprobaciones": [
+    {
+      "comprobacion": "Página pública 1",
+      "resultado": 12
+    },
+    {
+      "comprobacion": "Portadas decodificadas",
+      "resultado": 4
+    },
+    {
+      "comprobacion": "Página pública 2",
+      "resultado": 10
+    },
+    {
+      "comprobacion": "Destacados públicos Ana",
+      "resultado": 2
+    },
+    {
+      "comprobacion": "Perfil móvil sin desborde",
+      "resultado": false
+    },
+    {
+      "comprobacion": "Login ana",
+      "resultado": true
+    },
+    {
+      "comprobacion": "Login bruno",
+      "resultado": true
+    },
+    {
+      "comprobacion": "Login admin",
+      "resultado": true
+    },
+    {
+      "comprobacion": "Bundle Vue incluido renderiza el listado",
+      "resultado": 12
+    },
+    {
+      "comprobacion": "Creador sin rol administrador",
+      "resultado": 302
+    },
+    {
+      "comprobacion": "/administracion/cuentas",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "/administracion/reportes",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "/mis-favoritos",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "/mis-seguidos",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "/mi-portafolio/destacados",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "/panel/publicaciones",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Avatar ana",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Avatar bruno",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Avatar admin",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Atlas de formas: visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Atlas de formas: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Atlas de formas: miniatura visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Ritmo circular: visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Ritmo circular: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Ritmo circular: miniatura visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "GIF activado",
+      "resultado": "true"
+    },
+    {
+      "comprobacion": "Proceso para la comunidad: visitante",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Proceso para la comunidad: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Proceso para la comunidad: miniatura visitante",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Otra cuenta accede a registrados",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Movimiento en un segundo: visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Movimiento en un segundo: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Movimiento en un segundo: miniatura visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "MP4 rango HTTP",
+      "resultado": 206
+    },
+    {
+      "comprobacion": "MP4 bytes recibidos",
+      "resultado": 100
+    },
+    {
+      "comprobacion": "Video reproducido en Edge",
+      "resultado": true
+    },
+    {
+      "comprobacion": "Identidad en color: visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Identidad en color: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Identidad en color: miniatura visitante",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Propuesta reservada: visitante",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Propuesta reservada: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Propuesta reservada: miniatura visitante",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Admin no abre obra privada",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Obra en revisión: visitante",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Obra en revisión: propietario",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Obra en revisión: miniatura visitante",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "Paquete demo fuera de raíz pública",
+      "resultado": 404
+    },
+    {
+      "comprobacion": "API rechaza cookies sin JWT",
+      "resultado": 401
+    },
+    {
+      "comprobacion": "Emisión JWT local",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Lectura REST Bearer",
+      "resultado": 200
+    },
+    {
+      "comprobacion": "Errores JavaScript",
+      "resultado": []
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "fecha": "2026-10-28",
+  "baseCommit": "74de0380c8ef8a35103aef00dbe5e3d93bdb05c4",
+  "tipoCopia": "Archivos versionables con cambios pendientes; no es un clon del commit remoto",
+  "datosOrigen": "Demo completa creada en base vacía trazo_entrega, proyecto trazo-entrega, puerto 3308",
+  "datosDestino": "SQL importado en trazo_entrega, proyecto trazo-verificacion, puerto 3309",
+  "archivosEnCopiaInicial": 315,
+  "secretosLocalesCopiados": false,
+  "sqlSha256": "b7b0dc1a820d2b77b785b9cda96b0b7001879c4a2399549dae2bab119139a6b4",
+  "manifiestoSha256": "f3284a3dc16924e167eb5333af01180410045076abf9f51c468ce30fa7a59bab",
+  "archivosRestauradosVerificados": 17,
+  "entorno": "Windows, PowerShell 7, SDK 10.0.400, MySQL 8.4 en Docker y Edge",
+  "limitacion": "Herramientas, certificado HTTPS y caché NuGet ya disponibles en el equipo. No se ensayó una máquina sin prerrequisitos."
+}

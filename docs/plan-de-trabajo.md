@@ -8,6 +8,8 @@ Documento complementario a la entrega preliminar. Investigación consultada el *
 
 ## 1. Concepto y referencias
 
+**Actualización del 28/10/2026, incremento 09:** demo completa con medios propios, exportación SQL desde datos ficticios nuevos e importación comprobada en una copia limpia de archivos versionables. [Registro y evidencia](incremento-09.md), [instalación y defensa](entrega-y-defensa.md). Sin cambios del DER. Próximo paso tras el push: ensayo de defensa y revisión de observaciones/CI; producción sigue siendo un hito separado.
+
 **Actualización del 25/10/2026, incremento 08:** selección y orden de hasta seis obras destacadas, lectura sin duplicados en actividad, controles de concurrencia y vista previa de apariencia implementados y probados. Se usa OrdenDestacado existente, sin cambios de esquema. [Registro y evidencia](incremento-08.md). Próximo bloque después del push: datos de entrega, SQL demo y ejecución desde una copia limpia.
 
 **Actualización del 25/10/2026, incremento 07:** administración de suspensiones/reactivaciones, historial con motivo y revocación de sesiones implementados y probados. Se agregó la entidad de soporte CambioEstadoCuenta, segunda migración y DER actualizado. Cuentas propias/administradoras protegidas. [Registro y evidencia](incremento-07.md). Próximo bloque tras el push: destacados y revisión de personalización.
@@ -197,4 +199,4 @@ La seguridad y autorización se incorporan en cada bloque; la preparación produ
 
 ## 9. Próximas decisiones
 
-El siguiente paso es revisar y subir el incremento 08. Luego se prepararán datos de entrega, SQL demo e instalación desde una copia limpia, con revisión final de la matriz y preparación de la defensa. Las versiones probadas y los pasos de MySQL/VS Code figuran en el README y en desarrollo.md. Queda verificar con el docente cualquier observación sobre el alcance y las herramientas auxiliares. El nombre de trabajo puede cambiar sin afectar el modelo. No publicar contraseñas reales, claves JWT, datos de usuarios ni archivos sin licencia en GitHub.
+El siguiente paso es revisar y subir el incremento 09, con datos de entrega, SQL demo e instalación comprobada desde una copia limpia de archivos versionables. Luego corresponde ensayar la defensa y revisar la CI remota y eventuales observaciones docentes. Las versiones probadas y los pasos de MySQL/VS Code figuran en el README, desarrollo.md y entrega-y-defensa.md. Queda verificar con el docente cualquier observación sobre el alcance y las herramientas auxiliares. El nombre de trabajo puede cambiar sin afectar el modelo. No publicar contraseñas reales, claves JWT, datos de usuarios ni archivos sin licencia en GitHub.

@@ -1,5 +1,7 @@
 # Desarrollo local: VS Code, MySQL y GitHub
 
+Para instalar la demo completa con SQL y medios precargados, consultar [entrega y defensa](entrega-y-defensa.md). Usa puertos y almacenamiento separados. Los pasos de esta guía conservan el entorno habitual de desarrollo y su semilla básica.
+
 Guía actualizada al incremento 08, 25/10/2026. Todos los comandos se ejecutan en la carpeta que contiene `Trazo.sln`, salvo indicación explícita.
 
 ## 1. Abrir el proyecto
@@ -101,7 +103,7 @@ Los incrementos 02 a 06 no cambiaron el esquema. El incremento 07 agrega el hist
 
 El segundo comando usa MySQL real y **borra/recrea `trazo_tests`**. No guardar información útil en esa base. El código rechaza otra base o un servidor remoto. La aplicación puede seguir ejecutándose contra `trazo_dev` mientras se prueban las integraciones.
 
-Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 49 omitidas; con `-Integracion`, 76 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
+Resultados esperados de este incremento: sin `-Integracion`, 27 aprobadas y 50 omitidas; con `-Integracion`, 77 aprobadas y ninguna omitida. Los informes TRX se generan en `tests/Trazo.Tests/TestResults/` y no se suben al repositorio. La versión del runtime puede ser un parche anterior a la de paquetes; la compatibilidad se comprueba mediante compilación y pruebas.
 
 ### Recorrido de navegador y evidencia
 
@@ -157,7 +159,7 @@ Antes de subir, revisar `git status --short`: no deben aparecer `AGENTS.md`, `.e
 ```powershell
 git add .
 git diff --cached --stat
-git commit -m "feat: obras destacadas y vista previa del portafolio"
+git commit -m "feat: demo completa y entrega reproducible con SQL"
 git push
 ```
 

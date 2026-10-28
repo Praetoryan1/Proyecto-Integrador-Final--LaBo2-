@@ -9,6 +9,10 @@ Trazo reúne portafolios de diseño, ilustración y animación con descubrimient
 
 ## Ejecución local
 
+Para evaluar el proyecto con imágenes, GIF, MP4 y casos precargados, seguir la **[guía de entrega y defensa](docs/entrega-y-defensa.md)**. La demo completa se instala con `./tools/Preparar-Entrega.ps1 -DesdeSql -IniciarWeb`, usa MySQL separado y abre **https://localhost:7281**. El [SQL completo](database/003-demo-completa.sql) incluye datos ficticios; sus archivos se distribuyen en `DemoAssets`. [Prueba de restauración y evidencia](docs/incremento-09.md).
+
+Los pasos siguientes mantienen el entorno habitual de desarrollo en el puerto 7280 y su semilla básica.
+
 Requisitos: .NET SDK **10.0.400**, Docker Desktop con motor Linux activo, **PowerShell 7.2 o superior**, Git y VS Code. No hace falta instalar MySQL directamente ni modificar bases de otros proyectos. El JavaScript compilado de Vue está incluido: **Node no es necesario para ejecutar la web**. Para modificar sus componentes se requiere Node >=22.12 y `npm ci` / `npm run build`.
 
 En una terminal PowerShell de VS Code, abierta en la raíz del repositorio:
@@ -42,7 +46,7 @@ En **Mi estudio → Obras destacadas** podés elegir y ordenar hasta seis obras.
 
 
 
-Disponibles después de ejecutar `--seed-demo`, exclusivamente en Development. Contraseña común: **`Trazo.Demo2026!`**. Son credenciales ficticias públicas para evaluación local; no deben reutilizarse en un despliegue.
+Disponibles después de ejecutar `--seed-demo` o instalar la demo completa de entrega, exclusivamente en Development. Contraseña común: **`Trazo.Demo2026!`**. Son credenciales ficticias públicas para evaluación local; no deben reutilizarse en un despliegue.
 
 | Correo de acceso | Roles | Perfil |
 | --- | --- | --- |
@@ -50,7 +54,7 @@ Disponibles después de ejecutar `--seed-demo`, exclusivamente en Development. C
 | `bruno@trazo.test` | Creador | `/p/bruno` |
 | `admin@trazo.test` | Creador, Administrador | `/p/admin` |
 
-Los datos iniciales incluyen 6 etiquetas, 18 actualizaciones públicas y 3 casos de Ana: una publicación para registrados, una privada y un borrador. Las portadas geométricas están hechas con CSS; no simulan archivos multimedia cargados. El administrador tampoco puede leer publicaciones privadas ajenas.
+La semilla básica incluye 6 etiquetas, 18 actualizaciones públicas y 3 casos de Ana: una publicación para registrados, una privada y un borrador. Sus portadas geométricas están hechas con CSS; no simulan archivos multimedia cargados. La demo completa agrega 7 obras con archivos reales, 3 avatares, favoritos, seguimientos, reportes e historial ficticio. El administrador tampoco puede leer publicaciones privadas ajenas.
 
 ## Arquitectura y versiones
 
@@ -104,6 +108,8 @@ tools/                Preparación del entorno y ejecución de pruebas
 | 7. Web API REST con JWT | Implementado y probado localmente | [CRUD REST](src/Trazo.Web/Controllers/Api/PublicacionesApiController.cs), [autenticación](src/Trazo.Web/Controllers/Api/AuthApiController.cs), [validación JWT](src/Trazo.Web/Services/JwtLocal.cs) | [Colección Postman](docs/api/Trazo.postman_collection.json), [19 solicitudes y 31 aserciones](docs/evidencias/incremento-04/postman-resultados.json), [pruebas de autenticación y permisos](tests/Trazo.Tests/ApiIntegrationTests.cs) |
 
 ## Pruebas
+
+La [validación del incremento 09](docs/incremento-09.md) agrega instalación desde SQL y comprobación de la demo multimedia. La matriz anterior conserva las evidencias específicas de cada funcionalidad; la guía de defensa permite recorrerlas en la instalación restaurada.
 
 ```powershell
 ./tools/Probar.ps1                 # Unitarias; omite las que necesitan MySQL

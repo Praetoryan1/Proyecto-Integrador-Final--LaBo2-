@@ -21,6 +21,8 @@ Este inventario no determina por sí solo la compatibilidad legal de una distrib
 
 Las formas geométricas de las tarjetas se dibujan con CSS del proyecto. Los textos y usuarios de demostración son ficticios; no se copiaron obras de Amy J. Xu u otros portafolios. Las capturas de `docs/evidencias` corresponden a la aplicación local con esos datos.
 
+El incremento 09 también distribuye PNG, GIF y MP4 geométricos propios en `DemoAssets`, generados con Canvas por `tools/Generar-Assets-Demo.mjs` y codificados con FFmpeg. El manifiesto documenta tamaño y SHA-256; el script requiere Node, Playwright/Edge y FFmpeg únicamente para regenerarlos. No se descargaron imágenes, música ni videos de terceros. No se asigna una licencia nueva a estos recursos mientras siga pendiente la decisión de licencia del proyecto.
+
 La [investigación preliminar](plan-de-trabajo.md) conserva las referencias técnicas y legales consultadas. Los archivos de terceros conservan sus avisos originales. Una publicación futura de obras de usuarios requerirá permisos y procedimientos específicos, aparte de las licencias del software.
 
 Para integrar Vue se consultaron las guías oficiales de [herramientas y precompilación](https://vuejs.org/guide/scaling-up/tooling), [seguridad de plantillas](https://vuejs.org/guide/best-practices/security) e [integración de Vite con un backend](https://vite.dev/guide/backend-integration). Se compilan plantillas propias y se trata el texto del usuario como texto, sin `v-html`, compilación de plantillas de usuarios ni relajación de la política CSP. Se eligió una salida única con nombre estable y `asp-append-version` para servirla desde Razor.
